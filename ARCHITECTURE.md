@@ -53,7 +53,6 @@ C4Context
 
 ---
 
-
 ### Level 2 — Container Diagram
 
 > Shows the deployable containers that make up StudySync and how they communicate.
@@ -89,69 +88,79 @@ C4Container
 
 > Shows the internal components of the Spring Boot REST API container.
 
+**Part A — Security, Controllers & Services**
+
 ```mermaid
-flowchart TB
-    WebApp["🌐 React Web App\n(React SPA)"]
-    DB[("🗄️ PostgreSQL Database")]
+C4Component
+    title Backend Component Diagram (Part A) — Controllers and Services
 
-    subgraph API["Spring Boot REST API"]
-        direction TB
+    Container_Ext(webapp, "React Web App", "React SPA", "Sends HTTP requests with JWT tokens")
 
-        SEC["🔒 JWT Security Filter\nSpring Security / OncePerRequestFilter"]
+    Container_Boundary(api, "Spring Boot REST API") {
 
-        subgraph CONTROLLERS["Controllers Layer"]
-            direction LR
-            AC["Auth Controller\nPOST /api/auth/register\nPOST /api/auth/login"]
-            GC["Group Controller\nGET POST /api/groups\nGET DELETE /api/groups/{id}"]
-            MC["Membership Controller\nPOST /api/groups/{id}/join\nPUT /api/memberships/{id}/approve"]
-            SC["Session Controller\nPOST GET /api/groups/{id}/sessions\nPUT DELETE /api/sessions/{id}"]
-            ADC["Admin Controller\nGET DELETE /api/admin/users\nGET DELETE /api/admin/groups"]
-        end
+        Component(securityFilter, "JWT Security Filter", "Spring Security", "Validates JWT on every request. Sets SecurityContext. Rejects invalid tokens with 401.")
 
-        subgraph SERVICES["Services Layer"]
-            direction LR
-            AS["Auth Service\nJWT generation\nBCrypt password hashing"]
-            GS["Group Service\nGroup CRUD\nSearch & privacy logic"]
-            MS["Membership Service\nJoin requests & approvals\n5-group limit enforcement"]
-            SS["Session Service\nCreate, update\ncancel sessions"]
-            ADS["Admin Service\nUser & group moderation\nPlatform statistics"]
-        end
+        Component(authController, "Auth Controller", "@RestController", "POST /api/auth/register and /api/auth/login")
+        Component(groupController, "Group Controller", "@RestController", "CRUD for /api/groups and /api/groups/{id}")
+        Component(membershipController, "Membership Controller", "@RestController", "POST /join, PUT /approve, DELETE membership")
+        Component(sessionController, "Session Controller", "@RestController", "CRUD for /api/groups/{id}/sessions")
+        Component(adminController, "Admin Controller", "@RestController", "Admin endpoints under /api/admin/")
 
-        subgraph REPOS["Repository Layer  —  Spring Data JPA"]
-            direction LR
-            UR["User Repository\nfindByEmail()"]
-            GR["Group Repository\nfindByCourseId()"]
-            MR["Membership Repository\nfindByUserId()"]
-            SR["Session Repository\nfindByGroupId()"]
-        end
-    end
+        Component(authService, "Auth Service", "@Service", "JWT generation and BCrypt password hashing")
+        Component(groupService, "Group Service", "@Service", "Group creation, search, capacity and privacy checks")
+        Component(membershipService, "Membership Service", "@Service", "Join requests, approvals, 5-group limit enforcement")
+        Component(sessionService, "Session Service", "@Service", "Create, update and cancel study sessions")
+        Component(adminService, "Admin Service", "@Service", "User and group moderation, platform statistics")
+    }
 
-    WebApp -->|"HTTPS + JWT Bearer Token"| SEC
+    Rel(webapp, securityFilter, "All requests", "HTTPS + JWT")
+    Rel(securityFilter, authController, "Public routes", "")
+    Rel(securityFilter, groupController, "Authenticated", "")
+    Rel(securityFilter, membershipController, "Authenticated", "")
+    Rel(securityFilter, sessionController, "Authenticated", "")
+    Rel(securityFilter, adminController, "ADMIN role only", "")
 
-    SEC -->|"Public routes"| AC
-    SEC -->|"Authenticated"| GC
-    SEC -->|"Authenticated"| MC
-    SEC -->|"Authenticated"| SC
-    SEC -->|"ADMIN role only"| ADC
+    Rel(authController, authService, "Delegates to", "")
+    Rel(groupController, groupService, "Delegates to", "")
+    Rel(membershipController, membershipService, "Delegates to", "")
+    Rel(sessionController, sessionService, "Delegates to", "")
+    Rel(adminController, adminService, "Delegates to", "")
+```
 
-    AC --> AS
-    GC --> GS
-    MC --> MS
-    SC --> SS
-    ADC --> ADS
+**Part B — Services & Repositories**
 
-    AS --> UR
-    GS --> GR
-    MS --> MR
-    MS --> GR
-    SS --> SR
-    ADS --> UR
-    ADS --> GR
+```mermaid
+C4Component
+    title Backend Component Diagram (Part B) — Services and Repositories
 
-    UR -->|"JDBC / JPA"| DB
-    GR -->|"JDBC / JPA"| DB
-    MR -->|"JDBC / JPA"| DB
-    SR -->|"JDBC / JPA"| DB
+    Container_Ext(db, "PostgreSQL Database", "PostgreSQL 15", "Persistent data store")
+
+    Container_Boundary(api, "Spring Boot REST API") {
+
+        Component(authService, "Auth Service", "@Service", "JWT generation and BCrypt password hashing")
+        Component(groupService, "Group Service", "@Service", "Group creation, search, capacity and privacy checks")
+        Component(membershipService, "Membership Service", "@Service", "Join requests, approvals, 5-group limit enforcement")
+        Component(sessionService, "Session Service", "@Service", "Create, update and cancel study sessions")
+        Component(adminService, "Admin Service", "@Service", "User and group moderation, platform statistics")
+
+        Component(userRepo, "User Repository", "@Repository", "findByEmail(), existsByEmail(), standard CRUD")
+        Component(groupRepo, "Group Repository", "@Repository", "findByCourseId(), keyword search queries")
+        Component(membershipRepo, "Membership Repository", "@Repository", "findByUserId(), findByGroupId()")
+        Component(sessionRepo, "Session Repository", "@Repository", "findByGroupId(), upcoming session queries")
+    }
+
+    Rel(authService, userRepo, "Reads/writes users", "JPA")
+    Rel(groupService, groupRepo, "Reads/writes groups", "JPA")
+    Rel(membershipService, membershipRepo, "Reads/writes memberships", "JPA")
+    Rel(membershipService, groupRepo, "Reads group capacity", "JPA")
+    Rel(sessionService, sessionRepo, "Reads/writes sessions", "JPA")
+    Rel(adminService, userRepo, "Reads/updates users", "JPA")
+    Rel(adminService, groupRepo, "Reads/deletes groups", "JPA")
+
+    Rel(userRepo, db, "SQL queries", "JDBC")
+    Rel(groupRepo, db, "SQL queries", "JDBC")
+    Rel(membershipRepo, db, "SQL queries", "JDBC")
+    Rel(sessionRepo, db, "SQL queries", "JDBC")
 ```
 
 ---
@@ -160,53 +169,67 @@ flowchart TB
 
 > Shows the internal structure of the React SPA.
 
+**Part A — Routing, Auth Context & Pages**
+
 ```mermaid
 C4Component
-    title Component Diagram — React Web Application (Frontend)
+    title Frontend Component Diagram (Part A) — Router and Pages
+
+    Container_Boundary(webapp, "React Web Application") {
+
+        Component(router, "React Router", "react-router-dom", "Manages all client-side routes. Enforces protected routes and public routes.")
+        Component(authContext, "Auth Context", "React Context API", "Global state: current user, login(), logout(), JWT token.")
+
+        Component(authPages, "Auth Pages", "React Component", "Login and Register pages at /login and /register")
+        Component(dashboard, "Dashboard Page", "React Component", "Main page at /dashboard showing groups and sessions")
+        Component(groupPages, "Group Pages", "React Component", "Group search, detail and create at /groups/*")
+        Component(sessionPages, "Session Pages", "React Component", "Session schedule and list inside group detail")
+        Component(membershipUI, "Membership UI", "React Component", "Join and Leave buttons and pending requests list")
+        Component(adminPages, "Admin Pages", "React Component", "User and group management at /admin/*")
+    }
+
+    Rel(router, authPages, "Renders /login and /register", "")
+    Rel(router, dashboard, "Renders /dashboard", "")
+    Rel(router, groupPages, "Renders /groups/*", "")
+    Rel(router, sessionPages, "Renders inside group detail", "")
+    Rel(router, adminPages, "Renders /admin/*", "")
+
+    Rel(authPages, authContext, "Calls login()", "")
+    Rel(dashboard, authContext, "Reads current user", "")
+    Rel(groupPages, authContext, "Reads current user", "")
+```
+
+**Part B — Pages, API Services & Axios**
+
+```mermaid
+C4Component
+    title Frontend Component Diagram (Part B) — Services and HTTP Client
 
     Container_Ext(api, "Spring Boot REST API", "Backend", "Provides JSON REST endpoints")
 
     Container_Boundary(webapp, "React Web Application") {
 
-        Component(router, "React Router", "react-router-dom", "Manages client-side routing. Defines protected routes (require auth) and public routes (login/register).")
+        Component(authPages, "Auth Pages", "React Component", "Login and Register pages")
+        Component(dashboard, "Dashboard Page", "React Component", "Shows groups and upcoming sessions")
+        Component(groupPages, "Group Pages", "React Component", "Group search, detail and create")
+        Component(sessionPages, "Session Pages", "React Component", "Session schedule and list")
+        Component(membershipUI, "Membership UI", "React Component", "Join, Leave and approval actions")
+        Component(adminPages, "Admin Pages", "React Component", "User and group management")
 
-        Component(authPages, "Auth Pages", "React Components", "Login and Register pages. On success, stores JWT token in localStorage and redirects to dashboard.")
-
-        Component(axiosClient, "Axios HTTP Client", "Axios instance with interceptors", "Centralized HTTP client. Automatically attaches JWT Bearer token to all outgoing requests. Handles 401 responses by redirecting to login.")
-
-        Component(authContext, "Auth Context", "React Context API", "Global authentication state: current user object, login(), logout() functions. Consumed by all protected components.")
-
-        Component(dashboard, "Dashboard Page", "React Component", "Main landing page after login. Shows the student's groups, upcoming sessions, and unread notification count.")
-
-        Component(groupPages, "Group Pages", "React Components", "Group list/search page, group detail page, and create group form. Allows browsing public groups and managing owned groups.")
-
-        Component(sessionPages, "Session Pages", "React Components", "Session scheduling form and session list view within a group page.")
-
-        Component(membershipUI, "Membership UI Components", "React Components", "Join/Leave buttons, join request list for group creators, member list view.")
-
-        Component(adminPages, "Admin Dashboard Pages", "React Components", "User management table, group management table, and platform statistics. Only rendered for users with ADMIN role.")
-
-        Component(apiServices, "API Service Modules", "JavaScript modules (authService, groupService, etc.)", "Thin wrappers around Axios calls. One module per domain entity. Used by all page components.")
+        Component(apiServices, "API Service Modules", "JS Modules", "One service per domain: authService, groupService, membershipService, sessionService, adminService")
+        Component(axiosClient, "Axios HTTP Client", "Axios + interceptors", "Attaches JWT to all requests. Redirects to login on 401.")
     }
 
-    Rel(router, authPages, "Renders on /login and /register", "")
-    Rel(router, dashboard, "Renders on /dashboard (protected)", "")
-    Rel(router, groupPages, "Renders on /groups/* (protected)", "")
-    Rel(router, sessionPages, "Renders inside group detail (protected)", "")
-    Rel(router, adminPages, "Renders on /admin/* (ADMIN only)", "")
+    Rel(authPages, apiServices, "Calls authService", "")
+    Rel(dashboard, apiServices, "Calls groupService, sessionService", "")
+    Rel(groupPages, apiServices, "Calls groupService", "")
+    Rel(sessionPages, apiServices, "Calls sessionService", "")
+    Rel(membershipUI, apiServices, "Calls membershipService", "")
+    Rel(adminPages, apiServices, "Calls adminService", "")
 
-    Rel(authPages, authContext, "Calls login() / stores token", "")
-    Rel(dashboard, authContext, "Reads current user", "")
-    Rel(groupPages, authContext, "Reads current user for ownership checks", "")
-
-    Rel(dashboard, apiServices, "Calls groupService.getMyGroups(), sessionService.getUpcoming()", "")
-    Rel(groupPages, apiServices, "Calls groupService.search(), groupService.create()", "")
-    Rel(sessionPages, apiServices, "Calls sessionService.create(), sessionService.getByGroup()", "")
-    Rel(membershipUI, apiServices, "Calls membershipService.join(), approve(), leave()", "")
-    Rel(adminPages, apiServices, "Calls adminService.getUsers(), deleteGroup()", "")
-
-    Rel(apiServices, axiosClient, "Uses for all HTTP calls", "")
-    Rel(axiosClient, api, "Sends HTTP requests with JWT", "HTTPS / JSON")
+    Rel(apiServices, axiosClient, "All HTTP calls through", "")
+    Rel(axiosClient, api, "REST calls", "HTTPS + JWT")
+```
 ```
 
 ---
