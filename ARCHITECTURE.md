@@ -90,70 +90,68 @@ C4Container
 > Shows the internal components of the Spring Boot REST API container.
 
 ```mermaid
-C4Component
-    title Component Diagram — Spring Boot REST API (Backend)
+flowchart TB
+    WebApp["🌐 React Web App\n(React SPA)"]
+    DB[("🗄️ PostgreSQL Database")]
 
-    Container_Ext(webapp, "React Web App", "React SPA", "Sends HTTP requests with JWT tokens")
-    Container_Ext(db, "PostgreSQL Database", "PostgreSQL 15", "Persistent data store")
+    subgraph API["Spring Boot REST API"]
+        direction TB
 
-    Container_Boundary(api, "Spring Boot REST API") {
+        SEC["🔒 JWT Security Filter\nSpring Security / OncePerRequestFilter"]
 
-        Component(securityFilter, "JWT Security Filter", "Spring Security, OncePerRequestFilter", "Intercepts all incoming requests. Validates JWT tokens and sets the SecurityContext. Rejects unauthenticated requests with 401.")
+        subgraph CONTROLLERS["Controllers Layer"]
+            direction LR
+            AC["Auth Controller\nPOST /api/auth/register\nPOST /api/auth/login"]
+            GC["Group Controller\nGET POST /api/groups\nGET DELETE /api/groups/{id}"]
+            MC["Membership Controller\nPOST /api/groups/{id}/join\nPUT /api/memberships/{id}/approve"]
+            SC["Session Controller\nPOST GET /api/groups/{id}/sessions\nPUT DELETE /api/sessions/{id}"]
+            ADC["Admin Controller\nGET DELETE /api/admin/users\nGET DELETE /api/admin/groups"]
+        end
 
-        Component(authController, "Auth Controller", "Spring MVC @RestController", "Handles POST /api/auth/register and POST /api/auth/login. Delegates to AuthService.")
+        subgraph SERVICES["Services Layer"]
+            direction LR
+            AS["Auth Service\nJWT generation\nBCrypt password hashing"]
+            GS["Group Service\nGroup CRUD\nSearch & privacy logic"]
+            MS["Membership Service\nJoin requests & approvals\n5-group limit enforcement"]
+            SS["Session Service\nCreate, update\ncancel sessions"]
+            ADS["Admin Service\nUser & group moderation\nPlatform statistics"]
+        end
 
-        Component(authService, "Auth Service", "Spring @Service", "Validates credentials, generates JWT tokens, registers new users. Uses BCryptPasswordEncoder.")
+        subgraph REPOS["Repository Layer  —  Spring Data JPA"]
+            direction LR
+            UR["User Repository\nfindByEmail()"]
+            GR["Group Repository\nfindByCourseId()"]
+            MR["Membership Repository\nfindByUserId()"]
+            SR["Session Repository\nfindByGroupId()"]
+        end
+    end
 
-        Component(groupController, "Group Controller", "Spring MVC @RestController", "Handles CRUD endpoints for study groups: GET /api/groups, POST /api/groups, GET /api/groups/{id}, DELETE /api/groups/{id}.")
+    WebApp -->|"HTTPS + JWT Bearer Token"| SEC
 
-        Component(groupService, "Group Service", "Spring @Service", "Business logic for group creation, search/filter by course, capacity checks, and privacy enforcement.")
+    SEC -->|"Public routes"| AC
+    SEC -->|"Authenticated"| GC
+    SEC -->|"Authenticated"| MC
+    SEC -->|"Authenticated"| SC
+    SEC -->|"ADMIN role only"| ADC
 
-        Component(membershipController, "Membership Controller", "Spring MVC @RestController", "Handles POST /api/groups/{id}/join, PUT /api/memberships/{id}/approve, DELETE /api/memberships/{id}.")
+    AC --> AS
+    GC --> GS
+    MC --> MS
+    SC --> SS
+    ADC --> ADS
 
-        Component(membershipService, "Membership Service", "Spring @Service", "Manages join requests, approvals, rejections, and member removals. Enforces the 5-group limit per user.")
+    AS --> UR
+    GS --> GR
+    MS --> MR
+    MS --> GR
+    SS --> SR
+    ADS --> UR
+    ADS --> GR
 
-        Component(sessionController, "Session Controller", "Spring MVC @RestController", "Handles POST /api/groups/{id}/sessions, GET /api/groups/{id}/sessions, PUT /api/sessions/{id}, DELETE /api/sessions/{id}.")
-
-        Component(sessionService, "Session Service", "Spring @Service", "Creates, updates, and cancels study sessions.")
-
-        Component(adminController, "Admin Controller", "Spring MVC @RestController", "Restricted endpoints under /api/admin/. Handles user management and group moderation.")
-
-        Component(adminService, "Admin Service", "Spring @Service", "Admin business logic: list all users/groups, deactivate accounts, force-delete groups.")
-
-        Component(userRepo, "User Repository", "Spring Data JPA @Repository", "JPA repository for User entity. Provides findByEmail(), existsByEmail() and standard CRUD.")
-
-        Component(groupRepo, "Group Repository", "Spring Data JPA @Repository", "JPA repository for StudyGroup entity. Custom queries for search by courseId and keyword.")
-
-        Component(membershipRepo, "Membership Repository", "Spring Data JPA @Repository", "JPA repository for Membership entity. Queries for active memberships per user and per group.")
-
-        Component(sessionRepo, "Session Repository", "Spring Data JPA @Repository", "JPA repository for StudySession entity. Queries for upcoming and past sessions by groupId.")
-    }
-
-    Rel(webapp, securityFilter, "All HTTP requests pass through", "HTTP + JWT Bearer Token")
-    Rel(securityFilter, authController, "Passes unauthenticated requests (login/register only)", "")
-    Rel(securityFilter, groupController, "Passes authenticated requests", "")
-    Rel(securityFilter, membershipController, "Passes authenticated requests", "")
-    Rel(securityFilter, sessionController, "Passes authenticated requests", "")
-    Rel(securityFilter, adminController, "Passes requests with ADMIN role only", "")
-
-    Rel(authController, authService, "Delegates to", "")
-    Rel(groupController, groupService, "Delegates to", "")
-    Rel(membershipController, membershipService, "Delegates to", "")
-    Rel(sessionController, sessionService, "Delegates to", "")
-    Rel(adminController, adminService, "Delegates to", "")
-
-    Rel(authService, userRepo, "Reads/writes users", "JPA")
-    Rel(groupService, groupRepo, "Reads/writes groups", "JPA")
-    Rel(membershipService, membershipRepo, "Reads/writes memberships", "JPA")
-    Rel(membershipService, groupRepo, "Reads group capacity/privacy", "JPA")
-    Rel(sessionService, sessionRepo, "Reads/writes sessions", "JPA")
-    Rel(adminService, userRepo, "Reads/updates users", "JPA")
-    Rel(adminService, groupRepo, "Reads/deletes groups", "JPA")
-
-    Rel(userRepo, db, "SQL queries", "JDBC")
-    Rel(groupRepo, db, "SQL queries", "JDBC")
-    Rel(membershipRepo, db, "SQL queries", "JDBC")
-    Rel(sessionRepo, db, "SQL queries", "JDBC")
+    UR -->|"JDBC / JPA"| DB
+    GR -->|"JDBC / JPA"| DB
+    MR -->|"JDBC / JPA"| DB
+    SR -->|"JDBC / JPA"| DB
 ```
 
 ---
