@@ -35,8 +35,6 @@ The system will be built using a **React** frontend and a **Java Spring Boot** R
 ---
 
 ## Author
-
-**[Your Name]**  
 Student No: 221806229 
-Names: Fereshteh Keitumetse Gomolemo Dimpe 
+Names: Fereshteh Keitumetse Gomolemo Dimpe   
 Assignment 3 — System Specification and Architectural Modeling
