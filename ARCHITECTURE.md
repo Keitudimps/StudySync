@@ -53,6 +53,7 @@ C4Context
 
 ---
 
+
 ### Level 2 — Container Diagram
 
 > Shows the deployable containers that make up StudySync and how they communicate.
