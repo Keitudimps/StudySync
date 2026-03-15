@@ -230,7 +230,6 @@ C4Component
     Rel(apiServices, axiosClient, "All HTTP calls through", "")
     Rel(axiosClient, api, "REST calls", "HTTPS + JWT")
 ```
-```
 
 ---
 
