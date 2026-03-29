@@ -22,7 +22,7 @@
 | **University Administrator** | Manages users for institutional compliance. |
 | **Lecturer** | Indirect user. Can browse public groups and sessions linked to their course codes to observe peer collaboration. |
 
-## 2.2 Key Relationships
+### 2.2 Key Relationships
 
 **Generalisation:**
 - `New Student` → `Student`: A new student inherits all student capabilities.
@@ -40,7 +40,7 @@
 - `Leave or Remove Member` extends `Join Public Group` — only relevant after membership exists.
 - `View Platform Statistics` extends `Manage Users` — statistics are an optional additional view from the admin panel.
 
-## 2.3 How the Diagram Addresses Assignment 4 Stakeholder Concerns
+### 2.3 How the Diagram Addresses Assignment 4 Stakeholder Concerns
 
 - The **Student** actor's access to `Search and Discover Groups` directly addresses the pain point that students currently rely on WhatsApp and notice boards.
 - The **Group Creator**'s `Approve or Reject Join Request` use case addresses the concern of maintaining group quality for private groups.
