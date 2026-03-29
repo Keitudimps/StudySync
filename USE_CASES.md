@@ -5,94 +5,69 @@
 
 ## 1. Use Case Diagram
 
-> UML Use Case Diagram created using Mermaid. Shows all actors, use cases, and their relationships including `<<include>>` and `<<extend>>` dependencies.
+> UML Use Case Diagram (Mermaid – draw.io compatible)
 
-```mermaid
-graph TB
-    %% Actors
-    Student(["👤 Student"])
-    NewStudent(["👤 New Student"])
-    GroupCreator(["👤 Group Creator"])
-    Admin(["👤 Platform Admin"])
-    UniAdmin(["👤 University Admin"])
-    ITStaff(["👤 IT Staff"])
-    Lecturer(["👤 Lecturer"])
+usecaseDiagram
 
-    %% System boundary
-    subgraph StudySync["🖥️ StudySync System"]
+graph TD
 
-        %% Auth use cases
-        UC1["Register Account"]
-        UC2["Login"]
-        UC3["Setup Academic Profile"]
+%% ACTORS
+NS[New Student]
+S[Student]
+GC[Group Creator]
+L[Lecturer]
+UA[University Admin]
+PA[Platform Admin]
 
-        %% Group use cases
-        UC4["Create Study Group"]
-        UC5["Search and Discover Groups"]
-        UC6["Join Public Group"]
-        UC7["Request to Join Private Group"]
-        UC8["Approve or Reject Join Request"]
-        UC9["Leave or Remove Member"]
+%% GENERALISATION
+NS --|> S
+GC --|> S
 
-        %% Session use cases
-        UC10["Schedule Study Session"]
-        UC11["View Sessions"]
-        UC12["Cancel or Edit Session"]
+%% SYSTEM BOUNDARY
+subgraph StudySync System
 
-        %% Admin use cases
-        UC13["Manage Users"]
-        UC14["Moderate Groups"]
-        UC15["View Platform Statistics"]
+UC1(Register Account)
+UC2(Login)
+UC3(Setup Academic Profile)
+UC4(Search and Discover Groups)
+UC5(Join Public Group)
+UC6(Request to Join Private Group)
+UC7(Create Study Group)
+UC8(Approve or Reject Join Requests)
+UC9(Schedule Study Session)
+UC10(View Study Sessions)
+UC11(Manage Users)
+UC12(Moderate Groups)
 
-        %% Include relationships
-        UC6 -->|"<<include>>"| UC2
-        UC7 -->|"<<include>>"| UC2
-        UC4 -->|"<<include>>"| UC2
-        UC5 -->|"<<include>>"| UC2
-        UC10 -->|"<<include>>"| UC6
-        UC8 -->|"<<include>>"| UC4
-        UC3 -->|"<<include>>"| UC1
+end
 
-        %% Extend relationships
-        UC12 -->|"<<extend>>"| UC10
-        UC9 -->|"<<extend>>"| UC6
-        UC15 -->|"<<extend>>"| UC13
-    end
+%% ACTOR RELATIONSHIPS
+NS --> UC1
 
-    %% Actor to use case relationships
-    Student --- UC1
-    Student --- UC2
-    Student --- UC3
-    Student --- UC5
-    Student --- UC6
-    Student --- UC7
-    Student --- UC11
+S --> UC2
+S --> UC3
+S --> UC4
+S --> UC5
+S --> UC6
+S --> UC10
 
-    NewStudent --- UC1
-    NewStudent --- UC5
+GC --> UC7
+GC --> UC8
+GC --> UC9
 
-    GroupCreator --- UC4
-    GroupCreator --- UC8
-    GroupCreator --- UC9
-    GroupCreator --- UC10
-    GroupCreator --- UC12
+UA --> UC11
+PA --> UC12
 
-    Admin --- UC13
-    Admin --- UC14
-    Admin --- UC15
+L --> UC4
+L --> UC10
 
-    UniAdmin --- UC13
-    UniAdmin --- UC14
+%% INCLUDE RELATIONSHIPS
+UC5 ..> UC2 : <<include>>
+UC7 ..> UC2 : <<include>>
+UC9 ..> UC2 : <<include>>
 
-    ITStaff --- UC15
-
-    Lecturer --- UC5
-    Lecturer --- UC11
-
-    %% Generalisation - NewStudent is a Student
-    NewStudent -->|"generalisation"| Student
-    GroupCreator -->|"generalisation"| Student
-```
+%% EXTEND RELATIONSHIPS
+UC6 ..> UC8 : <<extend>>
 
 ---
 
@@ -102,19 +77,18 @@ graph TB
 
 | Actor | Role in the System |
 |---|---|
-| **Student** | Primary actor. Registers, searches for groups, joins sessions, and views schedules. Base actor from which other student roles inherit. |
-| **New Student** | Specialisation of Student. A first-time user who has no existing network. Primarily interacts with registration and group discovery use cases. |
-| **Group Creator** | Specialisation of Student. A student who has created at least one group. Has additional capabilities: approving members, scheduling sessions, removing members. |
-| **Platform Administrator** | Internal admin. Full access to user management, group moderation, and platform statistics. Not a student. |
-| **University Administrator** | Institutional stakeholder. Can view and moderate users and groups to enforce academic policy, but cannot access system-level statistics. |
-| **IT Staff** | Monitors platform statistics and system health. Has read-only access to analytics. |
+| **Student** | Primary user. Can search, join groups, and participate in sessions. |
+| **New Student** | A first-time user. Focused on registration and discovering groups. |
+| **Group Creator** | A student who creates and manages study groups. |
+| **Platform Administrator** |Full system control including moderation and platform integrity. |
+| **University Administrator** | Manages users for institutional compliance. |
 | **Lecturer** | Indirect user. Can browse public groups and sessions linked to their course codes to observe peer collaboration. |
 
 ### 2.2 Key Relationships
 
 **Generalisation:**
-- `New Student` → `Student`: A new student inherits all capabilities of a student but is distinguished by having no prior groups or profile.
-- `Group Creator` → `Student`: A group creator is still a student — they simply have elevated responsibilities within their own groups.
+- `New Student` → `Student`: A new student inherits all student capabilities.
+- `Group Creator` → `Student`: A group creator is still a student with additional privileges.
 
 **<<include>> relationships** (the included use case is always executed):
 - `Join Public Group` includes `Login` — a user must be authenticated before joining.
