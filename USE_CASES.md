@@ -11,7 +11,7 @@
 
 ## 2. Actor and Relationship Explanation
 
-### 2.1 Key Actors and Their Roles
+## 2.1 Key Actors and Their Roles
 
 | Actor | Role in the System |
 |---|---|
@@ -22,7 +22,7 @@
 | **University Administrator** | Manages users for institutional compliance. |
 | **Lecturer** | Indirect user. Can browse public groups and sessions linked to their course codes to observe peer collaboration. |
 
-### 2.2 Key Relationships
+## 2.2 Key Relationships
 
 **Generalisation:**
 - `New Student` → `Student`: A new student inherits all student capabilities.
@@ -40,7 +40,7 @@
 - `Leave or Remove Member` extends `Join Public Group` — only relevant after membership exists.
 - `View Platform Statistics` extends `Manage Users` — statistics are an optional additional view from the admin panel.
 
-### 2.3 How the Diagram Addresses Assignment 4 Stakeholder Concerns
+## 2.3 How the Diagram Addresses Assignment 4 Stakeholder Concerns
 
 - The **Student** actor's access to `Search and Discover Groups` directly addresses the pain point that students currently rely on WhatsApp and notice boards.
 - The **Group Creator**'s `Approve or Reject Join Request` use case addresses the concern of maintaining group quality for private groups.
@@ -54,7 +54,7 @@
 
 ---
 
-### UC-01: Register Account
+## UC-01: Register Account
 
 | Field | Detail |
 |---|---|
@@ -86,7 +86,7 @@
 
 ---
 
-### UC-02: Login
+## UC-02: Login
 
 | Field | Detail |
 |---|---|
@@ -118,7 +118,7 @@
 
 ---
 
-### UC-03: Setup Academic Profile
+## UC-03: Setup Academic Profile
 
 | Field | Detail |
 |---|---|
@@ -147,7 +147,7 @@
 
 ---
 
-### UC-04: Create Study Group
+## UC-04: Create Study Group
 
 | Field | Detail |
 |---|---|
@@ -179,7 +179,7 @@
 
 ---
 
-### UC-05: Search and Discover Groups
+## UC-05: Search and Discover Groups
 
 | Field | Detail |
 |---|---|
@@ -208,7 +208,7 @@
 
 ---
 
-### UC-06: Join Public Group
+## UC-06: Join Public Group
 
 | Field | Detail |
 |---|---|
@@ -238,7 +238,7 @@
 
 ---
 
-### UC-07: Approve or Reject Join Request
+## UC-07: Approve or Reject Join Request
 
 | Field | Detail |
 |---|---|
@@ -268,7 +268,7 @@
 
 ---
 
-### UC-08: Schedule Study Session
+## UC-08: Schedule Study Session
 
 | Field | Detail |
 |---|---|
@@ -301,7 +301,7 @@
 
 ## 4. Test Cases
 
-### 4.1 Functional Test Cases
+## 4.1 Functional Test Cases
 
 | Test ID | Requirement ID | Description | Steps | Expected Result | Actual Result | Status |
 |---|---|---|---|---|---|---|
@@ -323,7 +323,7 @@
 
 ---
 
-### 4.2 Non-Functional Test Cases
+## 4.2 Non-Functional Test Cases
 
 | Test ID | NFR ID | Category | Description | Steps | Expected Result | Actual Result | Status |
 |---|---|---|---|---|---|---|---|
@@ -340,40 +340,40 @@
 
 ## 5. Reflection — Challenges in Translating Requirements to Use Cases and Tests
 
-### 5.1 Introduction
+## 5.1 Introduction
 
 Translating functional requirements into use cases and test cases sounds straightforward in theory — a requirement becomes a use case becomes a test. In practice however, the process exposed several gaps, ambiguities, and design decisions that were not visible when writing requirements in plain language. This reflection documents the most significant challenges encountered while completing this assignment.
 
-### 5.2 Challenge 1: Determining the Right Level of Granularity for Use Cases
+## 5.2 Challenge 1: Determining the Right Level of Granularity for Use Cases
 
 The first challenge was deciding how detailed each use case should be. Requirements like FR-06 (Join Public Group) seemed like a single interaction, but when writing the specification it became clear that it contained multiple embedded decisions: is the group full? is the user already a member? have they hit the 5-group limit? Each of these is an alternative flow, not a separate use case.
 
 Getting this balance wrong in either direction causes problems. Too coarse and the use case hides important behaviour — testers miss scenarios. Too fine and every validation rule becomes its own use case, making the diagram unreadably complex. The resolution was to keep use cases at the level of a complete user goal (e.g., "join a group") and capture all branching within the alternative flows table of that specification.
 
-### 5.3 Challenge 2: Identifying `<<include>>` vs `<<extend>>` Correctly
+## 5.3 Challenge 2: Identifying `<<include>>` vs `<<extend>>` Correctly
 
 The UML distinction between `<<include>>` and `<<extend>>` proved more subtle than expected. Initially, "Cancel or Edit Session" was modelled as `<<include>>` of "Schedule Session" — meaning it would always run alongside scheduling. This was incorrect. Cancellation is optional and only triggered under a specific condition (the user decides to edit). It is therefore `<<extend>>`.
 
 Similarly, the login check was correctly identified as `<<include>>` in all protected use cases because it is mandatory — not optional. Taking time to apply these relationships correctly made the diagram significantly more meaningful and accurate to how the system actually behaves.
 
-### 5.4 Challenge 3: Writing Acceptance Criteria That Are Actually Testable
+## 5.4 Challenge 3: Writing Acceptance Criteria That Are Actually Testable
 
 Several requirements from Assignment 4 used language that felt specific but was still too vague to test directly. For example, "the system shall respond within 500ms" — 500ms measured where? At the server? At the browser? Under what load?
 
 Writing the test cases forced every NFR to be made concrete: the tool used (Apache JMeter), the number of virtual users (100 or 200), the metric measured (p95 response time), and the specific endpoint tested (GET /api/groups). This level of specificity was not present in the original SRD and had to be added during this assignment. This is a natural part of the requirements refinement process — test case development is itself a form of requirements validation.
 
-### 5.5 Challenge 4: Mapping Tests Back to Requirements Without Redundancy
+## 5.5 Challenge 4: Mapping Tests Back to Requirements Without Redundancy
 
 With 12 functional requirements and 10 non-functional requirements, deciding which 15 functional test cases and 8 non-functional test cases to write required prioritisation. Not every requirement could receive equal coverage within the scope of this document.
 
 The approach taken was to prioritise test cases for requirements that were either high-risk (security requirements like password hashing and JWT validation), high-frequency (login, group search, join group), or had previously been identified as potential conflict points in the stakeholder analysis (the 5-group limit, full group rejection, private group approval).
 
-### 5.6 Challenge 5: Consistency Across Three Assignments
+## 5.6 Challenge 5: Consistency Across Three Assignments
 
 Because this is the third document in a chain — building on Assignments 3 and 4 — every use case and test case had to remain consistent with both the architecture diagrams and the stakeholder analysis. For instance, the Lecturer actor in the use case diagram had to match the Lecturer stakeholder defined in STAKEHOLDERS.md, and the FR references in test cases had to match exactly the FR-IDs used in SRD.md.
 
 Maintaining this consistency required revisiting earlier documents multiple times. This was time-consuming but necessary — inconsistency between requirement IDs and test case references is one of the most common causes of failed software audits in real projects.
 
-### 5.7 Conclusion
+## 5.7 Conclusion
 
 This assignment reinforced that use cases and test cases are not just documentation artifacts — they are a mechanism for stress-testing the requirements themselves. Every alternative flow written in a use case specification represents a gap that the original requirement did not explicitly address. Every test case written forces a decision about what "correct behaviour" actually means in precise, measurable terms. Requirements that cannot be tested are not requirements — they are wishes.
