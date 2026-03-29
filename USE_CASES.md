@@ -11,7 +11,7 @@
 
 ## 2. Actor and Relationship Explanation
 
-## 2.1 Key Actors and Their Roles
+### 2.1 Key Actors and Their Roles
 
 | Actor | Role in the System |
 |---|---|
