@@ -24,6 +24,7 @@ The system will be built using a **React** frontend and a **Java Spring Boot** R
 | [STAKEHOLDERS.md](./STAKEHOLDERS.md) | Detailed stakeholder analysis including roles, key concerns, pain points, and success metrics for 7 stakeholders |
 | [SRD.md](./SRD.md) | Full System Requirements Document with 12 functional requirements and 10 non-functional requirements across 6 quality categories |
 | [REFLECTION.md](./REFLECTION.md) | Reflection on challenges faced in balancing competing stakeholder needs and the trade-off decisions made |
+| [USE_CASES.md](./USE_CASES.md) | UML use case diagram, 8 detailed use case specifications, 15 functional test cases, 8 non-functional test cases, and a reflection on the process |
 
 ---
 
