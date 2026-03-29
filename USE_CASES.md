@@ -62,12 +62,17 @@ L --> UC4
 L --> UC10
 
 %% INCLUDE RELATIONSHIPS
-UC5 ..> UC2 : <<include>>
-UC7 ..> UC2 : <<include>>
-UC9 ..> UC2 : <<include>>
+UC5 ..> UC2:::include
+UC7 ..> UC2:::include
+UC9 ..> UC2:::include
 
 %% EXTEND RELATIONSHIPS
-UC6 ..> UC8 : <<extend>>
+UC6 ..> UC8:::extend
+
+%% STYLE DEFINITIONS
+classDef include stroke-dasharray: 5 5,fill:#fff,stroke:#000;
+classDef extend stroke-dasharray: 5 5,fill:#fff,stroke:#000;
+
 
 ---
 
