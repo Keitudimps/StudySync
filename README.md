@@ -2,7 +2,7 @@
 
 ## Introduction
 
-**StudySync** is a web-based platform designed to help university students discover, create, and collaborate in study groups organized by course, or subject. Students often struggle to find peers studying the same material at the same time — StudySync solves this by providing a centralized, intelligent matchmaking environment for academic collaboration.
+**StudySync** is a web-based platform designed to help university students discover, create, and collaborate in study groups organized by course, subject, or topic. Students often struggle to find peers studying the same material at the same time — StudySync solves this by providing a centralized, intelligent matchmaking environment for academic collaboration.
 
 Once completed, StudySync will allow students to:
 - Register and build an academic profile tied to their enrolled courses
@@ -25,6 +25,7 @@ The system will be built using a **React** frontend and a **Java Spring Boot** R
 | [SRD.md](./SRD.md) | Full System Requirements Document with 12 functional requirements and 10 non-functional requirements across 6 quality categories |
 | [REFLECTION.md](./REFLECTION.md) | Reflection on challenges faced in balancing competing stakeholder needs and the trade-off decisions made |
 | [USE_CASES.md](./USE_CASES.md) | UML use case diagram, 8 detailed use case specifications, 15 functional test cases, 8 non-functional test cases, and a reflection on the process |
+| [AGILE_PLANNING.md](./AGILE_PLANNING.md) | 20 user stories mapped to FRs and UCs, MoSCoW prioritised product backlog, Sprint 1 plan with 25 tasks, GitHub project setup guide, and Agile reflection |
 
 ---
 
