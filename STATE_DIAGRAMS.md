@@ -25,20 +25,14 @@ This document defines the lifecycle of 8 critical objects in the StudySync syste
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Registered : Student submits registration form\n[email is unique and valid]
-
-    Registered --> Active : Student completes academic profile
-
-    Active --> Deactivated : Admin deactivates account\n[violation of platform policy]
-
+    [*] --> Registered : Registration submitted [email unique]
+    Registered --> Active : Profile setup complete
+    Active --> LoggedIn : Valid credentials submitted
+    LoggedIn --> Active : Logout or JWT expired
+    Active --> Deactivated : Admin deactivates [policy violation]
     Deactivated --> Active : Admin reactivates account
-
-    Active --> LoggedIn : Student submits valid credentials\n[password matches BCrypt hash]
-
-    LoggedIn --> Active : Student logs out or JWT expires
-
-    Active --> [*] : Account permanently deleted by admin
-    Deactivated --> [*] : Account permanently deleted by admin
+    Active --> [*] : Admin permanently deletes account
+    Deactivated --> [*] : Admin permanently deletes account
 ```
 
 ### Explanation
@@ -53,18 +47,13 @@ The User Account object begins in **Registered** state immediately after a stude
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Incomplete : User account created\n[profile not yet filled]
-
-    Incomplete --> Complete : Student submits year of study\nand at least one course\n[all required fields present]
-
-    Complete --> Updating : Student opens edit profile form
-
-    Updating --> Complete : Student saves updated profile\n[at least one course selected]
-
-    Updating --> Complete : Student cancels edit\n[no changes saved]
-
-    Complete --> [*] : Parent user account deleted
-    Incomplete --> [*] : Parent user account deleted
+    [*] --> Incomplete : Account created [profile empty]
+    Incomplete --> Complete : Year and course submitted [fields valid]
+    Complete --> Updating : Student opens edit form
+    Updating --> Complete : Changes saved [at least one course]
+    Updating --> Complete : Edit cancelled [no changes]
+    Complete --> [*] : Parent account deleted
+    Incomplete --> [*] : Parent account deleted
 ```
 
 ### Explanation
@@ -79,20 +68,13 @@ The Academic Profile starts as **Incomplete** the moment a user account is creat
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Active : Creator submits valid group details\n[course selected, capacity 2–50]
-
-    Active --> Full : Member joins and count reaches max capacity\n[memberCount == maxCapacity]
-
-    Full --> Active : Member leaves or is removed\n[memberCount < maxCapacity]
-
-    Active --> Deleted : Admin force-deletes group\n[policy violation or inactivity]
-
+    [*] --> Active : Group created [course set, capacity 2-50]
+    Active --> Full : Member joins [count reaches max capacity]
+    Full --> Active : Member leaves or removed [count below max]
+    Active --> Deleted : Admin force-deletes group
     Full --> Deleted : Admin force-deletes group
-
-    Active --> Archived : Creator deletes their own group\n[no active sessions scheduled]
-
-    Full --> Archived : Creator deletes their own group
-
+    Active --> Archived : Creator deletes own group
+    Full --> Archived : Creator deletes own group
     Deleted --> [*] : Cascade delete memberships and sessions
     Archived --> [*] : Cascade delete memberships and sessions
 ```
@@ -109,25 +91,17 @@ A Study Group enters **Active** state immediately upon creation — there is no 
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Active : Student joins PUBLIC group\n[group not full, student under 5-group limit]
-
-    [*] --> Pending : Student requests to join PRIVATE group\n[group not full, student under 5-group limit]
-
-    Pending --> Active : Group creator approves request\n[group still has capacity]
-
-    Pending --> Rejected : Group creator rejects request
-
+    [*] --> Active : Joins PUBLIC group [not full, under 5-group limit]
+    [*] --> Pending : Requests PRIVATE group [not full, under limit]
+    Pending --> Active : Creator approves [group has capacity]
+    Pending --> Rejected : Creator rejects request
     Rejected --> [*] : Membership record deleted
-
-    Active --> Left : Student voluntarily leaves group
-
-    Active --> Removed : Group creator removes member
-
+    Active --> Left : Student voluntarily leaves
+    Active --> Removed : Creator removes member
     Left --> [*] : Membership record deleted
     Removed --> [*] : Membership record deleted
-
-    Active --> [*] : Parent group deleted — cascade delete
-    Pending --> [*] : Parent group deleted — cascade delete
+    Active --> [*] : Parent group deleted
+    Pending --> [*] : Parent group deleted
 ```
 
 ### Explanation
@@ -142,19 +116,14 @@ Membership is the most complex object in StudySync because it has two possible e
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Submitted : Student clicks Request to Join\n[group is PRIVATE, not full]
-
-    Submitted --> UnderReview : Group creator opens management panel
-
-    UnderReview --> Approved : Creator clicks Approve\n[group still has capacity]
-
+    [*] --> Submitted : Student clicks Request to Join [group is PRIVATE]
+    Submitted --> UnderReview : Creator opens management panel
+    UnderReview --> Approved : Creator clicks Approve [group has capacity]
     UnderReview --> Rejected : Creator clicks Reject
-
-    Submitted --> Expired : Group is deleted while request is pending
-
-    Approved --> [*] : Membership record created with ACTIVE status
-    Rejected --> [*] : Join request record deleted
-    Expired --> [*] : Join request record deleted — cascade
+    Submitted --> Expired : Group deleted while request pending
+    Approved --> [*] : Membership created with ACTIVE status
+    Rejected --> [*] : Request record deleted
+    Expired --> [*] : Cascade deleted with group
 ```
 
 ### Explanation
@@ -169,22 +138,14 @@ The Join Request is a short-lived object that exists only for private group memb
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Scheduled : Group member creates session\n[scheduledAt is at least 30 mins in future]
-
-    Scheduled --> Active : Current time reaches scheduledAt
-
-    Active --> Completed : Session duration elapses\n[current time > scheduledAt + durationHours]
-
-    Scheduled --> Cancelled : Creator cancels session\n[before session start time]
-
-    Scheduled --> Rescheduled : Creator edits date or time\n[new time is at least 30 mins in future]
-
-    Rescheduled --> Scheduled : System confirms updated session details
-
-    Active --> Completed : Creator manually marks session complete
-
+    [*] --> Scheduled : Session created [at least 30 mins in future]
+    Scheduled --> Active : Scheduled time reached
+    Active --> Completed : Duration elapsed or manually closed
+    Scheduled --> Cancelled : Creator cancels before start time
+    Scheduled --> Rescheduled : Creator edits date or time
+    Rescheduled --> Scheduled : New time confirmed [30 mins in future]
     Cancelled --> [*] : Session record deleted
-    Completed --> [*] : Session record retained for history
+    Completed --> [*] : Session retained for history
 ```
 
 ### Explanation
@@ -199,23 +160,15 @@ A Study Session starts in **Scheduled** state and transitions to **Active** auto
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Initiated : Admin opens user or group management panel
-
-    Initiated --> UnderReview : Admin views target user or group details
-
-    UnderReview --> UserDeactivated : Admin clicks Deactivate on user account\n[user is currently Active]
-
-    UnderReview --> UserReactivated : Admin clicks Reactivate on user account\n[user is currently Deactivated]
-
-    UnderReview --> GroupDeleted : Admin clicks Delete on a group\n[group exists]
-
-    UserDeactivated --> Resolved : System confirms deactivation\n[user JWT invalidated]
-
-    UserReactivated --> Resolved : System confirms reactivation\n[user can log in again]
-
-    GroupDeleted --> Resolved : System confirms deletion\n[cascade delete complete]
-
-    Resolved --> [*] : Moderation action logged
+    [*] --> Initiated : Admin opens management panel
+    Initiated --> UnderReview : Admin views target details
+    UnderReview --> UserDeactivated : Admin deactivates user [user is Active]
+    UnderReview --> UserReactivated : Admin reactivates user [user is Deactivated]
+    UnderReview --> GroupDeleted : Admin deletes group [group exists]
+    UserDeactivated --> Resolved : System confirms [JWT invalidated]
+    UserReactivated --> Resolved : System confirms [user can login]
+    GroupDeleted --> Resolved : System confirms [cascade complete]
+    Resolved --> [*] : Action logged
 ```
 
 ### Explanation
@@ -230,18 +183,12 @@ The Admin Moderation Action is a process object — it does not persist in the d
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Available : Course exists in the system\n[seeded by administrator]
-
-    Available --> Enrolled : Student selects course during profile setup\nor profile edit\n[course is in active course list]
-
-    Enrolled --> Dropped : Student removes course from profile\n[at least one other course remains enrolled]
-
-    Dropped --> Available : Course returns to available pool\nfor other students
-
-    Enrolled --> Available : Student account deleted\n[enrolment record removed]
-
+    [*] --> Available : Course seeded by administrator
+    Available --> Enrolled : Student selects course [course is active]
+    Enrolled --> Dropped : Student removes course [one course still remains]
+    Dropped --> Available : Course returns to available pool
+    Enrolled --> Available : Student account deleted
     Available --> Inactive : Admin removes course from active list
-
     Inactive --> Available : Admin re-adds course to active list
 ```
 
