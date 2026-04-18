@@ -68,3 +68,29 @@ Requirements engineering is rarely straightforward. While it is easy to list wha
 | Student privacy vs. admin oversight | Admin sees all groups; privacy applies to peers only | Institution has legitimate oversight rights |
 | Strict email enforcement vs. accessibility | Format validation only; SSO deferred | Pragmatic v1 solution; SSO planned for future |
 | High performance vs. free-tier hosting | NFRs target production scale; free tier used for development | Architecture supports scaling without code changes |
+
+---
+
+## Assignment 7 Reflection — Challenges in Selecting and Customising a GitHub Project Template
+
+### Challenge 1: Choosing Between Simplicity and Completeness
+
+The first difficulty was deciding between the Basic Kanban and the Automated Kanban templates. Basic Kanban is simpler — three columns, no automation, nothing to configure. For a first-time GitHub Projects user, it is the path of least resistance. However, for a project with 25 tasks spread across a 2-week sprint, manually moving every card through every stage would create enough friction that the board would quickly fall out of sync with reality.
+
+The Automated Kanban template solves this by auto-moving issues when they are opened and closed. The trade-off is that automation can create a false sense of progress — a card moving to "Done" because an issue was closed does not mean the feature actually works. The resolution was to add a "Testing" column as a mandatory gate before "Done", so automation gets the card to Testing but a human decision is still required to move it to Done.
+
+### Challenge 2: GitHub Templates vs. Trello and Jira
+
+GitHub Projects is tightly integrated with the codebase — issues, pull requests, and milestones all live in the same place, making traceability effortless. Closing a PR automatically closes an issue, which moves a card. This end-to-end link from code to board is GitHub's strongest advantage.
+
+Trello is more flexible and visually polished, with drag-and-drop that feels more natural than GitHub's interface. However, Trello has no native code integration — linking a Trello card to a GitHub commit requires a third-party power-up. For a solo developer where the board and the code repository are the same product, that disconnection is a real cost.
+
+Jira is the industry standard for large teams — it has sophisticated sprint planning, velocity tracking, burndown charts, and deep customisation. But Jira's complexity is genuinely overkill for a solo academic project. The overhead of configuring Jira boards, epics, and sprint reports would consume time better spent building the system. GitHub Projects offers approximately 70% of Jira's value at 10% of the setup cost, which is the right trade-off for this context.
+
+### Challenge 3: WIP Limits Without Enforcement
+
+GitHub Projects does not enforce WIP limits natively — there is no built-in mechanism that prevents a developer from dragging a fourth card into a column with a WIP limit of 3. The limits exist only as column header annotations and as personal discipline.
+
+This is a genuine weakness compared to tools like Kanbanize or LeanKit, which can hard-block card movement when a column is full. The practical mitigation is documentation: by writing the WIP limits clearly in KANBAN_EXPLANATION.md and in the column headers, the constraint becomes a visible commitment rather than an invisible rule. Whether that commitment is honoured depends entirely on the developer's self-discipline — which is, ultimately, the real challenge of solo Agile.
+
+

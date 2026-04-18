@@ -26,6 +26,9 @@ The system will be built using a **React** frontend and a **Java Spring Boot** R
 | [REFLECTION.md](./REFLECTION.md) | Reflection on challenges faced in balancing competing stakeholder needs and the trade-off decisions made |
 | [USE_CASES.md](./USE_CASES.md) | UML use case diagram, 8 detailed use case specifications, 15 functional test cases, 8 non-functional test cases, and a reflection on the process |
 | [AGILE_PLANNING.md](./AGILE_PLANNING.md) | 20 user stories mapped to FRs and UCs, MoSCoW prioritised product backlog, Sprint 1 plan with 25 tasks, GitHub project setup guide, and Agile reflection |
+| [TEMPLATE_ANALYSIS.md](./TEMPLATE_ANALYSIS.md) | Comparison of 4 GitHub project templates, selection of Automated Kanban, and justification for custom Blocked and Testing columns |
+| [KANBAN_EXPLANATION.md](./KANBAN_EXPLANATION.md) | Definition of Kanban, explanation of all 5 board columns, WIP limits, workflow visualisation, and Agile alignment |
+| [REFLECTION.md](./REFLECTION.md) | Cumulative reflections across all assignments including Assignment 7: template selection challenges, GitHub vs Trello vs Jira comparison, and WIP limit limitations |
 
 ---
 
