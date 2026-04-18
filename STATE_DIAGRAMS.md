@@ -24,7 +24,7 @@ This document defines the lifecycle of 8 critical objects in the StudySync syste
 ## 2. Object 1 — User Account
 
 ```mermaid
-stateDiagram-v2
+stateDiagram
     [*] --> Registered : Registration submitted [email unique]
     Registered --> Active : Profile setup complete
     Active --> LoggedIn : Valid credentials submitted
@@ -46,7 +46,7 @@ The User Account object begins in **Registered** state immediately after a stude
 ## 3. Object 2 — Academic Profile
 
 ```mermaid
-stateDiagram-v2
+stateDiagram
     [*] --> Incomplete : Account created [profile empty]
     Incomplete --> Complete : Year and course submitted [fields valid]
     Complete --> Updating : Student opens edit form
@@ -67,7 +67,7 @@ The Academic Profile starts as **Incomplete** the moment a user account is creat
 ## 4. Object 3 — Study Group
 
 ```mermaid
-stateDiagram-v2
+stateDiagram
     [*] --> Active : Group created [course set, capacity 2-50]
     Active --> Full : Member joins [count reaches max capacity]
     Full --> Active : Member leaves or removed [count below max]
@@ -90,7 +90,7 @@ A Study Group enters **Active** state immediately upon creation — there is no 
 ## 5. Object 4 — Membership
 
 ```mermaid
-stateDiagram-v2
+stateDiagram
     [*] --> Active : Joins PUBLIC group [not full, under 5-group limit]
     [*] --> Pending : Requests PRIVATE group [not full, under limit]
     Pending --> Active : Creator approves [group has capacity]
@@ -115,7 +115,7 @@ Membership is the most complex object in StudySync because it has two possible e
 ## 6. Object 5 — Join Request
 
 ```mermaid
-stateDiagram-v2
+stateDiagram
     [*] --> Submitted : Student clicks Request to Join [group is PRIVATE]
     Submitted --> UnderReview : Creator opens management panel
     UnderReview --> Approved : Creator clicks Approve [group has capacity]
@@ -137,7 +137,7 @@ The Join Request is a short-lived object that exists only for private group memb
 ## 7. Object 6 — Study Session
 
 ```mermaid
-stateDiagram-v2
+stateDiagram
     [*] --> Scheduled : Session created [at least 30 mins in future]
     Scheduled --> Active : Scheduled time reached
     Active --> Completed : Duration elapsed or manually closed
@@ -159,7 +159,7 @@ A Study Session starts in **Scheduled** state and transitions to **Active** auto
 ## 8. Object 7 — Admin Moderation Action
 
 ```mermaid
-stateDiagram-v2
+stateDiagram
     [*] --> Initiated : Admin opens management panel
     Initiated --> UnderReview : Admin views target details
     UnderReview --> UserDeactivated : Admin deactivates user [user is Active]
@@ -182,7 +182,7 @@ The Admin Moderation Action is a process object — it does not persist in the d
 ## 9. Object 8 — Course Enrolment
 
 ```mermaid
-stateDiagram-v2
+stateDiagram
     [*] --> Available : Course seeded by administrator
     Available --> Enrolled : Student selects course [course is active]
     Enrolled --> Dropped : Student removes course [one course still remains]
