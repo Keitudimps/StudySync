@@ -47,6 +47,13 @@ The system will be built using a **React** frontend and a **Java Spring Boot** R
 | [KANBAN_EXPLANATION.md](./KANBAN_EXPLANATION.md) | Definition of Kanban, explanation of all 5 board columns, WIP limits, workflow visualisation, and Agile alignment |
 | [REFLECTION.md](./REFLECTION.md) | Updated with Assignment 7 reflection — template selection challenges, GitHub vs Trello vs Jira comparison, WIP limit limitations |
 
+### Assignment 8 — Object State Modeling and Activity Workflow Modeling
+| Document | Description |
+|---|---|
+| [STATE_DIAGRAMS.md](./STATE_DIAGRAMS.md) | State transition diagrams for 8 critical objects: User Account, Academic Profile, Study Group, Membership, Join Request, Study Session, Admin Moderation, Course Enrolment |
+| [ACTIVITY_DIAGRAMS.md](./ACTIVITY_DIAGRAMS.md) | Activity workflow diagrams for 8 workflows: Registration, Login, Create Group, Search and Join, Private Join Request, Schedule Session, Admin Moderation, Edit Profile |
+| [REFLECTION.md](./REFLECTION.md) | Updated with Assignment 8 reflection — granularity challenges, aligning diagrams with user stories, state vs activity diagrams, and Mermaid parallel action limitations |
+
 ---
 
 ## Kanban Board

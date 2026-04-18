@@ -93,4 +93,36 @@ GitHub Projects does not enforce WIP limits natively — there is no built-in me
 
 This is a genuine weakness compared to tools like Kanbanize or LeanKit, which can hard-block card movement when a column is full. The practical mitigation is documentation: by writing the WIP limits clearly in KANBAN_EXPLANATION.md and in the column headers, the constraint becomes a visible commitment rather than an invisible rule. Whether that commitment is honoured depends entirely on the developer's self-discipline — which is, ultimately, the real challenge of solo Agile.
 
+---
+
+## Assignment 8 Reflection — Object State Modeling and Activity Workflow Modeling
+
+### Challenge 1: Choosing the Right Level of Granularity for States
+
+The hardest decision in state modeling is knowing how fine-grained to make the states. For the Membership object, the first draft had only two states: Pending and Active. But this missed the terminal states — what happens when a member leaves, is removed, or their group is deleted? Each of these outcomes needed its own state to make the transitions explicit and complete. Adding too many states, however, makes the diagram unreadable. The Membership diagram went through three revisions before settling on a version that captured all meaningful lifecycle moments without becoming a tangled mess of arrows.
+
+The rule that emerged: a state is worth adding if it has at least one transition that no other state has. If two proposed states have identical outgoing transitions, they should be merged.
+
+### Challenge 2: Aligning Diagrams with Agile User Stories
+
+User stories describe what a user wants to accomplish — "As a student, I want to join a group." State and activity diagrams describe how the system behaves to make that happen. Bridging these two levels of abstraction required constantly asking: which state transition or activity step is this user story actually testing?
+
+For example, US-007 (Join Public Group) has acceptance criteria that the join is blocked if the group is full or the student is in 5 groups. These acceptance criteria translated directly into guard conditions on state transitions (in STATE_DIAGRAMS.md) and decision nodes in the activity diagram (Workflow 4). Making this mapping explicit in the traceability tables ensured no acceptance criterion was left unmodelled.
+
+### Challenge 3: State Diagrams vs. Activity Diagrams — When to Use Which
+
+These two diagram types answer different questions and the distinction matters:
+
+A **state diagram** answers: what states can this object be in, and what causes it to change? It is object-centric. The Study Group state diagram does not care about the user's steps — it only cares about what happens to the group object.
+
+An **activity diagram** answers: what are the steps in this process, and who does each step? It is process-centric. The Create Study Group activity diagram shows the student filling in the form, the system validating it, and the database recording it — a sequence of actions across actors.
+
+The confusion arises when a workflow triggers a state change — for example, the Join Group workflow (activity diagram) triggers the Membership object to enter Active state (state diagram). These diagrams are complementary, not redundant. The activity diagram shows the process; the state diagram shows the outcome on the affected object.
+
+### Challenge 4: Modelling Parallel Actions in Mermaid
+
+UML activity diagrams natively support fork and join bars to show parallel actions. Mermaid's flowchart syntax does not have a direct fork/join construct — parallel actions had to be represented using the `&` operator for simultaneous transitions (`L --> M & N`). This is a reasonable approximation but loses the visual distinction between sequential and parallel execution that a proper UML fork bar provides. For production-level documentation, a dedicated UML tool like PlantUML or draw.io would render parallel actions more accurately.
+
+
+
 
