@@ -117,6 +117,6 @@ The StudySync project is managed using a **GitHub Projects Kanban board** based 
 **Fereshteh Keitumetse Gomolemo Dimpe**  
 Student Number: 221806229  
 Course: Software Engineering  
-Assignments 3–7 — System Specification, Architecture, Requirements, Use Cases, Agile Planning and Kanban Board  
+Assignments 3–8 — System Specification, Architecture, Requirements, Use Cases, Agile Planning, Kanban Board, State and Activity Diagrams 
 
 
