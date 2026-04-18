@@ -20,7 +20,7 @@ This document applies Agile methodology to the StudySync project. It translates 
 
 ## 2. User Stories
 
-> Format: *"As a [role], I want [action] so that [benefit]."*
+> Format: *"As a [role], I want [action] so that [benefit]."*  
 > All stories follow the **INVEST** criteria: Independent, Negotiable, Valuable, Estimable, Small, Testable.
 
 ### 2.1 Functional User Stories (from Assignment 4 FRs)
