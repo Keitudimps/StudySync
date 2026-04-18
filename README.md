@@ -41,6 +41,7 @@ The system will be built using a **React** frontend and a **Java Spring Boot** R
 | API Style | RESTful |
 
 ---
+![Kanban Board](./kanban_board.png)
 
 ## Author
 Student No: 221806229  
