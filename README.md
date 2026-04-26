@@ -110,7 +110,7 @@ The development workflow for this project is managed using a GitHub Projects Kan
 
 **Live Board:** [StudySync — Sprint 1 Kanban Board](https://github.com/users/Keitudimps/projects)
 
-![StudySync Sprint 1 Kanban Board](./kanban_board.png)
+![StudySync Sprint 1 Kanban Board](./Kanban_board.png)
 
 #### Board Configuration
 
