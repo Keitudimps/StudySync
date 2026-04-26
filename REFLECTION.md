@@ -95,6 +95,43 @@ This is a genuine weakness compared to tools like Kanbanize or LeanKit, which ca
 
 ---
 
+## Assignment 9 Reflection — Domain Modeling and Class Diagram Development
+
+### 9.1 Introduction
+
+Designing the domain model and class diagram for StudySync was the first time all the prior assignment work had to be synthesised into a single coherent structural picture. Requirements, use cases, state diagrams, and activity diagrams each captured a slice of the system — the domain model and class diagram had to unify them into a consistent object-oriented design. This reflection discusses the challenges encountered, the trade-offs made, and the lessons learned.
+
+### 9.2 Challenge 1: Abstraction — What Deserves to Be an Entity?
+
+The first and most persistent challenge was deciding what warranted its own entity versus what should simply be an attribute. The clearest example was the Join Request. In early drafts of the domain model, a join request was just a Membership record with a PENDING status — there was no separate JoinRequest class. The state diagram from Assignment 8 eventually revealed that a join request has its own lifecycle (Submitted → UnderReview → Approved/Rejected/Expired) that is distinct from the Membership lifecycle. However, after careful consideration, the final design kept JoinRequest merged into Membership using the MembershipStatus enumeration — because in the database, a PENDING membership record is functionally equivalent to a join request, and introducing a separate entity would have created unnecessary complexity for no functional gain.
+
+This decision — collapsing JoinRequest into Membership — is a deliberate trade-off between conceptual purity and implementation simplicity.
+
+### 9.3 Challenge 2: Composition vs Association
+
+The most technically demanding part of the class diagram was correctly distinguishing composition from association. The rule is straightforward in theory: composition means the child cannot exist without the parent, association means the relationship is independent. In practice, applying this rule required going back to the state diagrams and asking: what happens to this object when its parent is deleted?
+
+Membership is a composition of StudyGroup because deleting a group removes all its memberships — confirmed by the FR-12 acceptance criteria ("cascade removes all memberships and sessions"). StudySession is also a composition of StudyGroup for the same reason. However, StudySession has only an association to the creating User — sessions survive if the creator leaves the group, because the sessions belong to the group, not to the individual who created them.
+
+Getting this distinction right matters beyond the diagram — it directly informs which database foreign keys have CASCADE DELETE constraints and which do not.
+
+### 9.4 Challenge 3: Where to Put Methods
+
+One of the most debated questions in object-oriented design is whether business logic should live in the domain entity or in a service class. In a pure domain-driven design, entities like StudyGroup would contain methods like isFull() and validateCapacity(). In a Spring Boot application, however, entities are JPA-managed objects and business logic conventionally lives in @Service classes.
+
+The solution adopted was a hybrid: simple query methods that return derived state (isFull(), isUpcoming(), isPast()) were placed on the entity classes because they require no external dependencies — they just inspect the object's own attributes. Complex operations that require database access or validation across multiple entities (joinGroup(), approveRequest()) were placed on service classes. This distinction is visible in the class diagram where entity methods are simple and stateless, while service methods are the entry points for all meaningful system behaviour.
+
+### 9.5 Alignment with Prior Assignments
+
+The class diagram did not emerge in isolation — every design decision traces back to a prior document. The five-membership limit on User traces to FR-06 and business rule BR-01. The MembershipStatus enumeration traces to the Membership state diagram in Assignment 8. The Privacy enumeration traces to FR-04 and UC-04. The AuthService.hashPassword() method traces to NFR-SE1 and US-018. AdminService traces entirely to FR-11 and FR-12. This level of traceability was only possible because the prior assignments were detailed enough to constrain the design — vague requirements would have left the class diagram with arbitrary decisions.
+
+### 9.6 Lessons Learned
+
+The most important lesson from this assignment is that class diagrams are a convergence point. They force every prior design decision to be consistent with every other. A use case that says "a student can join up to 5 groups" must appear as a multiplicity constraint (`0..5`) on the User-Membership relationship and as a guard condition in MembershipService.joinGroup() — the same rule expressed three different ways in three different artifacts. If any of those three representations are inconsistent, the design has a problem. Building the class diagram exposed two such inconsistencies in earlier documents, both of which were corrected during this assignment. This iterative refinement is exactly what the Agile methodology prescribes — not a weakness, but the process working as intended.
+
+
+---
+
 ## Assignment 8 Reflection — Object State Modeling and Activity Workflow Modeling
 
 ### Challenge 1: Choosing the Right Level of Granularity for States
@@ -122,7 +159,5 @@ The confusion arises when a workflow triggers a state change — for example, th
 ### Challenge 4: Modelling Parallel Actions in Mermaid
 
 UML activity diagrams natively support fork and join bars to show parallel actions. Mermaid's flowchart syntax does not have a direct fork/join construct — parallel actions had to be represented using the `&` operator for simultaneous transitions (`L --> M & N`). This is a reasonable approximation but loses the visual distinction between sequential and parallel execution that a proper UML fork bar provides. For production-level documentation, a dedicated UML tool like PlantUML or draw.io would render parallel actions more accurately.
-
-
 
 
