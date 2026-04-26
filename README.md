@@ -108,7 +108,7 @@ This repository serves as the complete project documentation repository for all 
 
 The development workflow for this project is managed using a GitHub Projects Kanban board. The board is based on the Automated Kanban template and has been customised with two additional columns to enforce a quality gate before task completion.
 
-**Live Board:** [StudySync — Sprint 1 Kanban Board](https://github.com/users/Keitudimps/projects)
+**Live Board:** [StudySync — Sprint 1 Kanban Board]([https://github.com/users/Keitudimps/projects/2)]
 
 ![StudySync Sprint 1 Kanban Board](./Kanban_board.png)
 
