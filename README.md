@@ -164,7 +164,7 @@ A cumulative reflection document is maintained throughout the project, covering 
 
 | Field | Detail |
 |---|---|
-| **Name** | ereshteh Keitumetse Gomolemo Dimpe |
+| **Name(s)** | Fereshteh Keitumetse Gomolemo Dimpe |
 | **Student Number** | 221806229 |
 | **Course** | Software Engineering |
 | **Institution** | CPUT |
