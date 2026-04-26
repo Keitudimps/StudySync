@@ -1,122 +1,176 @@
 # StudySync — Study Group Finder System
 
-## Introduction
+## Project Overview
 
-**StudySync** is a web-based platform designed to help university students discover, create, and collaborate in study groups organised by course, subject, or topic. Students often struggle to find peers studying the same material at the same time — StudySync solves this by providing a centralised matchmaking environment for academic collaboration.
+StudySync is a web-based academic collaboration platform developed as part of a Software Engineering course project. The system is designed to address a common challenge faced by university students: the lack of a structured, centralised tool for forming and coordinating peer study groups.
 
-Once completed, StudySync will allow students to:
-- Register and build an academic profile tied to their enrolled courses
-- Create or join study groups by course code or subject area
-- Schedule study sessions with date, time, location (physical or virtual), and session notes
-- Send and receive join requests with approval workflows
-- Allow administrators to manage users, groups, and platform content
+The platform enables students to discover, create, and participate in study groups organised by course code or subject area. It provides structured workflows for group membership, session scheduling, and administrative oversight — replacing the informal and unreliable methods students currently rely on, such as social media groups and physical notice boards.
 
-The system will be built using a **React** frontend and a **Java Spring Boot** REST API backend, backed by a **PostgreSQL** relational database.
+Upon completion, the system will provide the following core capabilities:
+
+- Student registration and academic profile management linked to enrolled courses
+- Creation and discovery of study groups with configurable privacy settings
+- Membership management including join requests and creator approval workflows
+- Study session scheduling with location and agenda support
+- Administrative tools for user account management and group moderation
+
+The system is being developed using **React** for the frontend, **Java Spring Boot** for the backend REST API, and **PostgreSQL** as the relational database.
 
 ---
 
-## Project Documents
+## Repository Structure
 
-### Assignment 3 — System Specification and Architectural Modeling
+This repository serves as the complete project documentation repository for all assignments submitted throughout the semester. Each assignment builds upon the previous, maintaining full traceability from system specification through to domain modelling and implementation planning.
+
+---
+
+## Project Documentation
+
+### Assignment 3 — System Specification and Architectural Modelling
+
+> Defines the system scope, domain, problem statement, and complete C4 architectural diagrams.
+
 | Document | Description |
 |---|---|
-| [SPECIFICATION.md](./SPECIFICATION.md) | Full system specification including domain, problem statement, stakeholders, functional & non-functional requirements, and use cases |
-| [ARCHITECTURE.md](./ARCHITECTURE.md) | C4 architectural diagrams (Context, Container, Component, and Code levels) with full end-to-end system coverage |
+| [SPECIFICATION.md](./SPECIFICATION.md) | System specification covering domain context, problem statement, individual scope justification, five core features, use cases, data model, and constraints |
+| [ARCHITECTURE.md](./ARCHITECTURE.md) | C4 model diagrams at all four levels: System Context, Container, Component (backend and frontend), and Code (class relationships) |
+
+---
 
 ### Assignment 4 — Stakeholder and System Requirements Documentation
-| Document | Description |
-|---|---|
-| [STAKEHOLDERS.md](./STAKEHOLDERS.md) | Detailed stakeholder analysis including roles, key concerns, pain points, and success metrics for 7 stakeholders |
-| [SRD.md](./SRD.md) | Full System Requirements Document with 12 functional requirements and 10 non-functional requirements across 6 quality categories |
-| [REFLECTION.md](./REFLECTION.md) | Cumulative reflections across all assignments — stakeholder trade-offs, Agile challenges, and Kanban template selection |
 
-### Assignment 5 — Use Case Diagrams, Specifications and Test Cases
-| Document | Description |
-|---|---|
-| [USE_CASES.md](./USE_CASES.md) | UML use case diagram, 8 detailed use case specifications, 15 functional test cases, 8 non-functional test cases, and a reflection on the process |
+> Identifies stakeholders and formally defines functional and non-functional requirements.
 
-### Assignment 6 — Agile User Stories, Backlog and Sprint Planning
 | Document | Description |
 |---|---|
-| [AGILE_PLANNING.md](./AGILE_PLANNING.md) | 20 user stories mapped to FRs and UCs, MoSCoW prioritised product backlog, Sprint 1 plan with 25 tasks, GitHub project setup guide, and Agile reflection |
+| [STAKEHOLDERS.md](./STAKEHOLDERS.md) | Analysis of seven stakeholders including roles, key concerns, pain points, success metrics, and identified trade-offs |
+| [SRD.md](./SRD.md) | System Requirements Document containing twelve functional requirements with acceptance criteria, ten non-functional requirements across six quality categories, and a requirements traceability matrix |
+| [REFLECTION.md](./REFLECTION.md) | Cumulative project reflection document — updated across all assignments |
+
+---
+
+### Assignment 5 — Use Case Diagrams, Specifications, and Test Cases
+
+> Models system interactions through UML use case diagrams and detailed specifications.
+
+| Document | Description |
+|---|---|
+| [USE_CASES.md](./USE_CASES.md) | UML use case diagram (SVG), eight detailed use case specifications with basic and alternative flows, fifteen functional test cases, and eight non-functional test cases |
+
+---
+
+### Assignment 6 — Agile User Stories, Backlog, and Sprint Planning
+
+> Translates requirements into Agile user stories and defines the Sprint 1 development plan.
+
+| Document | Description |
+|---|---|
+| [AGILE_PLANNING.md](./AGILE_PLANNING.md) | Twenty user stories traced to functional requirements and use cases, MoSCoW-prioritised product backlog with story point estimates, Sprint 1 plan with twenty-five tasks, and GitHub project setup guide |
+
+---
 
 ### Assignment 7 — GitHub Project Templates and Kanban Board
-| Document | Description |
-|---|---|
-| [TEMPLATE_ANALYSIS.md](./TEMPLATE_ANALYSIS.md) | Comparison of 4 GitHub project templates, selection of Automated Kanban, and justification for custom Blocked and Testing columns |
-| [KANBAN_EXPLANATION.md](./KANBAN_EXPLANATION.md) | Definition of Kanban, explanation of all 5 board columns, WIP limits, workflow visualisation, and Agile alignment |
-| [REFLECTION.md](./REFLECTION.md) | Updated with Assignment 7 reflection — template selection challenges, GitHub vs Trello vs Jira comparison, WIP limit limitations |
 
-### Assignment 8 — Object State Modeling and Activity Workflow Modeling
+> Evaluates GitHub project templates and implements a customised Kanban workflow.
+
 | Document | Description |
 |---|---|
-| [STATE_DIAGRAMS.md](./STATE_DIAGRAMS.md) | State transition diagrams for 8 critical objects: User Account, Academic Profile, Study Group, Membership, Join Request, Study Session, Admin Moderation, Course Enrolment |
-| [ACTIVITY_DIAGRAMS.md](./ACTIVITY_DIAGRAMS.md) | Activity workflow diagrams for 8 workflows: Registration, Login, Create Group, Search and Join, Private Join Request, Schedule Session, Admin Moderation, Edit Profile |
-| [REFLECTION.md](./REFLECTION.md) | Updated with Assignment 8 reflection — granularity challenges, aligning diagrams with user stories, state vs activity diagrams, and Mermaid parallel action limitations |
+| [TEMPLATE_ANALYSIS.md](./TEMPLATE_ANALYSIS.md) | Comparative analysis of four GitHub project templates with justification for the Automated Kanban selection and rationale for custom column additions |
+| [KANBAN_EXPLANATION.md](./KANBAN_EXPLANATION.md) | Formal definition of Kanban methodology, explanation of the five-column board structure, WIP limit rationale, and alignment with Agile principles |
 
 ---
 
-## Kanban Board
+### Assignment 8 — Object State Modelling and Activity Workflow Modelling
 
-The StudySync project is managed using a **GitHub Projects Kanban board** based on the Automated Kanban template, customised with two additional columns to support a complete development workflow.
+> Models dynamic system behaviour through state transition and activity diagrams.
 
-**🔗 Live Board:** [StudySync Sprint 1 Kanban Board](https://github.com/users/Keitudimps/projects/2/views/1)
+| Document | Description |
+|---|---|
+| [STATE_DIAGRAMS.md](./STATE_DIAGRAMS.md) | State transition diagrams for eight system objects: User Account, Academic Profile, Study Group, Membership, Join Request, Study Session, Admin Moderation Action, and Course Enrolment |
+| [ACTIVITY_DIAGRAMS.md](./ACTIVITY_DIAGRAMS.md) | Activity workflow diagrams for eight system processes: User Registration, Login and Authentication, Create Study Group, Search and Join Group, Private Group Join Request, Schedule Study Session, Admin Group Moderation, and Edit Academic Profile |
 
-### Screenshot
+---
 
-![StudySync Sprint 1 Kanban Board](./Kanban_board.png)
+### Assignment 9 — Domain Modelling and Class Diagram Development
 
-### Board Columns
+> Defines the structural design of the system through domain entities and a UML class diagram.
 
-| Column | Type | WIP Limit | Purpose |
+| Document | Description |
+|---|---|
+| [DOMAIN_MODEL.md](./DOMAIN_MODEL.md) | Domain model documenting seven core entities with attributes, methods, inter-entity relationships, and ten formally stated business rules traced to functional requirements |
+| [CLASS_DIAGRAM.md](./CLASS_DIAGRAM.md) | Full UML class diagram implemented in Mermaid.js, covering domain classes, service classes, enumerations, composition and association relationships, multiplicity constraints, and key design decision justifications |
+
+---
+
+## Project Management
+
+### Kanban Board
+
+The development workflow for this project is managed using a GitHub Projects Kanban board. The board is based on the Automated Kanban template and has been customised with two additional columns to enforce a quality gate before task completion.
+
+**Live Board:** [StudySync — Sprint 1 Kanban Board](https://github.com/users/Keitudimps/projects)
+
+![StudySync Sprint 1 Kanban Board](./kanban_board.png)
+
+#### Board Configuration
+
+| Column | Classification | WIP Limit | Purpose |
 |---|---|---|---|
-| **To Do** | Default | None | All sprint tasks not yet started. Populated at the start of each sprint. |
-| **In Progress** | Default | 3 | Tasks actively being developed. Auto-moves when a linked issue is opened. |
-| **Blocked** | Custom | 2 | Tasks that cannot proceed due to a dependency or blocker. Makes blockers visible instead of hiding them inside In Progress. |
-| **Testing** | Custom | 3 | Code-complete tasks awaiting manual verification before Done. Enforces the quality gate. |
-| **Done** | Default | None | Fully verified tasks that meet the Definition of Done. Auto-moves when a linked issue is closed. |
+| To Do | Default | Unlimited | Houses all tasks assigned to the current sprint that have not yet been initiated |
+| In Progress | Default | 3 | Tracks tasks under active development; auto-populated when a linked issue is opened |
+| Blocked | Custom | 2 | Isolates tasks that cannot progress due to unresolved dependencies or technical impediments, making blockers explicitly visible |
+| Testing | Custom | 3 | Holds code-complete tasks pending manual verification; serves as the quality gate before a task is considered done |
+| Done | Default | Unlimited | Contains fully verified tasks meeting the Definition of Done; auto-populated when a linked issue is closed |
 
-### Customisation Choices
+#### Issue Labels
 
-**"Blocked" column added** — without it, stuck tasks are invisible inside In Progress. A WIP limit of 2 creates urgency to resolve blockers rather than let them accumulate silently.
-
-**"Testing" column added** — the default template moves issues straight from In Progress to Done when closed, skipping verification entirely. This column enforces the Definition of Done defined in AGILE_PLANNING.md.
-
-**Automated Kanban chosen over Basic Kanban** — automation keeps the board accurate without constant manual card movement, which is essential for a solo developer managing 25 tasks across a 2-week sprint.
-
-### Labels Used
-
-| Label | Applied To |
+| Label | Scope |
 |---|---|
-| `sprint-1` | All Sprint 1 issues |
-| `must-have` | MoSCoW Must-have stories |
-| `should-have` | MoSCoW Should-have stories |
-| `backend` | Spring Boot tasks |
-| `frontend` | React tasks |
-| `security` | Authentication and encryption tasks |
-| `database` | JPA entity and migration tasks |
-| `testing` | Verification and test tasks |
+| `sprint-1` | All issues assigned to Sprint 1 |
+| `must-have` | MoSCoW Must-have user stories |
+| `should-have` | MoSCoW Should-have user stories |
+| `backend` | Tasks relating to Spring Boot API development |
+| `frontend` | Tasks relating to React UI development |
+| `security` | Tasks relating to authentication and authorisation |
+| `database` | Tasks relating to JPA entities and database migrations |
+| `testing` | Tasks relating to test case execution and verification |
 
 ---
 
-## Tech Stack (Planned)
+## Technology Stack
 
 | Layer | Technology |
 |---|---|
-| Frontend | React, Axios, React Router, TailwindCSS |
-| Backend | Java Spring Boot, Spring Security, Spring Data JPA |
-| Database | PostgreSQL |
-| Authentication | JWT (JSON Web Tokens) |
-| Deployment | Vercel (Frontend), Railway (Backend + Database) |
-| API Style | RESTful |
+| Frontend | React 18, Axios, React Router v6, TailwindCSS |
+| Backend | Java 17, Spring Boot 3, Spring Security, Spring Data JPA |
+| Database | PostgreSQL 15 |
+| Authentication | JSON Web Tokens (JWT) — HMAC-SHA256 |
+| Deployment | Vercel (Frontend), Railway (Backend and Database) |
+| API Architecture | RESTful — JSON over HTTP/HTTPS |
+
+---
+
+## Project Reflection
+
+A cumulative reflection document is maintained throughout the project, covering challenges and lessons learned at each stage of development. This document is updated with each assignment submission.
+
+| Document | Coverage |
+|---|---|
+| [REFLECTION.md](./REFLECTION.md) | Stakeholder trade-offs (Assignment 4), use case modelling challenges (Assignment 5), Agile estimation and solo development (Assignment 6), Kanban template selection and tool comparison (Assignment 7), state and activity diagram granularity (Assignment 8), domain modelling and object-oriented design (Assignment 9) |
 
 ---
 
 ## Author
 
-**Fereshteh Keitumetse Gomolemo Dimpe**  
-Student Number: 221806229  
-Course: Software Engineering  
-Assignments 3–8 — System Specification, Architecture, Requirements, Use Cases, Agile Planning, Kanban Board, State and Activity Diagrams 
+| Field | Detail |
+|---|---|
+| **Name** | ereshteh Keitumetse Gomolemo Dimpe |
+| **Student Number** | 221806229 |
+| **Course** | Software Engineering |
+| **Institution** | CPUT |
+| **Submission Period** | Assignments 3 through 9 |
+| **Repository** | [github.com/Keitudimps/StudySync](https://github.com/Keitudimps/StudySync) |
+
+
 
 
