@@ -248,6 +248,7 @@ mvn clean compile
 ```bash
 cd backend
 mvn clean test
+```
 # Output:
 ```
 C:\Users\keitu\StudySync\backend>mvn test
@@ -491,7 +492,6 @@ Attempting to set capacity to 1...
 [INFO] Total time:  2.791 s
 [INFO] Finished at: 2026-05-02T21:44:24+02:00
 [INFO] ------------------------------------------------------------------------
-```
 ```
 
 #### Quality Characteristics
