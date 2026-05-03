@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.studysync.creational.DatabaseConnectionTest" time="0.116" tests="8" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.studysync.creational.DatabaseConnectionTest" time="0.121" tests="8" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="21"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -15,7 +15,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="ZA"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-21.0.10\bin"/>
-    <property name="sun.java.command" value="C:\Users\keitu\AppData\Local\Temp\surefire7423541025537500250\surefirebooter-20260503100304894_3.jar C:\Users\keitu\AppData\Local\Temp\surefire7423541025537500250 2026-05-03T10-03-04_734-jvmRun1 surefire-20260503100304894_1tmp surefire_0-20260503100304894_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\keitu\AppData\Local\Temp\surefire16010771453458723701\surefirebooter-20260503100920196_3.jar C:\Users\keitu\AppData\Local\Temp\surefire16010771453458723701 2026-05-03T10-09-20_030-jvmRun1 surefire-20260503100920196_1tmp surefire_0-20260503100920196_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="C:\Users\keitu\StudySync\backend\target\test-classes;C:\Users\keitu\StudySync\backend\target\classes;C:\Users\keitu\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.10.0\junit-jupiter-api-5.10.0.jar;C:\Users\keitu\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\keitu\.m2\repository\org\junit\platform\junit-platform-commons\1.10.0\junit-platform-commons-1.10.0.jar;C:\Users\keitu\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\keitu\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.10.0\junit-jupiter-engine-5.10.0.jar;C:\Users\keitu\.m2\repository\org\junit\platform\junit-platform-engine\1.10.0\junit-platform-engine-1.10.0.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -30,7 +30,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\keitu\AppData\Local\Temp\surefire7423541025537500250\surefirebooter-20260503100304894_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\keitu\AppData\Local\Temp\surefire16010771453458723701\surefirebooter-20260503100920196_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="21.0.10+8-LTS-217"/>
@@ -61,7 +61,7 @@
   <testcase name="testQueryCountIncrementsCorrectly" classname="com.studysync.creational.DatabaseConnectionTest" time="0.056">
     <system-out><![CDATA[
 === TEST: Query Count Increments Correctly ===
-DatabaseConnection created at: 2026-05-03T10:03:05.642300800
+DatabaseConnection created at: 2026-05-03T10:09:20.908036200
 Query count before: 0
 Executing query #1: SELECT * FROM users
 Executing query #2: SELECT * FROM study_groups
@@ -86,7 +86,7 @@ Instance 2 hash: 447718425
 ✓ PASS — both references point to the same singleton instance
 ]]></system-out>
   </testcase>
-  <testcase name="testSyncSingletonReturnsSameInstance" classname="com.studysync.creational.DatabaseConnectionTest" time="0.003">
+  <testcase name="testSyncSingletonReturnsSameInstance" classname="com.studysync.creational.DatabaseConnectionTest" time="0.002">
     <system-out><![CDATA[
 === TEST: Sync Singleton Returns Same Instance ===
 [SyncSingleton] Instance created lazily with double-checked locking.
@@ -95,20 +95,20 @@ Sync instance 2 hash: 592983282
 ✓ PASS — synchronized singleton instance is the same object
 ]]></system-out>
   </testcase>
-  <testcase name="testSingletonThreadSafety" classname="com.studysync.creational.DatabaseConnectionTest" time="0.014">
+  <testcase name="testSingletonThreadSafety" classname="com.studysync.creational.DatabaseConnectionTest" time="0.018">
     <system-out><![CDATA[
 === TEST: Singleton Thread Safety ===
 Spawning 10 concurrent threads to retrieve the singleton...
-Thread 2 → instance hash: 447718425
-Thread 9 → instance hash: 447718425
-Thread 8 → instance hash: 447718425
-Thread 7 → instance hash: 447718425
-Thread 4 → instance hash: 447718425
 Thread 6 → instance hash: 447718425
 Thread 1 → instance hash: 447718425
 Thread 3 → instance hash: 447718425
-Thread 0 → instance hash: 447718425
+Thread 9 → instance hash: 447718425
+Thread 4 → instance hash: 447718425
+Thread 2 → instance hash: 447718425
 Thread 5 → instance hash: 447718425
+Thread 0 → instance hash: 447718425
+Thread 7 → instance hash: 447718425
+Thread 8 → instance hash: 447718425
 ✓ PASS — all 10 threads received the identical singleton instance
 ]]></system-out>
   </testcase>
@@ -132,7 +132,7 @@ Before: 0  After: 1
     <system-out><![CDATA[
 === TEST: Connection Details Are Valid ===
 Connection URL : jdbc:postgresql://localhost:5432/studysync
-Connected at   : 2026-05-03T10:03:05.642300800
+Connected at   : 2026-05-03T10:09:20.908036200
 Is connected   : true
 ✓ PASS — connection URL, timestamp, and status are all valid
 ]]></system-out>
