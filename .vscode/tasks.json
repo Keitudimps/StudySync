@@ -1,0 +1,21 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "mvn clean test",
+            "type": "shell",
+            "command": "mvn",
+            "args": ["clean", "test"],
+            "cwd": "${workspaceFolder}/backend",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": "$java"
+        }
+    ]
+}
