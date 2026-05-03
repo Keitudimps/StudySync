@@ -1,0 +1,6 @@
+com\studysync\creational\GroupPrototypeTest.class
+com\studysync\creational\GUIFactoryTest.class
+com\studysync\creational\NotificationFactoryTest.class
+com\studysync\creational\StudyResourceExporterFactoryTest.class
+com\studysync\creational\DatabaseConnectionTest.class
+com\studysync\creational\StudyGroupBuilderTest.class

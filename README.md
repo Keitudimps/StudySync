@@ -125,19 +125,19 @@ This assignment implements six creational design patterns to provide flexible ob
    - NotificationFactory with Email/SMS/Push implementations
    - 5 unit tests, 100% passing
 
-2. **Factory Method** — Polymorphic processor instantiation
-   - PaymentProcessorFactory with CreditCard/PayPal/Crypto processors
+2. **Factory Method** — Polymorphic exporter instantiation
+   - StudyResourceExporterFactory with PDF/Markdown/CSV exporters
    - 4 unit tests, 100% passing
 
 3. **Abstract Factory** — Family of platform-specific GUI components
    - GUIFactory with Windows and Mac implementations
    - Button and TextBox component families
-   - 4 unit tests, 100% passing
+   - 5 unit tests, 100% passing
 
 4. **Builder** — Step-by-step construction with fluent API
    - StudyGroupBuilder for complex StudyGroup objects
    - Validation of capacity constraints (2-50 range)
-   - 4 unit tests, 100% passing
+   - 5 unit tests, 100% passing
 
 5. **Prototype** — Template cloning and registry pattern
    - GroupTemplateRegistry with prototype instances
@@ -147,7 +147,7 @@ This assignment implements six creational design patterns to provide flexible ob
 6. **Singleton** — Thread-safe single instance guarantee
    - DatabaseConnection using Bill Pugh pattern
    - Plus eager and synchronized variants
-   - 4 unit tests, 100% passing
+   - 8 unit tests, 100% passing
 
 #### Quality Metrics
 
@@ -157,7 +157,7 @@ This assignment implements six creational design patterns to provide flexible ob
 | Domain Classes | 9 implemented |
 | Pattern Implementations | 31 classes across 6 patterns |
 | Test Classes | 6 test suites |
-| Unit Tests | 25 total |
+| Unit Tests | 31 total |
 | Test Pass Rate | 100% (all passing) |
 | Build Status | Clean (0 errors, 0 warnings) |
 | Security Vulnerabilities | 0 CVEs detected |
@@ -187,14 +187,14 @@ backend/src/main/java/com/studysync/
     │   └── NotificationFactory.java
     │
     ├── factorymethod/         (8 files)
-    │   ├── PaymentProcessor.java
-    │   ├── CreditCardProcessor.java
-    │   ├── PayPalProcessor.java
-    │   ├── CryptoProcessor.java
-    │   ├── PaymentProcessorFactory.java
-    │   ├── CreditCardFactory.java
-    │   ├── PayPalFactory.java
-    │   └── CryptoFactory.java
+    │   ├── StudyResourceExporter.java
+    │   ├── StudyResourceExporterFactory.java
+    │   ├── PdfExporter.java
+    │   ├── PdfExporterFactory.java
+    │   ├── MarkdownExporter.java
+    │   ├── MarkdownExporterFactory.java
+    │   ├── CsvExporter.java
+    │   └── CsvExporterFactory.java
     │
     ├── abstractfactory/       (10 files)
     │   ├── GUIFactory.java
@@ -223,12 +223,12 @@ backend/src/main/java/com/studysync/
         └── DatabaseConnectionSync.java
 
 backend/src/test/java/com/studysync/creational/
-├── NotificationFactoryTest.java      (5 tests)
-├── PaymentProcessorFactoryTest.java  (4 tests)
-├── GUIFactoryTest.java               (4 tests)
-├── StudyGroupBuilderTest.java        (4 tests)
-├── GroupPrototypeTest.java           (4 tests)
-└── DatabaseConnectionTest.java       (4 tests)
+├── NotificationFactoryTest.java           (5 tests)
+├── StudyResourceExporterFactoryTest.java  (4 tests)
+├── GUIFactoryTest.java                    (5 tests)
+├── StudyGroupBuilderTest.java             (5 tests)
+├── GroupPrototypeTest.java                (4 tests)
+└── DatabaseConnectionTest.java            (8 tests)
 ```
 
 #### Building and Testing
@@ -251,7 +251,7 @@ mvn clean test
 ```
 # Output:
 ```
-C:\Users\keitu\StudySync\backend>mvn test
+C:\Users\keitu\StudySync-1\backend>mvn clean test
 [INFO] Scanning for projects...
 [INFO]
 [INFO] ------------------< com.studysync:studysync-backend >-------------------
@@ -260,15 +260,15 @@ C:\Users\keitu\StudySync\backend>mvn test
 [INFO] --------------------------------[ jar ]---------------------------------
 [INFO]
 [INFO] --- resources:3.4.0:resources (default-resources) @ studysync-backend ---
-[INFO] Copying 0 resource from src\main\resources to target\classes
+[INFO] skip non existing resourceDirectory src\main\resources
 [INFO]
 [INFO] --- compiler:3.11.0:compile (default-compile) @ studysync-backend ---
-[INFO] Changes detected - recompiling the module! :input tree
+[INFO] Changes detected - recompiling the module! :source
 [INFO] Compiling 40 source files with javac [debug target 17] to target\classes
 [WARNING] system modules path not set in conjunction with -source 17
 [INFO]
 [INFO] --- resources:3.4.0:testResources (default-testResources) @ studysync-backend ---
-[INFO] skip non existing resourceDirectory C:\Users\keitu\StudySync\backend\src\test\resources
+[INFO] skip non existing resourceDirectory src\test\resources
 [INFO]
 [INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ studysync-backend ---
 [INFO] Changes detected - recompiling the module! :dependency
@@ -284,213 +284,276 @@ C:\Users\keitu\StudySync\backend>mvn test
 [INFO] Running com.studysync.creational.DatabaseConnectionTest
 
 === TEST: Query Count Increments Correctly ===
-DatabaseConnection created at: 2026-05-02T21:44:24.444607500
+DatabaseConnection created at: 2026-05-03T13:03:19.576951200
 Query count before: 0
 Executing query #1: SELECT * FROM users
 Executing query #2: SELECT * FROM study_groups
 Query count after:  2
-? PASS ? query counter incremented by 2 as expected
+✓ PASS — query counter incremented by 2 as expected
 
 === TEST: Eager Singleton Has Valid Connection URL ===
 [EagerSingleton] Instance created at class load time.
 URL: jdbc:postgresql://localhost:5432/studysync
-? PASS ? eager singleton has a valid JDBC URL
+✓ PASS — eager singleton has a valid JDBC URL
 
 === TEST: Singleton Returns Same Instance ===
 Getting two references via getInstance()...
-Instance 1 hash: 447718425
-Instance 2 hash: 447718425
-? PASS ? both references point to the same singleton instance
+Instance 1 hash: 846254484
+Instance 2 hash: 846254484
+✓ PASS — both references point to the same singleton instance
 
 === TEST: Sync Singleton Returns Same Instance ===
 [SyncSingleton] Instance created lazily with double-checked locking.
-Sync instance 1 hash: 592983282
-Sync instance 2 hash: 592983282
-? PASS ? synchronized singleton instance is the same object
+Sync instance 1 hash: 348984985
+Sync instance 2 hash: 348984985
+✓ PASS — synchronized singleton instance is the same object
 
 === TEST: Singleton Thread Safety ===
 Spawning 10 concurrent threads to retrieve the singleton...
-Thread 6 ? instance hash: 447718425
-Thread 3 ? instance hash: 447718425
-Thread 1 ? instance hash: 447718425
-Thread 5 ? instance hash: 447718425
-Thread 0 ? instance hash: 447718425
-Thread 2 ? instance hash: 447718425
-Thread 4 ? instance hash: 447718425
-Thread 8 ? instance hash: 447718425
-Thread 9 ? instance hash: 447718425
-Thread 7 ? instance hash: 447718425
-? PASS ? all 10 threads received the identical singleton instance
+Thread 4 → instance hash: 846254484
+Thread 9 → instance hash: 846254484
+Thread 3 → instance hash: 846254484
+Thread 2 → instance hash: 846254484
+Thread 1 → instance hash: 846254484
+Thread 8 → instance hash: 846254484
+Thread 0 → instance hash: 846254484
+Thread 6 → instance hash: 846254484
+Thread 5 → instance hash: 846254484
+Thread 7 → instance hash: 846254484
+✓ PASS — all 10 threads received the identical singleton instance
 
 === TEST: Eager Singleton Returns Same Instance ===
-Eager instance 1 hash: 1365008457
-Eager instance 2 hash: 1365008457
-? PASS ? eager singleton instance is the same object
+Eager instance 1 hash: 1985836631
+Eager instance 2 hash: 1985836631
+✓ PASS — eager singleton instance is the same object
 
 === TEST: Sync Singleton Query Count ===
+Before: 0
 [SyncSingleton] Executing query #1: SELECT 1
-Before: 0  After: 1
-? PASS ? sync singleton query count incremented correctly
+After:  1
+✓ PASS — sync singleton query count incremented correctly
 
 === TEST: Connection Details Are Valid ===
 Connection URL : jdbc:postgresql://localhost:5432/studysync
-Connected at   : 2026-05-02T21:44:24.444607500
+Connected at   : 2026-05-03T13:03:19.576951200
 Is connected   : true
-? PASS ? connection URL, timestamp, and status are all valid
-[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.090 s -- in com.studysync.creational.DatabaseConnectionTest
+✓ PASS — connection URL, timestamp, and status are all valid
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.169 s -- in com.studysync.creational.DatabaseConnectionTest
 [INFO] Running com.studysync.creational.GroupPrototypeTest
-
-=== TEST: Customize Clone ===
-Getting template from registry...
-Customizing clone...
-Getting another copy of same template...
-? Customization did not affect original template
 
 === TEST: Template Cloning ===
 Creating original template: Exam Prep...
 Cloning template...
-Original: Exam Prep
-Clone: Exam Prep
-? Template cloning successful: objects are independent
+Original name     : Exam Prep
+Clone name        : Exam Prep
+Original course   : CS301
+Clone course      : CS301
+Original capacity : 8
+Clone capacity    : 8
+Original private  : true
+Clone private     : true
+Mutating clone name to 'Modified Name'...
+Original name after clone mutation: Exam Prep
+✓ PASS — template cloning successful: objects are independent
 
 === TEST: Registry Returns Cloned Templates ===
-Retrieving same template twice from registry...
-Template 1 hash: 1010953501
-Template 2 hash: 1423561005
-? Registry correctly returns independent clones
+Retrieving same template key 'exam_prep' twice from registry...
+Template 1 hash: 1083021083
+Template 2 hash: 1819063424
+✓ PASS — registry correctly returns independent clones
+
+=== TEST: Customize Clone Does Not Affect Registry ===
+Getting 'assignment' template from registry...
+Original template name: Assignment Group
+Customizing retrieved clone to 'Custom Assignment Group'...
+Clone name after customization: Custom Assignment Group
+Fetching a fresh clone from registry...
+Fresh template name: Assignment Group
+✓ PASS — customization did not affect the registry's original template
 
 === TEST: Unknown Template Throws Exception ===
-Attempting to get non-existent template 'non_existent'...
+Attempting to get non-existent template key 'non_existent'...
 Exception caught: No template found for key: non_existent
-? Exception handling working correctly
-[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.009 s -- in com.studysync.creational.GroupPrototypeTest
+✓ PASS — exception handling working correctly
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.017 s -- in com.studysync.creational.GroupPrototypeTest
 [INFO] Running com.studysync.creational.GUIFactoryTest
 
-=== TEST: Platform Components Are Independent ===
-Creating buttons from Windows and Mac factories...
-Windows button: WindowsButton
-Mac button: MacButton
-? Components verified: each platform has independent implementations
+=== TEST: TextBox Stores and Retrieves Text ===
+Setting text on WindowsTextBox: 'Hello StudySync'
+Retrieved text: Hello StudySync
+Setting text on MacTextBox: 'Hello StudySync'
+Retrieved text: Hello StudySync
+✓ PASS — both TextBox implementations store and retrieve text correctly
 
 === TEST: Mac Factory Creates Mac Components ===
 Creating Mac GUI factory and components...
-Button type: MacButton
-TextBox type: MacTextBox
-? Mac factory verified: correct component types created
+Button type  : MacButton
+TextBox type : MacTextBox
+✓ PASS — Mac factory verified: correct component types created
 
 === TEST: Windows Factory Creates Windows Components ===
 Creating Windows GUI factory and components...
-Button type: WindowsButton
-TextBox type: WindowsTextBox
-? Windows factory verified: correct component types created
+Button type  : WindowsButton
+TextBox type : WindowsTextBox
+✓ PASS — Windows factory verified: correct component types created
+
+=== TEST: Windows and Mac Components Are Distinct Types ===
+Creating buttons and text boxes from both factories...
+Windows button : WindowsButton
+Mac button     : MacButton
+Windows textbox: WindowsTextBox
+Mac textbox    : MacTextBox
+✓ PASS — each platform has independent component implementations
 
 === TEST: Application UI Renders Without Error ===
 Initializing ApplicationUI with Windows factory...
-Rendering UI...
+Calling renderUI()...
 Rendering Windows-style button
 Rendering Windows-style text box
-? ApplicationUI rendered successfully without errors
-[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.021 s -- in com.studysync.creational.GUIFactoryTest
+✓ PASS — ApplicationUI rendered successfully without errors
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.025 s -- in com.studysync.creational.GUIFactoryTest
 [INFO] Running com.studysync.creational.NotificationFactoryTest
 
 === TEST: Create SMS Notification ===
-Creating SMS notification type...
-Notification type: SMS
-? SMS notification created successfully
+Creating SMS notification via factory...
+Concrete type  : SMSNotification
+Reported type  : SMS
+Calling send()...
+Sending SMS to +27821234567: Your session is in 1 hour
+✓ PASS — SMS notification created and send() executed successfully
 
 === TEST: Case Insensitive Type ===
-Creating notification with lowercase type 'email'...
-Created type normalized to: EMAIL
-? Case insensitive handling working correctly
+Creating notification with lowercase 'email'...
+Type from 'email'  : EMAIL
+Creating notification with mixed-case 'Email'...
+Type from 'Email'  : EMAIL
+✓ PASS — case insensitive handling working correctly
 
 === TEST: Create Push Notification ===
-Creating PUSH notification type...
-Notification type: PUSH
-? Push notification created successfully
+Creating PUSH notification via factory...
+Concrete type  : PushNotification
+Reported type  : PUSH
+Calling send()...
+Sending PUSH to device-token-abc: New session scheduled
+✓ PASS — push notification created and send() executed successfully
 
 === TEST: Unknown Type Throws Exception ===
 Attempting to create notification with invalid type 'WHATSAPP'...
 Exception caught: Unknown notification type: WHATSAPP
-? Exception handling working correctly
+✓ PASS — exception handling working correctly
 
 === TEST: Create Email Notification ===
-Creating EMAIL notification type...
-Notification type: EMAIL
-Testing send method...
-Sending EMAIL to test@example.com: Hello
-? Email notification created and working
-[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s -- in com.studysync.creational.NotificationFactoryTest
-[INFO] Running com.studysync.creational.PaymentProcessorFactoryTest
-
-=== TEST: PayPal Processor ===
-Creating PayPalFactory...
-Processor name: PAYPAL
-Processing payment of $75.50...
-Processing $75.5 via PayPal: user@paypal.com
-? PayPal processor working correctly
-
-=== TEST: Crypto Processor ===
-Creating CryptoFactory...
-Processor name: CRYPTO
-Processing crypto payment of 0.01 BTC...
-Processing $0.01 via Crypto wallet: 0xABC123...
-? Crypto processor working correctly
-
-=== TEST: Credit Card Processor ===
-Creating CreditCardFactory...
-Processor name: CREDIT_CARD
-Processing payment of $50.00...
-Processing $50.0 via Credit Card: 4111-1111-1111-1111
-? Credit card processor working correctly
-
-=== TEST: Template Method Pattern ===
-Testing factory template method...
-Processing $100.00 payment...
-[CREDIT_CARD] Processing $100.0 via Credit Card: card-number
-? Template method pattern working correctly
-[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.023 s -- in com.studysync.creational.PaymentProcessorFactoryTest
+Creating EMAIL notification via factory...
+Concrete type  : EmailNotification
+Reported type  : EMAIL
+Calling send()...
+Sending EMAIL to test@example.com: Session starts at 10am
+✓ PASS — email notification created and send() executed successfully
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.028 s -- in com.studysync.creational.NotificationFactoryTest
 [INFO] Running com.studysync.creational.StudyGroupBuilderTest
 
 === TEST: Full Group Build ===
-Building group with all optional fields...
-? Full group created: Physics 202
-  Description: Weekly problem-solving sessions
-  Max Capacity: 15
-  Privacy: PRIVATE
-  Tags: [difficult, weekly]
-  Location: Room 3.24
-? All assertions passed!
+Building group with all optional fields set...
+Name         : Physics 202
+Course Code  : PHYS202
+Description  : Weekly problem-solving sessions
+Max Capacity : 15
+Privacy      : PRIVATE
+Tags         : [difficult, weekly]
+Location     : Room 3.24
+Meeting Time : 2026-05-06T13:03:19.760881600
+✓ PASS — all fields set and verified correctly
+
+=== TEST: Capacity Validation — Above Maximum ===
+Attempting to set capacity to 51 (maximum is 50)...
+Exception caught: Capacity must be between 2 and 50
+✓ PASS — above-maximum capacity correctly rejected
 
 === TEST: Minimal Group Build ===
-Building group with default values...
-? Group created: Math Study
-  Course Code: MATH101
-  Max Capacity: 10
-  Privacy: PUBLIC
-? All assertions passed!
+Building group with required fields only (defaults applied)...
+Name         : Math Study
+Course Code  : MATH101
+Max Capacity : 10
+Privacy      : PUBLIC
+✓ PASS — all default values applied correctly
 
-=== TEST: Method Chaining ===
-Testing fluent API method chaining...
-? Chained group created: Chained
-  Has 2 tags: [tag1, tag2]
-? Fluent API working correctly!
+=== TEST: Capacity Validation — Below Minimum ===
+Attempting to set capacity to 1 (minimum is 2)...
+Exception caught: Capacity must be between 2 and 50
+✓ PASS — below-minimum capacity correctly rejected
 
-=== TEST: Capacity Validation ===
-Testing invalid capacity (1 < 2)...
-Attempting to set capacity to 1...
-? Exception caught: Capacity must be between 2 and 50
-? Validation working correctly!
-[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s -- in com.studysync.creational.StudyGroupBuilderTest
+=== TEST: Fluent API Method Chaining ===
+Building group using a full fluent chain...
+Name         : Chained
+Description  : Test description
+Max Capacity : 5
+Privacy      : PUBLIC
+Tags         : [tag1, tag2]
+✓ PASS — fluent API method chaining working correctly
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.018 s -- in com.studysync.creational.StudyGroupBuilderTest
+[INFO] Running com.studysync.creational.StudyResourceExporterFactoryTest
+
+=== TEST: Markdown Exporter ===
+Creating MarkdownExporterFactory...
+Concrete type : MarkdownExporter
+Format name   : MARKDOWN
+Exporting study notes...
+Exporting to Markdown: # Session Notes
+- Topic: Recursion
+Export result : true
+✓ PASS — Markdown exporter working correctly
+
+=== TEST: PDF Exporter ===
+Creating PdfExporterFactory...
+Concrete type : PdfExporter
+Format name   : PDF
+Exporting session summary...
+Exporting to PDF: Session: Algorithms Review — Room 3.24
+Export result : true
+✓ PASS — PDF exporter working correctly
+
+=== TEST: CSV Exporter ===
+Creating CsvExporterFactory...
+Concrete type : CsvExporter
+Format name   : CSV
+Exporting session attendance list...
+Exporting to CSV: name,email
+Alice,alice@uni.ac.za
+Bob,bob@uni.ac.za
+Export result : true
+✓ PASS — CSV exporter working correctly
+
+=== TEST: Template Method Delegates to Concrete Exporter ===
+Testing exportResource() template method on all three factories...
+
+Calling markdownFactory.exportResource()...
+[MARKDOWN] Exporting to Markdown: CS301 Exam Prep — Session Notes
+Result: true
+
+Calling pdfFactory.exportResource()...
+[PDF] Exporting to PDF: CS301 Exam Prep — Session Notes
+Result: true
+
+Calling csvFactory.exportResource()...
+[CSV] Exporting to CSV: CS301 Exam Prep — Session Notes
+Result: true
+
+Verifying each factory produces a distinct exporter type...
+Markdown exporter type : MarkdownExporter
+PDF exporter type      : PdfExporter
+CSV exporter type      : CsvExporter
+✓ PASS — template method pattern working correctly
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.022 s -- in com.studysync.creational.StudyResourceExporterFactoryTest
 [INFO]
 [INFO] Results:
 [INFO]
-[INFO] Tests run: 29, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 31, Failures: 0, Errors: 0, Skipped: 0
 [INFO]
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  2.791 s
-[INFO] Finished at: 2026-05-02T21:44:24+02:00
+[INFO] Total time:  5.246 s
+[INFO] Finished at: 2026-05-03T13:03:19+02:00
 [INFO] ------------------------------------------------------------------------
 ```
 
@@ -498,7 +561,7 @@ Attempting to set capacity to 1...
 
 - **Comprehensive Pattern Coverage:** All six creational patterns correctly implemented
 - **Real-World Application:** Each pattern solves authentic system design problems
-- **Thorough Testing:** 25 unit tests with 100% pass rate covering normal and edge cases
+- **Thorough Testing:** 31 unit tests with 100% pass rate covering normal and edge cases
 - **Code Quality:** Follows Java conventions and SOLID principles throughout
 - **Thread Safety:** Singleton pattern validated with concurrent access testing
 - **Security:** Zero known CVE vulnerabilities in all dependencies

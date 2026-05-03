@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.studysync.creational.StudyGroupBuilderTest" time="0.018" tests="5" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.studysync.creational.StudyResourceExporterFactoryTest" time="0.022" tests="4" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="21"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -58,58 +58,67 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="65.0"/>
   </properties>
-  <testcase name="testBuildFullGroup" classname="com.studysync.creational.StudyGroupBuilderTest" time="0.005">
+  <testcase name="testMarkdownExporter" classname="com.studysync.creational.StudyResourceExporterFactoryTest" time="0.003">
     <system-out><![CDATA[
-=== TEST: Full Group Build ===
-Building group with all optional fields set...
-Name         : Physics 202
-Course Code  : PHYS202
-Description  : Weekly problem-solving sessions
-Max Capacity : 15
-Privacy      : PRIVATE
-Tags         : [difficult, weekly]
-Location     : Room 3.24
-Meeting Time : 2026-05-06T13:03:19.760881600
-✓ PASS — all fields set and verified correctly
+=== TEST: Markdown Exporter ===
+Creating MarkdownExporterFactory...
+Concrete type : MarkdownExporter
+Format name   : MARKDOWN
+Exporting study notes...
+Exporting to Markdown: # Session Notes
+- Topic: Recursion
+Export result : true
+✓ PASS — Markdown exporter working correctly
 ]]></system-out>
   </testcase>
-  <testcase name="testCapacityValidationAboveMaximum" classname="com.studysync.creational.StudyGroupBuilderTest" time="0.0">
+  <testcase name="testPdfExporter" classname="com.studysync.creational.StudyResourceExporterFactoryTest" time="0.002">
     <system-out><![CDATA[
-=== TEST: Capacity Validation — Above Maximum ===
-Attempting to set capacity to 51 (maximum is 50)...
-Exception caught: Capacity must be between 2 and 50
-✓ PASS — above-maximum capacity correctly rejected
+=== TEST: PDF Exporter ===
+Creating PdfExporterFactory...
+Concrete type : PdfExporter
+Format name   : PDF
+Exporting session summary...
+Exporting to PDF: Session: Algorithms Review — Room 3.24
+Export result : true
+✓ PASS — PDF exporter working correctly
 ]]></system-out>
   </testcase>
-  <testcase name="testBuildMinimalGroup" classname="com.studysync.creational.StudyGroupBuilderTest" time="0.002">
+  <testcase name="testCsvExporter" classname="com.studysync.creational.StudyResourceExporterFactoryTest" time="0.002">
     <system-out><![CDATA[
-=== TEST: Minimal Group Build ===
-Building group with required fields only (defaults applied)...
-Name         : Math Study
-Course Code  : MATH101
-Max Capacity : 10
-Privacy      : PUBLIC
-✓ PASS — all default values applied correctly
+=== TEST: CSV Exporter ===
+Creating CsvExporterFactory...
+Concrete type : CsvExporter
+Format name   : CSV
+Exporting session attendance list...
+Exporting to CSV: name,email
+Alice,alice@uni.ac.za
+Bob,bob@uni.ac.za
+Export result : true
+✓ PASS — CSV exporter working correctly
 ]]></system-out>
   </testcase>
-  <testcase name="testCapacityValidationBelowMinimum" classname="com.studysync.creational.StudyGroupBuilderTest" time="0.002">
+  <testcase name="testTemplateMethodDelegatesToConcreteExporter" classname="com.studysync.creational.StudyResourceExporterFactoryTest" time="0.005">
     <system-out><![CDATA[
-=== TEST: Capacity Validation — Below Minimum ===
-Attempting to set capacity to 1 (minimum is 2)...
-Exception caught: Capacity must be between 2 and 50
-✓ PASS — below-minimum capacity correctly rejected
-]]></system-out>
-  </testcase>
-  <testcase name="testFluentApiMethodChaining" classname="com.studysync.creational.StudyGroupBuilderTest" time="0.0">
-    <system-out><![CDATA[
-=== TEST: Fluent API Method Chaining ===
-Building group using a full fluent chain...
-Name         : Chained
-Description  : Test description
-Max Capacity : 5
-Privacy      : PUBLIC
-Tags         : [tag1, tag2]
-✓ PASS — fluent API method chaining working correctly
+=== TEST: Template Method Delegates to Concrete Exporter ===
+Testing exportResource() template method on all three factories...
+
+Calling markdownFactory.exportResource()...
+[MARKDOWN] Exporting to Markdown: CS301 Exam Prep — Session Notes
+Result: true
+
+Calling pdfFactory.exportResource()...
+[PDF] Exporting to PDF: CS301 Exam Prep — Session Notes
+Result: true
+
+Calling csvFactory.exportResource()...
+[CSV] Exporting to CSV: CS301 Exam Prep — Session Notes
+Result: true
+
+Verifying each factory produces a distinct exporter type...
+Markdown exporter type : MarkdownExporter
+PDF exporter type      : PdfExporter
+CSV exporter type      : CsvExporter
+✓ PASS — template method pattern working correctly
 ]]></system-out>
   </testcase>
 </testsuite>

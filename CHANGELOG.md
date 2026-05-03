@@ -9,7 +9,7 @@
 
 ### Added - Creational Patterns (40 marks)
 - Simple Factory: NotificationFactory with Email/SMS/Push
-- Factory Method: PaymentProcessor with CreditCard/PayPal/Crypto
+- Factory Method: StudyResourceExporter with PDF/Markdown/CSV exporters
 - Abstract Factory: GUIFactory with Windows/Mac implementations
 - Builder: StudyGroupBuilder for complex object construction
 - Prototype: GroupTemplateRegistry with cloning support
