@@ -73,6 +73,7 @@ public class User {
     
     // Getters
     public Long getUserId() { return userId; }
+    public void setUserId(Long userId) { this.userId = userId; }
     public String getName() { return name; }
     public String getEmail() { return email; }
     public String getPasswordHash() { return passwordHash; }

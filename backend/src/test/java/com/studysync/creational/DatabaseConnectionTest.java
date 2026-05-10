@@ -1,172 +1,200 @@
 package com.studysync.creational;
 
-import com.studysync.creational.singleton.DatabaseConnection;
-import com.studysync.creational.singleton.DatabaseConnectionEager;
-import com.studysync.creational.singleton.DatabaseConnectionSync;
-import org.junit.jupiter.api.Test;
+import com.studysync.creational.singleton.*;
+import org.junit.jupiter.api.*;
 import java.util.concurrent.*;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Each test class runs in its own forked JVM (configured in pom.xml via reuseForks=false),
+ * so the Singleton state is completely fresh for every test CLASS.
+ * Within the class, tests share the same singleton — assertions use relative
+ * (before + N) counts, never absolute values, to remain order-independent.
+ */
+@DisplayName("Singleton Pattern — DatabaseConnection (3 variants)")
 class DatabaseConnectionTest {
 
-    // ── Holder-based Singleton (main implementation) ──────────────────────────
+    // ── Holder-based Singleton ────────────────────────────────────────────────
 
     @Test
+    @DisplayName("getInstance() always returns the exact same object reference")
     void testSingletonReturnsSameInstance() {
-        System.out.println("\n=== TEST: Singleton Returns Same Instance ===");
-        System.out.println("Getting two references via getInstance()...");
+        System.out.println("\n--- TEST: Holder Singleton — Same Instance ---");
 
-        DatabaseConnection conn1 = DatabaseConnection.getInstance();
-        DatabaseConnection conn2 = DatabaseConnection.getInstance();
+        DatabaseConnection a = DatabaseConnection.getInstance();
+        DatabaseConnection b = DatabaseConnection.getInstance();
+        DatabaseConnection c = DatabaseConnection.getInstance();
 
-        System.out.println("Instance 1 hash: " + System.identityHashCode(conn1));
-        System.out.println("Instance 2 hash: " + System.identityHashCode(conn2));
+        System.out.println("  Call 1 hash : " + System.identityHashCode(a));
+        System.out.println("  Call 2 hash : " + System.identityHashCode(b));
+        System.out.println("  Call 3 hash : " + System.identityHashCode(c));
 
-        assertNotNull(conn1, "getInstance() must not return null");
-        assertSame(conn1, conn2, "Both calls must return the exact same instance");
+        assertSame(a, b, "First and second calls must return identical reference");
+        assertSame(b, c, "Second and third calls must return identical reference");
 
-        System.out.println("✓ PASS — both references point to the same singleton instance");
+        System.out.println("  All three calls returned the same object: confirmed");
+        System.out.println("  PASS");
     }
 
     @Test
-    void testSingletonThreadSafety() throws InterruptedException {
-        System.out.println("\n=== TEST: Singleton Thread Safety ===");
-        System.out.println("Spawning 10 concurrent threads to retrieve the singleton...");
-
-        int threadCount = 10;
-        ExecutorService executor = Executors.newFixedThreadPool(threadCount);
-        DatabaseConnection[] connections = new DatabaseConnection[threadCount];
-
-        for (int i = 0; i < threadCount; i++) {
-            final int index = i;
-            executor.submit(() -> {
-                connections[index] = DatabaseConnection.getInstance();
-                System.out.println("Thread " + index + " → instance hash: "
-                        + System.identityHashCode(connections[index]));
-            });
-        }
-
-        executor.shutdown();
-        assertTrue(executor.awaitTermination(5, TimeUnit.SECONDS),
-                "All threads should finish within 5 seconds");
-
-        DatabaseConnection expected = DatabaseConnection.getInstance();
-        for (int i = 0; i < threadCount; i++) {
-            assertNotNull(connections[i], "Thread " + i + " must receive a non-null instance");
-            assertSame(expected, connections[i],
-                    "Thread " + i + " must receive the same instance as the canonical singleton");
-        }
-
-        System.out.println("✓ PASS — all 10 threads received the identical singleton instance");
-    }
-
-    @Test
+    @DisplayName("queryCount increases by exactly 2 after two executeQuery() calls")
     void testQueryCountIncrementsCorrectly() {
-        System.out.println("\n=== TEST: Query Count Increments Correctly ===");
+        System.out.println("\n--- TEST: Holder Singleton — Query Count ---");
 
         DatabaseConnection conn = DatabaseConnection.getInstance();
         int before = conn.getQueryCount();
-        System.out.println("Query count before: " + before);
+        System.out.println("  Query count before calls : " + before);
 
         conn.executeQuery("SELECT * FROM users");
         conn.executeQuery("SELECT * FROM study_groups");
 
         int after = conn.getQueryCount();
-        System.out.println("Query count after:  " + after);
+        System.out.println("  Query count after 2 calls: " + after);
 
         assertEquals(before + 2, after,
-                "Query count must increase by exactly 2 after two executeQuery calls");
+            "Query count must increase by exactly 2 — if this fails, " +
+            "executeQuery() is not incrementing queryCount correctly");
 
-        System.out.println("✓ PASS — query counter incremented by 2 as expected");
+        System.out.println("  PASS");
     }
 
     @Test
+    @DisplayName("Connection URL is a valid JDBC string and isConnected() is true")
     void testConnectionDetailsAreValid() {
-        System.out.println("\n=== TEST: Connection Details Are Valid ===");
+        System.out.println("\n--- TEST: Holder Singleton — Connection Details ---");
 
         DatabaseConnection conn = DatabaseConnection.getInstance();
 
-        String url = conn.getConnectionUrl();
-        System.out.println("Connection URL : " + url);
-        assertNotNull(url, "Connection URL must not be null");
+        String  url       = conn.getConnectionUrl();
+        boolean connected = conn.isConnected();
+
+        System.out.println("  URL         : " + url);
+        System.out.println("  Connected   : " + connected);
+        System.out.println("  Created at  : " + conn.getConnectedAt());
+
+        assertNotNull(url, "getConnectionUrl() must not return null");
         assertTrue(url.startsWith("jdbc:"),
-                "URL must be a valid JDBC connection string starting with 'jdbc:'");
+            "URL must start with 'jdbc:' — if this fails, the default URL was changed");
+        assertTrue(connected,
+            "isConnected() must return true after construction — " +
+            "if this fails, the constructor is setting isConnected=false");
+        assertNotNull(conn.getConnectedAt(),
+            "getConnectedAt() must not return null");
 
-        System.out.println("Connected at   : " + conn.getConnectedAt());
-        assertNotNull(conn.getConnectedAt(), "connectedAt timestamp must not be null");
+        System.out.println("  PASS");
+    }
 
-        System.out.println("Is connected   : " + conn.isConnected());
-        assertTrue(conn.isConnected(), "Connection must report as active");
+    @Test
+    @DisplayName("10 concurrent threads all receive the same singleton instance")
+    void testSingletonThreadSafety() throws InterruptedException {
+        System.out.println("\n--- TEST: Holder Singleton — Thread Safety (10 threads) ---");
 
-        System.out.println("✓ PASS — connection URL, timestamp, and status are all valid");
+        int threadCount = 10;
+        ExecutorService executor = Executors.newFixedThreadPool(threadCount);
+        Set<Integer> identityHashes = ConcurrentHashMap.newKeySet();
+
+        for (int i = 0; i < threadCount; i++) {
+            final int idx = i;
+            executor.submit(() -> {
+                DatabaseConnection instance = DatabaseConnection.getInstance();
+                int hash = System.identityHashCode(instance);
+                identityHashes.add(hash);
+                System.out.println("  Thread " + idx + " → hash: " + hash);
+            });
+        }
+
+        executor.shutdown();
+        boolean finished = executor.awaitTermination(5, TimeUnit.SECONDS);
+        assertTrue(finished, "All threads must complete within 5 seconds");
+
+        System.out.println("  Distinct identity hashes collected: " + identityHashes.size());
+
+        assertEquals(1, identityHashes.size(),
+            "All 10 threads must receive the exact same instance — " +
+            "if this is > 1, the Holder singleton is not thread-safe and created multiple instances");
+
+        System.out.println("  PASS");
     }
 
     // ── Eager Singleton variant ───────────────────────────────────────────────
 
     @Test
+    @DisplayName("Eager singleton: multiple calls return the same instance")
     void testEagerSingletonReturnsSameInstance() {
-        System.out.println("\n=== TEST: Eager Singleton Returns Same Instance ===");
+        System.out.println("\n--- TEST: Eager Singleton — Same Instance ---");
 
-        DatabaseConnectionEager e1 = DatabaseConnectionEager.getInstance();
-        DatabaseConnectionEager e2 = DatabaseConnectionEager.getInstance();
+        DatabaseConnectionEager x = DatabaseConnectionEager.getInstance();
+        DatabaseConnectionEager y = DatabaseConnectionEager.getInstance();
 
-        System.out.println("Eager instance 1 hash: " + System.identityHashCode(e1));
-        System.out.println("Eager instance 2 hash: " + System.identityHashCode(e2));
+        System.out.println("  Call 1 hash : " + System.identityHashCode(x));
+        System.out.println("  Call 2 hash : " + System.identityHashCode(y));
 
-        assertNotNull(e1, "Eager singleton must not return null");
-        assertSame(e1, e2, "Eager singleton must always return the same instance");
+        assertSame(x, y,
+            "Eager singleton must return the same instance every time — " +
+            "if this fails, the INSTANCE field was removed or made non-static");
+        assertTrue(x.getConnectionUrl().startsWith("jdbc:"),
+            "Eager singleton URL must be a valid JDBC string");
 
-        System.out.println("✓ PASS — eager singleton instance is the same object");
+        System.out.println("  PASS");
     }
 
     @Test
-    void testEagerSingletonHasValidUrl() {
-        System.out.println("\n=== TEST: Eager Singleton Has Valid Connection URL ===");
+    @DisplayName("Eager singleton: queryCount increases by 1 after one executeQuery() call")
+    void testEagerSingletonQueryCount() {
+        System.out.println("\n--- TEST: Eager Singleton — Query Count ---");
 
         DatabaseConnectionEager conn = DatabaseConnectionEager.getInstance();
-        System.out.println("URL: " + conn.getConnectionUrl());
+        int before = conn.getQueryCount();
+        System.out.println("  Count before : " + before);
 
-        assertNotNull(conn.getConnectionUrl(), "Eager singleton URL must not be null");
-        assertTrue(conn.getConnectionUrl().startsWith("jdbc:"),
-                "Eager singleton URL must be a valid JDBC connection string");
+        conn.executeQuery("SELECT 1");
+        int after = conn.getQueryCount();
+        System.out.println("  Count after  : " + after);
 
-        System.out.println("✓ PASS — eager singleton has a valid JDBC URL");
+        assertEquals(before + 1, after,
+            "Eager singleton queryCount must increase by 1 after one executeQuery()");
+
+        System.out.println("  PASS");
     }
 
     // ── Synchronized (double-checked locking) Singleton variant ──────────────
 
     @Test
+    @DisplayName("Sync singleton: multiple calls return the same instance")
     void testSyncSingletonReturnsSameInstance() {
-        System.out.println("\n=== TEST: Sync Singleton Returns Same Instance ===");
+        System.out.println("\n--- TEST: Sync Singleton — Same Instance ---");
 
-        DatabaseConnectionSync s1 = DatabaseConnectionSync.getInstance();
-        DatabaseConnectionSync s2 = DatabaseConnectionSync.getInstance();
+        DatabaseConnectionSync p = DatabaseConnectionSync.getInstance();
+        DatabaseConnectionSync q = DatabaseConnectionSync.getInstance();
 
-        System.out.println("Sync instance 1 hash: " + System.identityHashCode(s1));
-        System.out.println("Sync instance 2 hash: " + System.identityHashCode(s2));
+        System.out.println("  Call 1 hash : " + System.identityHashCode(p));
+        System.out.println("  Call 2 hash : " + System.identityHashCode(q));
 
-        assertNotNull(s1, "Sync singleton must not return null");
-        assertSame(s1, s2, "Double-checked locking singleton must return the same instance");
+        assertSame(p, q,
+            "Sync singleton must return the same instance every time — " +
+            "if this fails, the volatile+double-check logic was broken");
 
-        System.out.println("✓ PASS — synchronized singleton instance is the same object");
+        System.out.println("  PASS");
     }
 
     @Test
+    @DisplayName("Sync singleton: queryCount increases by 1 after one executeQuery() call")
     void testSyncSingletonQueryCount() {
-        System.out.println("\n=== TEST: Sync Singleton Query Count ===");
+        System.out.println("\n--- TEST: Sync Singleton — Query Count ---");
 
         DatabaseConnectionSync conn = DatabaseConnectionSync.getInstance();
         int before = conn.getQueryCount();
-        System.out.println("Before: " + before);
+        System.out.println("  Count before : " + before);
 
         conn.executeQuery("SELECT 1");
-
         int after = conn.getQueryCount();
-        System.out.println("After:  " + after);
+        System.out.println("  Count after  : " + after);
 
         assertEquals(before + 1, after,
-                "Sync singleton query count must increment by 1 after one executeQuery call");
+            "Sync singleton queryCount must increase by 1 after one executeQuery()");
 
-        System.out.println("✓ PASS — sync singleton query count incremented correctly");
+        System.out.println("  PASS");
     }
 }

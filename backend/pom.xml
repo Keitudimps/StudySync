@@ -41,6 +41,8 @@
                 <configuration>
                     <source>17</source>
                     <target>17</target>
+                    <!-- ALWAYS recompile — never use cached classes -->
+                    <useIncrementalCompilation>false</useIncrementalCompilation>
                 </configuration>
             </plugin>
             <plugin>
@@ -48,9 +50,12 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.1</version>
                 <configuration>
-                    <!-- Print System.out.println directly to console instead of swallowing it -->
+                    <!-- Show System.out.println in terminal -->
                     <useFile>false</useFile>
                     <redirectTestOutputToFile>false</redirectTestOutputToFile>
+                    <!-- Run each test class in a fresh JVM — isolates singleton state -->
+                    <forkCount>1</forkCount>
+                    <reuseForks>false</reuseForks>
                 </configuration>
             </plugin>
         </plugins>

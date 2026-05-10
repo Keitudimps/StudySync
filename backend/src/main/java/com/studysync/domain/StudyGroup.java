@@ -64,6 +64,7 @@ public class StudyGroup {
     
     // Getters
     public Long getGroupId() { return groupId; }
+    public void setGroupId(Long groupId) { this.groupId = groupId; }
     public String getName() { return name; }
     public String getDescription() { return description; }
     public Privacy getPrivacy() { return privacy; }

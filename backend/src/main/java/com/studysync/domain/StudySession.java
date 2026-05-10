@@ -56,6 +56,7 @@ public class StudySession {
     
     // Getters
     public Long getSessionId() { return sessionId; }
+    public void setSessionId(Long sessionId) { this.sessionId = sessionId; }
     public String getTitle() { return title; }
     public LocalDateTime getScheduledAt() { return scheduledAt; }
     public Integer getDurationHours() { return durationHours; }

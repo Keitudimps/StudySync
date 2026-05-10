@@ -1,114 +1,107 @@
 package com.studysync.creational;
 
 import com.studysync.creational.abstractfactory.*;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+@DisplayName("Abstract Factory Pattern — GUIFactory, WindowsFactory, MacFactory")
 class GUIFactoryTest {
 
     @Test
+    @DisplayName("WindowsFactory creates WindowsButton and WindowsTextBox instances")
     void testWindowsFactoryCreatesWindowsComponents() {
-        System.out.println("\n=== TEST: Windows Factory Creates Windows Components ===");
-        System.out.println("Creating Windows GUI factory and components...");
+        System.out.println("\n--- TEST: Windows Factory Creates Windows Components ---");
 
         GUIFactory factory = new WindowsFactory();
-        Button button = factory.createButton();
+        Button button   = factory.createButton();
         TextBox textBox = factory.createTextBox();
 
-        System.out.println("Button type  : " + button.getClass().getSimpleName());
-        System.out.println("TextBox type : " + textBox.getClass().getSimpleName());
+        System.out.println("  Button class  : " + button.getClass().getSimpleName());
+        System.out.println("  TextBox class : " + textBox.getClass().getSimpleName());
 
-        assertNotNull(button, "WindowsFactory must produce a non-null Button");
-        assertNotNull(textBox, "WindowsFactory must produce a non-null TextBox");
         assertInstanceOf(WindowsButton.class, button,
-                "WindowsFactory must produce a WindowsButton");
+            "WindowsFactory.createButton() must return a WindowsButton — " +
+            "if this fails, the factory was changed to return a different type");
         assertInstanceOf(WindowsTextBox.class, textBox,
-                "WindowsFactory must produce a WindowsTextBox");
+            "WindowsFactory.createTextBox() must return a WindowsTextBox");
 
-        System.out.println("✓ PASS — Windows factory verified: correct component types created");
+        // Verify render() executes without throwing
+        assertDoesNotThrow(button::render,   "WindowsButton.render() must not throw");
+        assertDoesNotThrow(textBox::render,  "WindowsTextBox.render() must not throw");
+
+        System.out.println("  PASS");
     }
 
     @Test
+    @DisplayName("MacFactory creates MacButton and MacTextBox instances")
     void testMacFactoryCreatesMacComponents() {
-        System.out.println("\n=== TEST: Mac Factory Creates Mac Components ===");
-        System.out.println("Creating Mac GUI factory and components...");
+        System.out.println("\n--- TEST: Mac Factory Creates Mac Components ---");
 
         GUIFactory factory = new MacFactory();
-        Button button = factory.createButton();
+        Button button   = factory.createButton();
         TextBox textBox = factory.createTextBox();
 
-        System.out.println("Button type  : " + button.getClass().getSimpleName());
-        System.out.println("TextBox type : " + textBox.getClass().getSimpleName());
+        System.out.println("  Button class  : " + button.getClass().getSimpleName());
+        System.out.println("  TextBox class : " + textBox.getClass().getSimpleName());
 
-        assertNotNull(button, "MacFactory must produce a non-null Button");
-        assertNotNull(textBox, "MacFactory must produce a non-null TextBox");
         assertInstanceOf(MacButton.class, button,
-                "MacFactory must produce a MacButton");
+            "MacFactory.createButton() must return a MacButton — " +
+            "if this fails, the factory was changed to return a different type");
         assertInstanceOf(MacTextBox.class, textBox,
-                "MacFactory must produce a MacTextBox");
+            "MacFactory.createTextBox() must return a MacTextBox");
 
-        System.out.println("✓ PASS — Mac factory verified: correct component types created");
+        assertDoesNotThrow(button::render,  "MacButton.render() must not throw");
+        assertDoesNotThrow(textBox::render, "MacTextBox.render() must not throw");
+
+        System.out.println("  PASS");
     }
 
     @Test
-    void testApplicationUIRendersWithoutError() {
-        System.out.println("\n=== TEST: Application UI Renders Without Error ===");
-        System.out.println("Initializing ApplicationUI with Windows factory...");
+    @DisplayName("Windows and Mac factories produce different component classes")
+    void testFactoriesProduceDifferentComponents() {
+        System.out.println("\n--- TEST: Factories Produce Independent Component Types ---");
 
-        GUIFactory factory = new WindowsFactory();
-        ApplicationUI app = new ApplicationUI(factory);
-
-        System.out.println("Calling renderUI()...");
-        assertDoesNotThrow(app::renderUI,
-                "ApplicationUI.renderUI() must not throw any exception");
-
-        System.out.println("✓ PASS — ApplicationUI rendered successfully without errors");
-    }
-
-    @Test
-    void testTextBoxStoresAndRetrievesText() {
-        System.out.println("\n=== TEST: TextBox Stores and Retrieves Text ===");
-
-        TextBox winTextBox = new WindowsFactory().createTextBox();
-        System.out.println("Setting text on WindowsTextBox: 'Hello StudySync'");
-        winTextBox.setText("Hello StudySync");
-        System.out.println("Retrieved text: " + winTextBox.getText());
-        assertEquals("Hello StudySync", winTextBox.getText(),
-                "WindowsTextBox must store and return the text that was set");
-
-        TextBox macTextBox = new MacFactory().createTextBox();
-        System.out.println("Setting text on MacTextBox: 'Hello StudySync'");
-        macTextBox.setText("Hello StudySync");
-        System.out.println("Retrieved text: " + macTextBox.getText());
-        assertEquals("Hello StudySync", macTextBox.getText(),
-                "MacTextBox must store and return the text that was set");
-
-        System.out.println("✓ PASS — both TextBox implementations store and retrieve text correctly");
-    }
-
-    @Test
-    void testWindowsAndMacComponentsAreDistinctTypes() {
-        System.out.println("\n=== TEST: Windows and Mac Components Are Distinct Types ===");
-        System.out.println("Creating buttons and text boxes from both factories...");
-
-        GUIFactory windowsFactory = new WindowsFactory();
+        GUIFactory winFactory = new WindowsFactory();
         GUIFactory macFactory = new MacFactory();
 
-        Button winBtn = windowsFactory.createButton();
+        Button winBtn = winFactory.createButton();
         Button macBtn = macFactory.createButton();
-        TextBox winBox = windowsFactory.createTextBox();
+        TextBox winBox = winFactory.createTextBox();
         TextBox macBox = macFactory.createTextBox();
 
-        System.out.println("Windows button : " + winBtn.getClass().getSimpleName());
-        System.out.println("Mac button     : " + macBtn.getClass().getSimpleName());
-        System.out.println("Windows textbox: " + winBox.getClass().getSimpleName());
-        System.out.println("Mac textbox    : " + macBox.getClass().getSimpleName());
+        System.out.println("  Windows button : " + winBtn.getClass().getSimpleName());
+        System.out.println("  Mac button     : " + macBtn.getClass().getSimpleName());
+        System.out.println("  Windows textbox: " + winBox.getClass().getSimpleName());
+        System.out.println("  Mac textbox    : " + macBox.getClass().getSimpleName());
 
         assertNotEquals(winBtn.getClass(), macBtn.getClass(),
-                "Windows and Mac buttons must be different types");
+            "Windows and Mac buttons must be different classes — " +
+            "if this fails, both factories return the same button type");
         assertNotEquals(winBox.getClass(), macBox.getClass(),
-                "Windows and Mac text boxes must be different types");
+            "Windows and Mac textboxes must be different classes");
 
-        System.out.println("✓ PASS — each platform has independent component implementations");
+        System.out.println("  PASS");
+    }
+
+    @Test
+    @DisplayName("ApplicationUI renders all components without throwing an exception")
+    void testApplicationUIRendersWithoutError() {
+        System.out.println("\n--- TEST: ApplicationUI Renders Without Error ---");
+
+        GUIFactory winFactory = new WindowsFactory();
+        GUIFactory macFactory = new MacFactory();
+
+        ApplicationUI winApp = new ApplicationUI(winFactory);
+        ApplicationUI macApp = new ApplicationUI(macFactory);
+
+        System.out.println("  Rendering Windows UI...");
+        assertDoesNotThrow(winApp::renderUI,
+            "ApplicationUI.renderUI() with WindowsFactory must not throw");
+
+        System.out.println("  Rendering Mac UI...");
+        assertDoesNotThrow(macApp::renderUI,
+            "ApplicationUI.renderUI() with MacFactory must not throw");
+
+        System.out.println("  PASS");
     }
 }

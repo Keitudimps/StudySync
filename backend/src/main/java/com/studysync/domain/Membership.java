@@ -34,6 +34,7 @@ public class Membership {
     
     // Getters
     public Long getMembershipId() { return membershipId; }
+    public void setMembershipId(Long membershipId) { this.membershipId = membershipId; }
     public MembershipStatus getStatus() { return status; }
     public LocalDateTime getJoinedAt() { return joinedAt; }
     public Long getUserId() { return userId; }

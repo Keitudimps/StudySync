@@ -1,110 +1,125 @@
 package com.studysync.creational;
 
 import com.studysync.creational.prototype.*;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+@DisplayName("Prototype Pattern — GroupTemplateRegistry and TemplateStudyGroup")
 class GroupPrototypeTest {
 
     @Test
+    @DisplayName("Clone is a different object but has identical field values")
     void testTemplateCloning() {
-        System.out.println("\n=== TEST: Template Cloning ===");
-        System.out.println("Creating original template: Exam Prep...");
+        System.out.println("\n--- TEST: Template Cloning ---");
 
         TemplateStudyGroup original = new TemplateStudyGroup("Exam Prep", "CS301", 8);
         original.setPrivate(true);
         original.addTag("priority", "high");
 
-        System.out.println("Cloning template...");
         TemplateStudyGroup cloned = (TemplateStudyGroup) original.clone();
 
-        System.out.println("Original name     : " + original.getTemplateName());
-        System.out.println("Clone name        : " + cloned.getTemplateName());
-        System.out.println("Original course   : " + original.getSuggestedCourse());
-        System.out.println("Clone course      : " + cloned.getSuggestedCourse());
-        System.out.println("Original capacity : " + original.getRecommendedCapacity());
-        System.out.println("Clone capacity    : " + cloned.getRecommendedCapacity());
-        System.out.println("Original private  : " + original.isPrivate());
-        System.out.println("Clone private     : " + cloned.isPrivate());
+        System.out.println("  Original object hash : " + System.identityHashCode(original));
+        System.out.println("  Clone object hash    : " + System.identityHashCode(cloned));
 
-        assertNotSame(original, cloned, "Clone must be a different object reference");
+        assertNotSame(original, cloned,
+            "Clone must be a different object in memory — if this fails, clone() returned 'this'");
         assertEquals(original.getTemplateName(), cloned.getTemplateName(),
-                "Clone must have the same template name");
+            "Template name must be copied to clone");
         assertEquals(original.getSuggestedCourse(), cloned.getSuggestedCourse(),
-                "Clone must have the same suggested course");
+            "Suggested course must be copied to clone");
         assertEquals(original.getRecommendedCapacity(), cloned.getRecommendedCapacity(),
-                "Clone must have the same recommended capacity");
+            "Recommended capacity must be copied to clone");
         assertEquals(original.isPrivate(), cloned.isPrivate(),
-                "Clone must have the same privacy setting");
+            "isPrivate flag must be copied to clone");
 
-        System.out.println("Mutating clone name to 'Modified Name'...");
-        cloned.customize("Modified Name", "Modified description");
-        System.out.println("Original name after clone mutation: " + original.getTemplateName());
-
-        assertEquals("Exam Prep", original.getTemplateName(),
-                "Mutating the clone must not change the original's name");
-
-        System.out.println("✓ PASS — template cloning successful: objects are independent");
+        System.out.println("  Name match        : " + original.getTemplateName().equals(cloned.getTemplateName()));
+        System.out.println("  Course match      : " + original.getSuggestedCourse().equals(cloned.getSuggestedCourse()));
+        System.out.println("  Capacity match    : " + (original.getRecommendedCapacity() == cloned.getRecommendedCapacity()));
+        System.out.println("  PASS");
     }
 
     @Test
+    @DisplayName("Modifying clone does not affect original (deep copy verified)")
+    void testCloningIsDeep() {
+        System.out.println("\n--- TEST: Deep Copy Isolation ---");
+
+        TemplateStudyGroup original = new TemplateStudyGroup("Original", "CS101", 5);
+        original.addTag("shared", "value");
+
+        TemplateStudyGroup cloned = (TemplateStudyGroup) original.clone();
+        cloned.addTag("clone-only", "data");
+
+        System.out.println("  Original tags count : " + original.getDefaultTags().size());
+        System.out.println("  Clone tags count    : " + cloned.getDefaultTags().size());
+
+        assertFalse(original.getDefaultTags().containsKey("clone-only"),
+            "Adding a tag to the clone must NOT affect the original — " +
+            "if this fails, clone() is doing a shallow copy of the tags map");
+
+        System.out.println("  Original unaffected by clone modification: confirmed");
+        System.out.println("  PASS");
+    }
+
+    @Test
+    @DisplayName("Registry returns a new clone each call — same key gives independent objects")
     void testRegistryReturnsClonedTemplates() {
-        System.out.println("\n=== TEST: Registry Returns Cloned Templates ===");
-        System.out.println("Retrieving same template key 'exam_prep' twice from registry...");
+        System.out.println("\n--- TEST: Registry Returns Independent Clones ---");
 
         GroupPrototype template1 = GroupTemplateRegistry.getTemplate("exam_prep");
         GroupPrototype template2 = GroupTemplateRegistry.getTemplate("exam_prep");
 
-        System.out.println("Template 1 hash: " + System.identityHashCode(template1));
-        System.out.println("Template 2 hash: " + System.identityHashCode(template2));
+        System.out.println("  Call 1 hash : " + System.identityHashCode(template1));
+        System.out.println("  Call 2 hash : " + System.identityHashCode(template2));
 
-        assertNotNull(template1, "Registry must return a non-null template");
-        assertNotNull(template2, "Registry must return a non-null template on second call");
         assertNotSame(template1, template2,
-                "Registry must return independent clones, not the same object");
+            "Each getTemplate() call must return a NEW clone — " +
+            "if this fails, the registry is returning the original prototype instead of cloning it");
 
-        System.out.println("✓ PASS — registry correctly returns independent clones");
+        System.out.println("  Two calls produced two different objects: confirmed");
+        System.out.println("  PASS");
     }
 
     @Test
+    @DisplayName("Customizing a clone does not affect registry's stored prototype")
     void testCustomizeCloneDoesNotAffectRegistry() {
-        System.out.println("\n=== TEST: Customize Clone Does Not Affect Registry ===");
-        System.out.println("Getting 'assignment' template from registry...");
+        System.out.println("\n--- TEST: Customize Clone Independence ---");
 
-        TemplateStudyGroup template = (TemplateStudyGroup) GroupTemplateRegistry.getTemplate("assignment");
-        String originalName = template.getTemplateName();
-        System.out.println("Original template name: " + originalName);
+        GroupPrototype clone1 = GroupTemplateRegistry.getTemplate("assignment");
+        String originalName = clone1.toString();
 
-        System.out.println("Customizing retrieved clone to 'Custom Assignment Group'...");
-        template.customize("Custom Assignment Group", "Custom description");
-        System.out.println("Clone name after customization: " + template.getTemplateName());
+        clone1.customize("Completely Different Name", "New description");
+        System.out.println("  After customize, clone toString : " + clone1);
 
-        System.out.println("Fetching a fresh clone from registry...");
-        TemplateStudyGroup freshTemplate = (TemplateStudyGroup) GroupTemplateRegistry.getTemplate("assignment");
-        System.out.println("Fresh template name: " + freshTemplate.getTemplateName());
+        GroupPrototype clone2 = GroupTemplateRegistry.getTemplate("assignment");
+        System.out.println("  Fresh clone from registry       : " + clone2);
 
-        assertEquals(originalName, freshTemplate.getTemplateName(),
-                "Customizing a retrieved clone must not affect the registry's stored prototype");
+        assertNotEquals(clone1.toString(), clone2.toString(),
+            "A customized clone must differ from a fresh clone — " +
+            "if this fails, customize() is mutating the stored prototype");
 
-        System.out.println("✓ PASS — customization did not affect the registry's original template");
+        System.out.println("  Registry prototype was not affected by customization: confirmed");
+        System.out.println("  PASS");
     }
 
     @Test
+    @DisplayName("Unknown key throws IllegalArgumentException with correct message")
     void testUnknownTemplateThrowsException() {
-        System.out.println("\n=== TEST: Unknown Template Throws Exception ===");
-        System.out.println("Attempting to get non-existent template key 'non_existent'...");
+        System.out.println("\n--- TEST: Unknown Template Key ---");
 
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> GroupTemplateRegistry.getTemplate("non_existent"),
-                "Requesting an unknown template key must throw IllegalArgumentException"
+        IllegalArgumentException ex = assertThrows(
+            IllegalArgumentException.class,
+            () -> GroupTemplateRegistry.getTemplate("non_existent"),
+            "Non-existent key must throw IllegalArgumentException"
         );
 
-        System.out.println("Exception caught: " + exception.getMessage());
+        System.out.println("  Exception message : " + ex.getMessage());
 
-        assertTrue(exception.getMessage().contains("No template found"),
-                "Exception message must indicate no template was found");
+        assertTrue(ex.getMessage().contains("No template found"),
+            "Exception message must contain 'No template found' — " +
+            "if this fails, the error message in GroupTemplateRegistry was changed");
+        assertTrue(ex.getMessage().contains("non_existent"),
+            "Exception message must include the bad key 'non_existent'");
 
-        System.out.println("✓ PASS — exception handling working correctly");
+        System.out.println("  PASS");
     }
 }

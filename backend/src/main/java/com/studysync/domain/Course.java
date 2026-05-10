@@ -11,6 +11,7 @@ public class Course {
     }
     
     public Long getCourseId() { return courseId; }
+    public void setCourseId(Long courseId) { this.courseId = courseId; }
     public String getCourseCode() { return courseCode; }
     public String getCourseName() { return courseName; }
 }
