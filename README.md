@@ -193,9 +193,9 @@ In-memory storage enables fast, isolated unit tests with zero external dependenc
 
 | Storage Type | Status | Class |
 |---|---|---|
-| `MEMORY` | ✅ Fully implemented | `InMemory*Repository` |
-| `DATABASE` | 🔲 Stub — future SQL/JPA implementation | `Database*Repository` |
-| `FILESYSTEM` | 🔲 Stub — future JSON file implementation | `FileSystem*Repository` |  
+| `MEMORY` |  Fully implemented | `InMemory*Repository` |
+| `DATABASE` |  Stub — future SQL/JPA implementation | `Database*Repository` |
+| `FILESYSTEM` |  Stub — future JSON file implementation | `FileSystem*Repository` |  
 
 #### Project Structure
 
