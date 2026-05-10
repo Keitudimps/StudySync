@@ -548,6 +548,497 @@ The development workflow for this project is managed using a GitHub Projects Kan
 | `testing` | Tasks relating to test case execution and verification |
 
 ---
+### Assignment 11 — Repository Layer Implementation
+
+> Adds a full persistence abstraction layer with in-memory implementations, a storage factory, and future-proofing stubs.
+
+| Resource | Description |
+|---|---|
+| `backend/src/main/java/com/studysync/repository/` | Generic `Repository<T,ID>` interface and 5 entity-specific interfaces |
+| `backend/src/main/java/com/studysync/repository/inmemory/` | HashMap-based in-memory implementations for all 5 entities |
+| `backend/src/main/java/com/studysync/factory/RepositoryFactory.java` | Factory that returns MEMORY, DATABASE, or FILESYSTEM backend per entity |
+| `backend/src/main/java/com/studysync/repository/stubs/` | Stub implementations for future SQL and filesystem backends |
+| `backend/src/test/java/com/studysync/repository/` | 31 unit tests across 5 test classes — all passing |
+| [CHANGELOG.md](./CHANGELOG.md) | Full changelog for all assignments |
+
+#### Repository Design Decisions
+
+**Why a generic `Repository<T, ID>` interface?**
+Generics eliminate duplication — all five entity repositories share the same six CRUD methods without rewriting them. Entity-specific interfaces extend this base to add domain queries like `findByEmail()` or `findByCourseId()`.
+
+**Why Factory Pattern over Dependency Injection?**
+The Factory Pattern was chosen because it requires no Spring context — it works with plain Java. This keeps the repository layer fully testable without a framework. When Spring Boot is integrated later, the factory can be replaced with `@Autowired` injection with no changes to the interfaces.
+
+**Why in-memory HashMap for now?**
+In-memory storage enables fast, isolated unit tests with zero external dependencies. Every test creates a fresh repository instance in `@BeforeEach` so tests never share state. Switching to a real database later requires only implementing the existing interface and updating the factory — no business logic changes needed.
+
+#### Storage Backends
+
+| Storage Type | Status | Class |
+|---|---|---|
+| `MEMORY` | Fully implemented | `InMemory*Repository` |
+| `DATABASE` | Stub — future SQL/JPA implementation | `Database*Repository` |
+| `FILESYSTEM` | Stub — future JSON file implementation | `FileSystem*Repository` |
+
+#### Test Results
+```
+PS C:\Users\keitu\StudySync> cd backend
+>> mvn clean test
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------< com.studysync:studysync-backend >-------------------
+[INFO] Building studysync-backend 1.0.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ studysync-backend ---
+[INFO] Deleting C:\Users\keitu\StudySync\backend\target
+[INFO] 
+[INFO] --- resources:3.4.0:resources (default-resources) @ studysync-backend ---
+[INFO] Copying 0 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ studysync-backend ---
+[INFO] Compiling 67 source files with javac [debug target 17] to target\classes
+[WARNING] system modules path not set in conjunction with -source 17
+[INFO] 
+[INFO] --- resources:3.4.0:testResources (default-testResources) @ studysync-backend ---
+[INFO] skip non existing resourceDirectory C:\Users\keitu\StudySync\backend\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ studysync-backend ---
+[INFO] Compiling 12 source files with javac [debug target 17] to target\test-classes
+[WARNING] system modules path not set in conjunction with -source 17
+[INFO] 
+[INFO] --- surefire:3.2.1:test (default-test) @ studysync-backend ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.studysync.creational.DatabaseConnectionTest
+
+--- TEST: Holder Singleton ? Query Count ---
+DatabaseConnection created at: 2026-05-10T20:24:05.258053500
+  Query count before calls : 0
+Executing query #1: SELECT * FROM users
+Executing query #2: SELECT * FROM study_groups
+  Query count after 2 calls: 2
+  PASS
+
+--- TEST: Holder Singleton ? Same Instance ---
+  Call 1 hash : 574434418
+  Call 2 hash : 574434418
+  Call 3 hash : 574434418
+  All three calls returned the same object: confirmed
+  PASS
+
+--- TEST: Sync Singleton ? Same Instance ---
+[SyncSingleton] Instance created lazily with double-checked locking.
+  Call 1 hash : 283318938
+  Call 2 hash : 283318938
+  PASS
+
+--- TEST: Holder Singleton ? Thread Safety (10 threads) ---
+  Thread 2 ? hash: 574434418
+  Thread 0 ? hash: 574434418
+  Thread 4 ? hash: 574434418
+  Thread 5 ? hash: 574434418
+  Thread 8 ? hash: 574434418
+  Thread 9 ? hash: 574434418
+  Thread 3 ? hash: 574434418
+  Thread 7 ? hash: 574434418
+  Thread 1 ? hash: 574434418
+  Thread 6 ? hash: 574434418
+  Distinct identity hashes collected: 1
+  PASS
+
+--- TEST: Eager Singleton ? Same Instance ---
+[EagerSingleton] Instance created at class load time.
+  Call 1 hash : 1740797075
+  Call 2 hash : 1740797075
+  PASS
+
+--- TEST: Eager Singleton ? Query Count ---
+  Count before : 0
+[EagerSingleton] Executing query #1: SELECT 1
+  Count after  : 1
+  PASS
+
+--- TEST: Sync Singleton ? Query Count ---
+  Count before : 0
+[SyncSingleton] Executing query #1: SELECT 1
+  Count after  : 1
+  PASS
+
+--- TEST: Holder Singleton ? Connection Details ---
+  URL         : jdbc:postgresql://localhost:5432/studysync
+  Connected   : true
+  Created at  : 2026-05-10T20:24:05.258053500
+  PASS
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.113 s -- in com.studysync.creational.DatabaseConnectionTest
+[INFO] Running com.studysync.creational.GroupPrototypeTest
+
+--- TEST: Deep Copy Isolation ---
+  Original tags count : 3
+  Clone tags count    : 4
+  Original unaffected by clone modification: confirmed
+  PASS
+
+--- TEST: Template Cloning ---
+  Original object hash : 106374177
+  Clone object hash    : 1803669141
+  Name match        : true
+  Course match      : true
+  Capacity match    : true
+  PASS
+
+--- TEST: Registry Returns Independent Clones ---
+  Call 1 hash : 1364767791
+  Call 2 hash : 1499136125
+  Two calls produced two different objects: confirmed
+  PASS
+
+--- TEST: Customize Clone Independence ---
+  After customize, clone toString : TemplateStudyGroup{templateName='Completely Different Name', course='CS201'}
+  Fresh clone from registry       : TemplateStudyGroup{templateName='Assignment Group', course='CS201'}
+  Registry prototype was not affected by customization: confirmed
+  PASS
+
+--- TEST: Unknown Template Key ---
+  Exception message : No template found for key: non_existent
+  PASS
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.084 s -- in com.studysync.creational.GroupPrototypeTest
+[INFO] Running com.studysync.creational.GUIFactoryTest
+
+--- TEST: Factories Produce Independent Component Types ---
+  Windows button : WindowsButton
+  Mac button     : MacButton
+  Windows textbox: WindowsTextBox
+  Mac textbox    : MacTextBox
+  PASS
+
+--- TEST: Mac Factory Creates Mac Components ---
+  Button class  : MacButton
+  TextBox class : MacTextBox
+Rendering Mac-style button
+Rendering Mac-style text box
+  PASS
+
+--- TEST: Windows Factory Creates Windows Components ---
+  Button class  : WindowsButton
+  TextBox class : WindowsTextBox
+Rendering Windows-style button
+Rendering Windows-style text box
+  PASS
+
+--- TEST: ApplicationUI Renders Without Error ---
+  Rendering Windows UI...
+Rendering Windows-style button
+Rendering Windows-style text box
+  Rendering Mac UI...
+Rendering Mac-style button
+Rendering Mac-style text box
+  PASS
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.069 s -- in com.studysync.creational.GUIFactoryTest
+[INFO] Running com.studysync.creational.NotificationFactoryTest
+
+--- TEST: Create SMS Notification ---
+  Type returned : SMS
+  Instance of   : SMSNotification
+  PASS
+
+--- TEST: Case-Insensitive Input ---
+  'email' ? getType() : EMAIL
+  'EMAIL' ? getType() : EMAIL
+  Both match          : true
+  PASS
+
+--- TEST: Create Push Notification ---
+  Type returned : PUSH
+  Instance of   : PushNotification
+  PASS
+
+--- TEST: Unknown Type Throws Exception ---
+  Exception type    : IllegalArgumentException
+  Exception message : Unknown notification type: WHATSAPP
+  PASS
+
+--- TEST: Create Email Notification ---
+  Type returned : EMAIL
+  Class created : EmailNotification
+Sending EMAIL to student@uni.ac.za: Test message
+  send() result : completed without exception
+  PASS
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.096 s -- in com.studysync.creational.NotificationFactoryTest
+[INFO] Running com.studysync.creational.PaymentProcessorFactoryTest
+
+--- TEST: Template Method Delegates to Correct Processor ---
+  CreditCardFactory.processPayment(100.00, ...) ...
+[CREDIT_CARD] Processing $100.0 via Credit Card: card-number
+  Result : true
+  PayPalFactory.processPayment(200.00, ...) ...
+[PAYPAL] Processing $200.0 via PayPal: email@paypal.com
+  Result : true
+  PASS
+
+--- TEST: PayPal Processor ---
+  Processor class : PayPalProcessor
+  Processor name  : PAYPAL
+Processing $75.5 via PayPal: user@paypal.com
+  processPayment result : true
+  PASS
+
+--- TEST: Crypto Processor ---
+  Processor class : CryptoProcessor
+  Processor name  : CRYPTO
+Processing $0.01 via Crypto wallet: 0xABC123...
+  processPayment result : true
+  PASS
+
+--- TEST: Credit Card Processor ---
+  Processor class : CreditCardProcessor
+  Processor name  : CREDIT_CARD
+Processing $50.0 via Credit Card: 4111-1111-1111-1111
+  processPayment result : true
+  PASS
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.069 s -- in com.studysync.creational.PaymentProcessorFactoryTest
+[INFO] Running com.studysync.creational.StudyGroupBuilderTest
+
+--- TEST: Full Group Build ---
+  Name        : Physics 202
+  Capacity    : 15
+  Privacy     : PRIVATE
+  Tags        : [difficult, weekly]
+  Location    : Room 3.24
+  Description : Weekly problem-solving sessions
+  PASS
+
+--- TEST: Capacity Validation (too high) ---
+  Attempting capacity = 51 (maximum is 50)...
+  Exception message : Capacity must be between 2 and 50
+  PASS
+
+--- TEST: Minimal Group Build ---
+  Name        : Math Study
+  Course      : MATH101
+  Capacity    : 10
+  Privacy     : PUBLIC
+  Tags count  : 0
+  PASS
+
+--- TEST: Capacity Validation (too low) ---
+  Attempting capacity = 1 (minimum is 2)...
+  Exception message : Capacity must be between 2 and 50
+  PASS
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.064 s -- in com.studysync.creational.StudyGroupBuilderTest
+[INFO] Running com.studysync.creational.StudyResourceExporterFactoryTest
+
+=== TEST: Markdown Exporter ===
+Creating MarkdownExporterFactory...
+Concrete type : MarkdownExporter
+Format name   : MARKDOWN
+Exporting study notes...
+Exporting to Markdown: # Session Notes
+- Topic: Recursion
+Export result : true
+? PASS ? Markdown exporter working correctly
+
+=== TEST: PDF Exporter ===
+Creating PdfExporterFactory...
+Concrete type : PdfExporter
+Format name   : PDF
+Exporting session summary...
+Exporting to PDF: Session: Algorithms Review ? Room 3.24
+Export result : true
+? PASS ? PDF exporter working correctly
+
+=== TEST: CSV Exporter ===
+Creating CsvExporterFactory...
+Concrete type : CsvExporter
+Format name   : CSV
+Exporting session attendance list...
+Exporting to CSV: name,email
+Alice,alice@uni.ac.za
+Bob,bob@uni.ac.za
+Export result : true
+? PASS ? CSV exporter working correctly
+
+=== TEST: Template Method Delegates to Concrete Exporter ===
+Testing exportResource() template method on all three factories...
+
+Calling markdownFactory.exportResource()...
+[MARKDOWN] Exporting to Markdown: CS301 Exam Prep ? Session Notes
+Result: true
+
+Calling pdfFactory.exportResource()...
+[PDF] Exporting to PDF: CS301 Exam Prep ? Session Notes
+Result: true
+
+Calling csvFactory.exportResource()...
+[CSV] Exporting to CSV: CS301 Exam Prep ? Session Notes
+Result: true
+
+Verifying each factory produces a distinct exporter type...
+Markdown exporter type : MarkdownExporter
+PDF exporter type      : PdfExporter
+CSV exporter type      : CsvExporter
+? PASS ? template method pattern working correctly
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.066 s -- in com.studysync.creational.StudyResourceExporterFactoryTest
+[INFO] Running com.studysync.repository.InMemoryMembershipRepositoryTest
+
+--- TEST: findByStatus() ---
+  ACTIVE: 2  PENDING: 1
+  PASS
+
+--- TEST: findByUserId() ---
+  User 1 memberships: 2
+  PASS
+
+--- TEST: save() + findById() ---
+  Membership ID: 1
+  PASS
+
+--- TEST: findByUserIdAndGroupId() ---
+  Exact match found: true
+  PASS
+
+--- TEST: countActiveByUserId() ---
+  Active count for user 1: 2 (expected 2)
+  PASS
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.075 s -- in com.studysync.repository.InMemoryMembershipRepositoryTest
+[INFO] Running com.studysync.repository.InMemoryStudyGroupRepositoryTest
+
+--- TEST: findPublicGroups() ---
+  Public groups found: 1
+  PASS
+
+--- TEST: save() + findById() ---
+  Saved group ID: 1
+  PASS
+
+--- TEST: findByCourseId() ---
+  Course 101 groups: 2
+  Course 202 groups: 1
+  PASS
+
+--- TEST: searchByName() ---
+  Search 'algo' found: 1 group(s)
+  PASS
+
+--- TEST: deleteById() ---
+  Group deleted successfully
+  PASS
+
+--- TEST: findByCreatorId() ---
+  Creator 1 groups: 2
+  PASS
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.069 s -- in com.studysync.repository.InMemoryStudyGroupRepositoryTest
+[INFO] Running com.studysync.repository.InMemoryStudySessionRepositoryTest
+
+--- TEST: findUpcomingSessions() ---
+  Upcoming sessions: 2 (expected 2)
+  PASS
+
+--- TEST: save() + findById() ---
+  Session ID: 1
+  PASS
+
+--- TEST: findByGroupId() ---
+  Group 10 sessions: 2
+  PASS
+
+--- TEST: deleteById() ---
+  Session deleted; exists=false
+  PASS
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.069 s -- in com.studysync.repository.InMemoryStudySessionRepositoryTest
+[INFO] Running com.studysync.repository.InMemoryUserRepositoryTest
+
+--- TEST: findAll() ---
+  findAll returned 3 users
+  PASS
+
+--- TEST: count() ---
+  count after 2 saves: 2
+  PASS
+
+--- TEST: findById() returns empty for missing ID ---
+  findById(999) returned empty: confirmed
+  PASS
+
+--- TEST: findByEmail() ---
+  Found: Eve
+  PASS
+
+--- TEST: deleteById() ---
+  User deleted; existsById=false
+  PASS
+
+--- TEST: existsByEmail() ---
+  frank@uni.ac.za exists: true
+  PASS
+
+--- TEST: findAllActive() ---
+  Active users: 1 (expected 1)
+  PASS
+
+--- TEST: save() assigns ID ---
+  Assigned ID: 1
+  PASS
+
+--- TEST: save() + findById() ---
+  Found user: Bob (ID=1)
+  PASS
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.084 s -- in com.studysync.repository.InMemoryUserRepositoryTest
+[INFO] Running com.studysync.repository.RepositoryFactoryTest
+
+--- TEST: Factory returns InMemoryCourseRepository for MEMORY ---
+  Returned type: InMemoryCourseRepository
+  PASS
+
+--- TEST: Factory is case-insensitive ---
+  'memory' ? InMemoryUserRepository
+  'MEMORY' ? InMemoryUserRepository
+  'Memory' ? InMemoryUserRepository
+  PASS
+
+--- TEST: Factory returns InMemoryUserRepository for MEMORY ---
+  Returned type: InMemoryUserRepository
+  PASS
+
+--- TEST: Factory returns InMemoryStudySessionRepository for MEMORY ---
+  Returned type: InMemoryStudySessionRepository
+  PASS
+
+--- TEST: Factory returns InMemoryMembershipRepository for MEMORY ---
+  Returned type: InMemoryMembershipRepository
+  PASS
+
+--- TEST: Unknown storage type throws exception ---
+  Exception message: Unknown storage type: 'ORACLE'. Valid options: MEMORY, DATABASE, FILESYSTEM
+  PASS
+
+--- TEST: Each factory call returns a new instance ---
+  repo1 hash: 574434418
+  repo2 hash: 361571968
+  Independent instances confirmed
+  PASS
+
+--- TEST: Factory returns InMemoryStudyGroupRepository for MEMORY ---
+  Returned type: InMemoryStudyGroupRepository
+  PASS
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.078 s -- in com.studysync.repository.RepositoryFactoryTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 66, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  10.046 s
+[INFO] Finished at: 2026-05-10T20:24:11+02:00
+[INFO] ------------------------------------------------------------------------
+PS C:\Users\keitu\StudySync\backend> 
+```
 
 ## Technology Stack
 
