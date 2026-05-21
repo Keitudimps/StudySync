@@ -148,11 +148,7 @@ public class StudyGroupService {
      */
     public StudyGroup updateGroup(Long groupId, String name, String description) {
         StudyGroup group = getGroupById(groupId);
-<<<<<<< HEAD
         group.updateDetails(name, description);
-=======
-        // In a real system, use proper setters
->>>>>>> a45ea42cb29611d2dde3a32c101ba083797f449e
         groupRepository.save(group);
         return group;
     }

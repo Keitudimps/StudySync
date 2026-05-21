@@ -172,11 +172,7 @@ public class StudySessionService {
      */
     public StudySession updateSession(Long sessionId, String title, String location, String notes) {
         StudySession session = getSessionById(sessionId);
-<<<<<<< HEAD
         session.updateDetails(title, location, notes);
-=======
-        // In a real system, use proper setters
->>>>>>> a45ea42cb29611d2dde3a32c101ba083797f449e
         sessionRepository.save(session);
         return session;
     }

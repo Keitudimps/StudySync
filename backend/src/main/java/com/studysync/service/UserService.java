@@ -96,23 +96,12 @@ public class UserService {
     public User updateUser(Long userId, String name, String email) {
         User user = getUserById(userId);
 
-<<<<<<< HEAD
         if (email != null && !email.equalsIgnoreCase(user.getEmail())
             && userRepository.findByEmail(email).isPresent()) {
             throw new IllegalArgumentException("Email already registered");
         }
 
         user.updateDetails(name, email);
-=======
-        if (name != null && !name.trim().isEmpty()) {
-            // In a real system, use reflection or setter methods
-            // For now, we'll create a new object (assumes User is immutable)
-            user = new User(name, email != null ? email : user.getEmail(),
-                user.getPasswordHash(), user.getYearOfStudy());
-            user.setUserId(userId);
-        }
-
->>>>>>> a45ea42cb29611d2dde3a32c101ba083797f449e
         userRepository.save(user);
         return user;
     }
@@ -125,12 +114,8 @@ public class UserService {
      */
     public User deactivateUser(Long userId) {
         User user = getUserById(userId);
-<<<<<<< HEAD
         user.deactivate();
         userRepository.save(user);
-=======
-        // In a real system, call user.deactivate() if mutable
->>>>>>> a45ea42cb29611d2dde3a32c101ba083797f449e
         return user;
     }
 
