@@ -51,6 +51,18 @@ public class StudySession {
         this.scheduledAt = newTime;
     }
     
+
+    public void updateDetails(String title, String location, String notes) {
+        if (title != null && !title.trim().isEmpty()) {
+            this.title = title;
+        }
+        if (location != null) {
+            this.location = location;
+        }
+        if (notes != null) {
+            this.notes = notes;
+        }
+    }
     public boolean isUpcoming() { return scheduledAt.isAfter(LocalDateTime.now()); }
     public boolean isPast() { return scheduledAt.isBefore(LocalDateTime.now()); }
     

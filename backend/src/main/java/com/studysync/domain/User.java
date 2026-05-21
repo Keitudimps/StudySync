@@ -61,6 +61,15 @@ public class User {
         this.yearOfStudy = yearOfStudy;
     }
     
+
+    public void updateDetails(String name, String email) {
+        if (name != null && !name.trim().isEmpty()) {
+            this.name = name;
+        }
+        if (email != null && email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            this.email = email;
+        }
+    }
     public void deactivate() { this.isActive = false; }
     public void reactivate() { this.isActive = true; }
     

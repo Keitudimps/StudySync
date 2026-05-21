@@ -1,0 +1,166 @@
+openapi: 3.0.3
+info:
+  title: StudySync API
+  version: 1.0.0
+  description: REST API for StudySync service layer and API implementation.
+servers:
+  - url: http://localhost:8080
+paths:
+  /api/users:
+    get:
+      tags: [Users]
+      summary: Get all users
+      responses:
+        '200': { description: Users retrieved successfully }
+    post:
+      tags: [Users]
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/UserDTO' }
+      responses:
+        '201': { description: User created successfully }
+        '400': { description: Invalid input or duplicate email }
+  /api/users/{userId}:
+    get:
+      tags: [Users]
+      summary: Get user by ID
+      parameters:
+        - { name: userId, in: path, required: true, schema: { type: integer, format: int64 } }
+      responses:
+        '200': { description: User found }
+        '404': { description: User not found }
+    put:
+      tags: [Users]
+      summary: Update user details
+      parameters:
+        - { name: userId, in: path, required: true, schema: { type: integer, format: int64 } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/UserDTO' }
+      responses:
+        '200': { description: User updated successfully }
+        '404': { description: User not found }
+    delete:
+      tags: [Users]
+      summary: Deactivate user account
+      parameters:
+        - { name: userId, in: path, required: true, schema: { type: integer, format: int64 } }
+      responses:
+        '204': { description: User deactivated successfully }
+        '404': { description: User not found }
+  /api/groups:
+    get:
+      tags: [Study Groups]
+      summary: Get all study groups
+      responses:
+        '200': { description: Groups retrieved successfully }
+    post:
+      tags: [Study Groups]
+      summary: Create a study group
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/StudyGroupDTO' }
+      responses:
+        '201': { description: Group created successfully }
+        '400': { description: Invalid input or duplicate group name }
+  /api/groups/{groupId}:
+    get:
+      tags: [Study Groups]
+      summary: Get study group by ID
+      parameters:
+        - { name: groupId, in: path, required: true, schema: { type: integer, format: int64 } }
+      responses:
+        '200': { description: Group found }
+        '404': { description: Group not found }
+    put:
+      tags: [Study Groups]
+      summary: Update study group details
+      parameters:
+        - { name: groupId, in: path, required: true, schema: { type: integer, format: int64 } }
+      responses:
+        '200': { description: Group updated successfully }
+        '404': { description: Group not found }
+    delete:
+      tags: [Study Groups]
+      summary: Delete study group, creator only
+      parameters:
+        - { name: groupId, in: path, required: true, schema: { type: integer, format: int64 } }
+        - { name: userId, in: query, required: true, schema: { type: integer, format: int64 } }
+      responses:
+        '204': { description: Group deleted successfully }
+        '403': { description: User is not the creator }
+        '404': { description: Group not found }
+  /api/sessions:
+    get:
+      tags: [Study Sessions]
+      summary: Get all study sessions
+      responses:
+        '200': { description: Sessions retrieved successfully }
+    post:
+      tags: [Study Sessions]
+      summary: Schedule a study session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/StudySessionDTO' }
+      responses:
+        '201': { description: Session scheduled successfully }
+        '400': { description: Invalid session details }
+  /api/sessions/{sessionId}:
+    get:
+      tags: [Study Sessions]
+      summary: Get study session by ID
+      parameters:
+        - { name: sessionId, in: path, required: true, schema: { type: integer, format: int64 } }
+      responses:
+        '200': { description: Session found }
+        '404': { description: Session not found }
+    delete:
+      tags: [Study Sessions]
+      summary: Cancel study session, creator only
+      parameters:
+        - { name: sessionId, in: path, required: true, schema: { type: integer, format: int64 } }
+        - { name: userId, in: query, required: true, schema: { type: integer, format: int64 } }
+      responses:
+        '204': { description: Session cancelled successfully }
+        '403': { description: User is not the creator }
+        '404': { description: Session not found }
+components:
+  schemas:
+    UserDTO:
+      type: object
+      properties:
+        user_id: { type: integer, format: int64 }
+        name: { type: string, example: Keitumetse Dimpe }
+        email: { type: string, example: student@example.com }
+        year_of_study: { type: integer, example: 3 }
+        is_active: { type: boolean, example: true }
+    StudyGroupDTO:
+      type: object
+      properties:
+        group_id: { type: integer, format: int64 }
+        name: { type: string, example: Database Study Group }
+        description: { type: string, example: Weekly DBMS revision group }
+        max_capacity: { type: integer, example: 10 }
+        privacy: { type: string, example: public }
+        course_id: { type: integer, format: int64, example: 1 }
+        creator_id: { type: integer, format: int64, example: 1 }
+    StudySessionDTO:
+      type: object
+      properties:
+        session_id: { type: integer, format: int64 }
+        title: { type: string, example: Normalisation Revision }
+        scheduled_at: { type: string, format: date-time, example: '2026-06-01T14:00:00' }
+        duration_hours: { type: integer, example: 2 }
+        location: { type: string, example: Library Room 2 }
+        notes: { type: string, example: Bring DBMS notes }
+        group_id: { type: integer, format: int64, example: 1 }
+        created_by: { type: integer, format: int64, example: 1 }

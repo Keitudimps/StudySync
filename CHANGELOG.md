@@ -76,3 +76,19 @@
 Tests run: 60 total (29 creational + 31 repository), Failures: 0, Errors: 0
 BUILD SUCCESS
 ```
+
+## Assignment 12 — Service Layer and REST API Implementation
+
+### Added
+- Added Spring Boot REST API endpoints for Users, Study Groups, and Study Sessions.
+- Added service-layer business logic for registration, group creation, group availability, session scheduling, rescheduling, cancellation, and deletion rules.
+- Added `RepositoryConfig` to wire Assignment 11 in-memory repositories into Spring Boot services.
+- Added OpenAPI/Swagger documentation in `docs/openapi.yaml`.
+- Added Swagger screenshot instruction note in `docs/SWAGGER_SCREENSHOT_NOTE.md`.
+
+### Fixed
+- Fixed user update logic so existing users are updated instead of being replaced incorrectly.
+- Fixed user deactivation logic so DELETE `/api/users/{userId}` now marks the user inactive and saves the change.
+- Fixed group update logic so group name/description changes are applied.
+- Fixed session update logic so title, location, and notes changes are applied.
+- Changed Maven compiler target to Java 21 for better Spring Boot compatibility.
