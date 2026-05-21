@@ -20,7 +20,7 @@ The system is being developed using **React** for the frontend, **Java Spring Bo
 
 ## Repository Structure
 
-This repository serves as the complete project documentation repository for all assignments submitted throughout the semester. Each assignment builds upon the previous, maintaining full traceability from system specification through to domain modelling and implementation planning.
+This repository serves as the complete project documentation and source code repository for all assignments submitted throughout the semester. Each assignment builds upon the previous, maintaining full traceability from system specification through to implementation.
 
 ---
 
@@ -45,7 +45,7 @@ This repository serves as the complete project documentation repository for all 
 |---|---|
 | [STAKEHOLDERS.md](./STAKEHOLDERS.md) | Analysis of seven stakeholders including roles, key concerns, pain points, success metrics, and identified trade-offs |
 | [SRD.md](./SRD.md) | System Requirements Document containing twelve functional requirements with acceptance criteria, ten non-functional requirements across six quality categories, and a requirements traceability matrix |
-| [REFLECTION.md](./REFLECTION.md) | Cumulative project reflection document — updated across all assignments |
+| [REFLECTION.md](./REFLECTION.md) | Cumulative project reflection document updated across all assignments |
 
 ---
 
@@ -104,104 +104,40 @@ This repository serves as the complete project documentation repository for all 
 
 ### Assignment 10 — Creational Design Patterns Implementation
 
-> Implements all six creational design patterns integrated with the domain model, with comprehensive unit testing.
+> Implements all six creational design patterns in Java, integrated with the domain model and validated through unit testing.
 
-#### Overview
+All domain classes from Assignment 9 are fully implemented with production-ready code, comprehensive test coverage, and professional documentation.
 
-This assignment implements six creational design patterns to provide flexible object creation mechanisms throughout the StudySync backend system. All domain classes from Assignment 9 are fully implemented with production-ready code, comprehensive testing, and professional documentation.
+**Build Tool:** Maven 3.9.15 | **Java Version:** 17 (LTS) | **Test Status:** All passing
 
-**Status:** Production Ready | **Version:** 1.0.0 | **Java Version:** 25.0.2 LTS | **Build Tool:** Maven 3.9.15
+#### Patterns Implemented
 
-#### Implementation Summary
-
-**Domain Model** (9 classes)
-- User, StudyGroup, Membership, StudySession, Course, UserCourse
-- Role, Privacy, MembershipStatus (enumerations)
-- All attributes, methods, and relationships properly coded with business logic
-
-**Design Patterns Implemented** (6 patterns)
-
-1. **Simple Factory** — Centralized notification creation
-   - NotificationFactory with Email/SMS/Push implementations
-   - 5 unit tests, 100% passing
-
-2. **Factory Method** — Polymorphic processor instantiation
-   - PaymentProcessorFactory with CreditCard/PayPal/Crypto processors
-   - 4 unit tests, 100% passing
-
-3. **Abstract Factory** — Family of platform-specific GUI components
-   - GUIFactory with Windows and Mac implementations
-   - Button and TextBox component families
-   - 4 unit tests, 100% passing
-
-4. **Builder** — Step-by-step construction with fluent API
-   - StudyGroupBuilder for complex StudyGroup objects
-   - Validation of capacity constraints (2-50 range)
-   - 4 unit tests, 100% passing
-
-5. **Prototype** — Template cloning and registry pattern
-   - GroupTemplateRegistry with prototype instances
-   - Efficient template reusability
-   - 4 unit tests, 100% passing
-
-6. **Singleton** — Thread-safe single instance guarantee
-   - DatabaseConnection using Bill Pugh pattern
-   - Plus eager and synchronized variants
-   - 4 unit tests, 100% passing
-
-   
+| Pattern | Class | Purpose |
+|---|---|---|
+| Simple Factory | `NotificationFactory` | Centralised creation of EMAIL, SMS, and PUSH notifications |
+| Factory Method | `PaymentProcessorFactory` | Delegates processor creation to CreditCard, PayPal, and Crypto subclasses |
+| Abstract Factory | `GUIFactory` | Creates families of platform-specific Windows or Mac UI components |
+| Builder | `StudyGroupBuilder` | Fluent step-by-step construction of complex StudyGroup objects |
+| Prototype | `GroupTemplateRegistry` | Clones pre-configured group templates to avoid costly re-initialisation |
+| Singleton | `DatabaseConnection` | Guarantees a single thread-safe database connection instance system-wide |
 
 #### Quality Metrics
 
-| Component | Specification |
-|-----------|---------------|
-| Java Source Files | 40 (production code) |
-| Domain Classes | 9 implemented |
-| Pattern Implementations | 31 classes across 6 patterns |
-| Test Classes | 6 test suites |
-| Unit Tests | 25 total |
-| Test Pass Rate | 100% (all passing) |
-| Build Status | Clean (0 errors, 0 warnings) |
-| Security Vulnerabilities | 0 CVEs detected |
-| Code Quality | Follows Java conventions and SOLID principles |
-
-### Assignment 11 — Repository Layer Implementation
-
-> Adds a full persistence abstraction layer with in-memory implementations, a storage factory, and future-proofing stubs.
-
-| Resource | Description |
+| Component | Count |
 |---|---|
-| `backend/src/main/java/com/studysync/repository/` | Generic `Repository<T,ID>` interface and 5 entity-specific interfaces |
-| `backend/src/main/java/com/studysync/repository/inmemory/` | HashMap-based in-memory implementations for all 5 entities |
-| `backend/src/main/java/com/studysync/factory/RepositoryFactory.java` | Factory that returns MEMORY, DATABASE, or FILESYSTEM backend per entity |
-| `backend/src/main/java/com/studysync/repository/stubs/` | Stub implementations for future SQL and filesystem backends |
-| `backend/src/test/java/com/studysync/repository/` | 31 unit tests across 5 test classes — all passing |
-| [CHANGELOG.md](./CHANGELOG.md) | Full changelog for all assignments |
-
-#### Repository Design Decisions
-
-**Why a generic `Repository<T, ID>` interface?**
-Generics eliminate duplication — all five entity repositories share the same six CRUD methods without rewriting them. Entity-specific interfaces extend this base to add domain queries like `findByEmail()` or `findByCourseId()`.
-
-**Why Factory Pattern over Dependency Injection?**
-The Factory Pattern was chosen because it requires no Spring context — it works with plain Java. This keeps the repository layer fully testable without a framework. When Spring Boot is integrated later, the factory can be replaced with `@Autowired` injection with no changes to the interfaces.
-
-**Why in-memory HashMap for now?**
-In-memory storage enables fast, isolated unit tests with zero external dependencies. Every test creates a fresh repository instance in `@BeforeEach` so tests never share state. Switching to a real database later requires only implementing the existing interface and updating the factory — no business logic changes needed.
-
-#### Storage Backends
-
-| Storage Type | Status | Class |
-|---|---|---|
-| `MEMORY` | ✅ Fully implemented | `InMemory*Repository` |
-| `DATABASE` | 🔲 Stub — future SQL/JPA implementation | `Database*Repository` |
-| `FILESYSTEM` | 🔲 Stub — future JSON file implementation | `FileSystem*Repository` |  
+| Java Source Files | 67 |
+| Domain Classes | 9 |
+| Pattern Classes | 31 across 6 patterns |
+| Test Suites | 7 |
+| Unit Tests | 35 |
+| Test Pass Rate | 100% |
+| Build Status | Clean — 0 errors, 0 warnings |
 
 #### Project Structure
 
 ```
 backend/src/main/java/com/studysync/
-├── domain/                    (9 classes)
+├── domain/
 │   ├── User.java
 │   ├── StudyGroup.java
 │   ├── Membership.java
@@ -212,25 +148,23 @@ backend/src/main/java/com/studysync/
 │   ├── Privacy.java
 │   └── MembershipStatus.java
 │
-└── creational/                (31 pattern classes)
-    ├── simplefactory/         (5 files)
+└── creational/
+    ├── simplefactory/
     │   ├── Notification.java
     │   ├── EmailNotification.java
     │   ├── SMSNotification.java
     │   ├── PushNotification.java
     │   └── NotificationFactory.java
-    │
-    ├── factorymethod/         (8 files)
+    ├── factorymethod/
     │   ├── PaymentProcessor.java
-    │   ├── CreditCardProcessor.java
-    │   ├── PayPalProcessor.java
-    │   ├── CryptoProcessor.java
     │   ├── PaymentProcessorFactory.java
+    │   ├── CreditCardProcessor.java
     │   ├── CreditCardFactory.java
+    │   ├── PayPalProcessor.java
     │   ├── PayPalFactory.java
+    │   ├── CryptoProcessor.java
     │   └── CryptoFactory.java
-    │
-    ├── abstractfactory/       (10 files)
+    ├── abstractfactory/
     │   ├── GUIFactory.java
     │   ├── WindowsFactory.java
     │   ├── MacFactory.java
@@ -241,551 +175,131 @@ backend/src/main/java/com/studysync/
     │   ├── WindowsTextBox.java
     │   ├── MacTextBox.java
     │   └── ApplicationUI.java
-    │
-    ├── builder/               (2 files)
+    ├── builder/
     │   ├── StudyGroupBuilder.java
     │   └── StudyGroupDTO.java
-    │
-    ├── prototype/             (3 files)
+    ├── prototype/
     │   ├── GroupPrototype.java
     │   ├── TemplateStudyGroup.java
     │   └── GroupTemplateRegistry.java
-    │
-    └── singleton/             (3 files)
+    └── singleton/
         ├── DatabaseConnection.java
         ├── DatabaseConnectionEager.java
         └── DatabaseConnectionSync.java
 
 backend/src/test/java/com/studysync/creational/
-├── NotificationFactoryTest.java      (5 tests)
-├── PaymentProcessorFactoryTest.java  (4 tests)
-├── GUIFactoryTest.java               (4 tests)
-├── StudyGroupBuilderTest.java        (4 tests)
-├── GroupPrototypeTest.java           (4 tests)
-└── DatabaseConnectionTest.java       (4 tests)
+├── NotificationFactoryTest.java           (5 tests)
+├── PaymentProcessorFactoryTest.java       (4 tests)
+├── GUIFactoryTest.java                    (4 tests)
+├── StudyGroupBuilderTest.java             (4 tests)
+├── GroupPrototypeTest.java                (5 tests)
+├── DatabaseConnectionTest.java            (8 tests)
+└── StudyResourceExporterFactoryTest.java  (4 tests)
 ```
 
-#### Building and Testing
+#### Running the Tests
 
-**Prerequisites:**
-- Java 25.0.2 LTS or later
-- Apache Maven 3.9.15 or later
-
-**Compile the project:**
-```bash
-cd backend
-mvn clean compile
-# Expected output: BUILD SUCCESS
-```
-
-**Run all tests:**
 ```bash
 cd backend
 mvn clean test
 ```
-# Output:
+
+Expected result:
+
 ```
-PS C:\Users\keitu\StudySync> cd backend
->> mvn clean test
-[INFO] Scanning for projects...
-[INFO] 
-[INFO] ------------------< com.studysync:studysync-backend >-------------------
-[INFO] Building studysync-backend 1.0.0
-[INFO]   from pom.xml
-[INFO] --------------------------------[ jar ]---------------------------------
-[INFO] 
-[INFO] --- clean:3.2.0:clean (default-clean) @ studysync-backend ---
-[INFO] Deleting C:\Users\keitu\StudySync\backend\target
-[INFO] 
-[INFO] --- resources:3.4.0:resources (default-resources) @ studysync-backend ---
-[INFO] Copying 0 resource from src\main\resources to target\classes
-[INFO] 
-[INFO] --- compiler:3.11.0:compile (default-compile) @ studysync-backend ---
-[INFO] Compiling 67 source files with javac [debug target 17] to target\classes
-[WARNING] system modules path not set in conjunction with -source 17
-[INFO] 
-[INFO] --- resources:3.4.0:testResources (default-testResources) @ studysync-backend ---
-[INFO] skip non existing resourceDirectory C:\Users\keitu\StudySync\backend\src\test\resources
-[INFO] 
-[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ studysync-backend ---
-[INFO] Compiling 12 source files with javac [debug target 17] to target\test-classes
-[WARNING] system modules path not set in conjunction with -source 17
-[INFO] 
-[INFO] --- surefire:3.2.1:test (default-test) @ studysync-backend ---
-[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
-[INFO] 
-[INFO] -------------------------------------------------------
-[INFO]  T E S T S
-[INFO] -------------------------------------------------------
-[INFO] Running com.studysync.creational.DatabaseConnectionTest
-
---- TEST: Holder Singleton ? Query Count ---
-DatabaseConnection created at: 2026-05-10T20:24:05.258053500
-  Query count before calls : 0
-Executing query #1: SELECT * FROM users
-Executing query #2: SELECT * FROM study_groups
-  Query count after 2 calls: 2
-  PASS
-
---- TEST: Holder Singleton ? Same Instance ---
-  Call 1 hash : 574434418
-  Call 2 hash : 574434418
-  Call 3 hash : 574434418
-  All three calls returned the same object: confirmed
-  PASS
-
---- TEST: Sync Singleton ? Same Instance ---
-[SyncSingleton] Instance created lazily with double-checked locking.
-  Call 1 hash : 283318938
-  Call 2 hash : 283318938
-  PASS
-
---- TEST: Holder Singleton ? Thread Safety (10 threads) ---
-  Thread 2 ? hash: 574434418
-  Thread 0 ? hash: 574434418
-  Thread 4 ? hash: 574434418
-  Thread 5 ? hash: 574434418
-  Thread 8 ? hash: 574434418
-  Thread 9 ? hash: 574434418
-  Thread 3 ? hash: 574434418
-  Thread 7 ? hash: 574434418
-  Thread 1 ? hash: 574434418
-  Thread 6 ? hash: 574434418
-  Distinct identity hashes collected: 1
-  PASS
-
---- TEST: Eager Singleton ? Same Instance ---
-[EagerSingleton] Instance created at class load time.
-  Call 1 hash : 1740797075
-  Call 2 hash : 1740797075
-  PASS
-
---- TEST: Eager Singleton ? Query Count ---
-  Count before : 0
-[EagerSingleton] Executing query #1: SELECT 1
-  Count after  : 1
-  PASS
-
---- TEST: Sync Singleton ? Query Count ---
-  Count before : 0
-[SyncSingleton] Executing query #1: SELECT 1
-  Count after  : 1
-  PASS
-
---- TEST: Holder Singleton ? Connection Details ---
-  URL         : jdbc:postgresql://localhost:5432/studysync
-  Connected   : true
-  Created at  : 2026-05-10T20:24:05.258053500
-  PASS
-[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.113 s -- in com.studysync.creational.DatabaseConnectionTest
-[INFO] Running com.studysync.creational.GroupPrototypeTest
-
---- TEST: Deep Copy Isolation ---
-  Original tags count : 3
-  Clone tags count    : 4
-  Original unaffected by clone modification: confirmed
-  PASS
-
---- TEST: Template Cloning ---
-  Original object hash : 106374177
-  Clone object hash    : 1803669141
-  Name match        : true
-  Course match      : true
-  Capacity match    : true
-  PASS
-
---- TEST: Registry Returns Independent Clones ---
-  Call 1 hash : 1364767791
-  Call 2 hash : 1499136125
-  Two calls produced two different objects: confirmed
-  PASS
-
---- TEST: Customize Clone Independence ---
-  After customize, clone toString : TemplateStudyGroup{templateName='Completely Different Name', course='CS201'}
-  Fresh clone from registry       : TemplateStudyGroup{templateName='Assignment Group', course='CS201'}
-  Registry prototype was not affected by customization: confirmed
-  PASS
-
---- TEST: Unknown Template Key ---
-  Exception message : No template found for key: non_existent
-  PASS
-[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.084 s -- in com.studysync.creational.GroupPrototypeTest
-[INFO] Running com.studysync.creational.GUIFactoryTest
-
---- TEST: Factories Produce Independent Component Types ---
-  Windows button : WindowsButton
-  Mac button     : MacButton
-  Windows textbox: WindowsTextBox
-  Mac textbox    : MacTextBox
-  PASS
-
---- TEST: Mac Factory Creates Mac Components ---
-  Button class  : MacButton
-  TextBox class : MacTextBox
-Rendering Mac-style button
-Rendering Mac-style text box
-  PASS
-
---- TEST: Windows Factory Creates Windows Components ---
-  Button class  : WindowsButton
-  TextBox class : WindowsTextBox
-Rendering Windows-style button
-Rendering Windows-style text box
-  PASS
-
---- TEST: ApplicationUI Renders Without Error ---
-  Rendering Windows UI...
-Rendering Windows-style button
-Rendering Windows-style text box
-  Rendering Mac UI...
-Rendering Mac-style button
-Rendering Mac-style text box
-  PASS
-[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.069 s -- in com.studysync.creational.GUIFactoryTest
-[INFO] Running com.studysync.creational.NotificationFactoryTest
-
---- TEST: Create SMS Notification ---
-  Type returned : SMS
-  Instance of   : SMSNotification
-  PASS
-
---- TEST: Case-Insensitive Input ---
-  'email' ? getType() : EMAIL
-  'EMAIL' ? getType() : EMAIL
-  Both match          : true
-  PASS
-
---- TEST: Create Push Notification ---
-  Type returned : PUSH
-  Instance of   : PushNotification
-  PASS
-
---- TEST: Unknown Type Throws Exception ---
-  Exception type    : IllegalArgumentException
-  Exception message : Unknown notification type: WHATSAPP
-  PASS
-
---- TEST: Create Email Notification ---
-  Type returned : EMAIL
-  Class created : EmailNotification
-Sending EMAIL to student@uni.ac.za: Test message
-  send() result : completed without exception
-  PASS
-[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.096 s -- in com.studysync.creational.NotificationFactoryTest
-[INFO] Running com.studysync.creational.PaymentProcessorFactoryTest
-
---- TEST: Template Method Delegates to Correct Processor ---
-  CreditCardFactory.processPayment(100.00, ...) ...
-[CREDIT_CARD] Processing $100.0 via Credit Card: card-number
-  Result : true
-  PayPalFactory.processPayment(200.00, ...) ...
-[PAYPAL] Processing $200.0 via PayPal: email@paypal.com
-  Result : true
-  PASS
-
---- TEST: PayPal Processor ---
-  Processor class : PayPalProcessor
-  Processor name  : PAYPAL
-Processing $75.5 via PayPal: user@paypal.com
-  processPayment result : true
-  PASS
-
---- TEST: Crypto Processor ---
-  Processor class : CryptoProcessor
-  Processor name  : CRYPTO
-Processing $0.01 via Crypto wallet: 0xABC123...
-  processPayment result : true
-  PASS
-
---- TEST: Credit Card Processor ---
-  Processor class : CreditCardProcessor
-  Processor name  : CREDIT_CARD
-Processing $50.0 via Credit Card: 4111-1111-1111-1111
-  processPayment result : true
-  PASS
-[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.069 s -- in com.studysync.creational.PaymentProcessorFactoryTest
-[INFO] Running com.studysync.creational.StudyGroupBuilderTest
-
---- TEST: Full Group Build ---
-  Name        : Physics 202
-  Capacity    : 15
-  Privacy     : PRIVATE
-  Tags        : [difficult, weekly]
-  Location    : Room 3.24
-  Description : Weekly problem-solving sessions
-  PASS
-
---- TEST: Capacity Validation (too high) ---
-  Attempting capacity = 51 (maximum is 50)...
-  Exception message : Capacity must be between 2 and 50
-  PASS
-
---- TEST: Minimal Group Build ---
-  Name        : Math Study
-  Course      : MATH101
-  Capacity    : 10
-  Privacy     : PUBLIC
-  Tags count  : 0
-  PASS
-
---- TEST: Capacity Validation (too low) ---
-  Attempting capacity = 1 (minimum is 2)...
-  Exception message : Capacity must be between 2 and 50
-  PASS
-[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.064 s -- in com.studysync.creational.StudyGroupBuilderTest
-[INFO] Running com.studysync.creational.StudyResourceExporterFactoryTest
-
-=== TEST: Markdown Exporter ===
-Creating MarkdownExporterFactory...
-Concrete type : MarkdownExporter
-Format name   : MARKDOWN
-Exporting study notes...
-Exporting to Markdown: # Session Notes
-- Topic: Recursion
-Export result : true
-? PASS ? Markdown exporter working correctly
-
-=== TEST: PDF Exporter ===
-Creating PdfExporterFactory...
-Concrete type : PdfExporter
-Format name   : PDF
-Exporting session summary...
-Exporting to PDF: Session: Algorithms Review ? Room 3.24
-Export result : true
-? PASS ? PDF exporter working correctly
-
-=== TEST: CSV Exporter ===
-Creating CsvExporterFactory...
-Concrete type : CsvExporter
-Format name   : CSV
-Exporting session attendance list...
-Exporting to CSV: name,email
-Alice,alice@uni.ac.za
-Bob,bob@uni.ac.za
-Export result : true
-? PASS ? CSV exporter working correctly
-
-=== TEST: Template Method Delegates to Concrete Exporter ===
-Testing exportResource() template method on all three factories...
-
-Calling markdownFactory.exportResource()...
-[MARKDOWN] Exporting to Markdown: CS301 Exam Prep ? Session Notes
-Result: true
-
-Calling pdfFactory.exportResource()...
-[PDF] Exporting to PDF: CS301 Exam Prep ? Session Notes
-Result: true
-
-Calling csvFactory.exportResource()...
-[CSV] Exporting to CSV: CS301 Exam Prep ? Session Notes
-Result: true
-
-Verifying each factory produces a distinct exporter type...
-Markdown exporter type : MarkdownExporter
-PDF exporter type      : PdfExporter
-CSV exporter type      : CsvExporter
-? PASS ? template method pattern working correctly
-[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.066 s -- in com.studysync.creational.StudyResourceExporterFactoryTest
-[INFO] Running com.studysync.repository.InMemoryMembershipRepositoryTest
-
---- TEST: findByStatus() ---
-  ACTIVE: 2  PENDING: 1
-  PASS
-
---- TEST: findByUserId() ---
-  User 1 memberships: 2
-  PASS
-
---- TEST: save() + findById() ---
-  Membership ID: 1
-  PASS
-
---- TEST: findByUserIdAndGroupId() ---
-  Exact match found: true
-  PASS
-
---- TEST: countActiveByUserId() ---
-  Active count for user 1: 2 (expected 2)
-  PASS
-[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.075 s -- in com.studysync.repository.InMemoryMembershipRepositoryTest
-[INFO] Running com.studysync.repository.InMemoryStudyGroupRepositoryTest
-
---- TEST: findPublicGroups() ---
-  Public groups found: 1
-  PASS
-
---- TEST: save() + findById() ---
-  Saved group ID: 1
-  PASS
-
---- TEST: findByCourseId() ---
-  Course 101 groups: 2
-  Course 202 groups: 1
-  PASS
-
---- TEST: searchByName() ---
-  Search 'algo' found: 1 group(s)
-  PASS
-
---- TEST: deleteById() ---
-  Group deleted successfully
-  PASS
-
---- TEST: findByCreatorId() ---
-  Creator 1 groups: 2
-  PASS
-[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.069 s -- in com.studysync.repository.InMemoryStudyGroupRepositoryTest
-[INFO] Running com.studysync.repository.InMemoryStudySessionRepositoryTest
-
---- TEST: findUpcomingSessions() ---
-  Upcoming sessions: 2 (expected 2)
-  PASS
-
---- TEST: save() + findById() ---
-  Session ID: 1
-  PASS
-
---- TEST: findByGroupId() ---
-  Group 10 sessions: 2
-  PASS
-
---- TEST: deleteById() ---
-  Session deleted; exists=false
-  PASS
-[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.069 s -- in com.studysync.repository.InMemoryStudySessionRepositoryTest
-[INFO] Running com.studysync.repository.InMemoryUserRepositoryTest
-
---- TEST: findAll() ---
-  findAll returned 3 users
-  PASS
-
---- TEST: count() ---
-  count after 2 saves: 2
-  PASS
-
---- TEST: findById() returns empty for missing ID ---
-  findById(999) returned empty: confirmed
-  PASS
-
---- TEST: findByEmail() ---
-  Found: Eve
-  PASS
-
---- TEST: deleteById() ---
-  User deleted; existsById=false
-  PASS
-
---- TEST: existsByEmail() ---
-  frank@uni.ac.za exists: true
-  PASS
-
---- TEST: findAllActive() ---
-  Active users: 1 (expected 1)
-  PASS
-
---- TEST: save() assigns ID ---
-  Assigned ID: 1
-  PASS
-
---- TEST: save() + findById() ---
-  Found user: Bob (ID=1)
-  PASS
-[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.084 s -- in com.studysync.repository.InMemoryUserRepositoryTest
-[INFO] Running com.studysync.repository.RepositoryFactoryTest
-
---- TEST: Factory returns InMemoryCourseRepository for MEMORY ---
-  Returned type: InMemoryCourseRepository
-  PASS
-
---- TEST: Factory is case-insensitive ---
-  'memory' ? InMemoryUserRepository
-  'MEMORY' ? InMemoryUserRepository
-  'Memory' ? InMemoryUserRepository
-  PASS
-
---- TEST: Factory returns InMemoryUserRepository for MEMORY ---
-  Returned type: InMemoryUserRepository
-  PASS
-
---- TEST: Factory returns InMemoryStudySessionRepository for MEMORY ---
-  Returned type: InMemoryStudySessionRepository
-  PASS
-
---- TEST: Factory returns InMemoryMembershipRepository for MEMORY ---
-  Returned type: InMemoryMembershipRepository
-  PASS
-
---- TEST: Unknown storage type throws exception ---
-  Exception message: Unknown storage type: 'ORACLE'. Valid options: MEMORY, DATABASE, FILESYSTEM
-  PASS
-
---- TEST: Each factory call returns a new instance ---
-  repo1 hash: 574434418
-  repo2 hash: 361571968
-  Independent instances confirmed
-  PASS
-
---- TEST: Factory returns InMemoryStudyGroupRepository for MEMORY ---
-  Returned type: InMemoryStudyGroupRepository
-  PASS
-[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.078 s -- in com.studysync.repository.RepositoryFactoryTest
-[INFO] 
-[INFO] Results:
-[INFO] 
-[INFO] Tests run: 66, Failures: 0, Errors: 0, Skipped: 0
-[INFO] 
-[INFO] ------------------------------------------------------------------------
-[INFO] BUILD SUCCESS
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time:  10.046 s
-[INFO] Finished at: 2026-05-10T20:24:11+02:00
-[INFO] ------------------------------------------------------------------------
-PS C:\Users\keitu\StudySync\backend> 
+Tests run: 66, Failures: 0, Errors: 0, Skipped: 0
+BUILD SUCCESS
 ```
 
-> Adds a full persistence abstraction layer with in-memory implementations, a storage factory, and future-proofing stubs.
+---
+
+### Assignment 11 — Repository Layer Implementation
+
+> Adds a full persistence abstraction layer with in-memory implementations, a storage factory, and future-proofing stubs for database and filesystem backends.
 
 | Resource | Description |
 |---|---|
-| `backend/src/main/java/com/studysync/repository/` | Generic `Repository<T,ID>` interface and 5 entity-specific interfaces |
-| `backend/src/main/java/com/studysync/repository/inmemory/` | HashMap-based in-memory implementations for all 5 entities |
-| `backend/src/main/java/com/studysync/factory/RepositoryFactory.java` | Factory that returns MEMORY, DATABASE, or FILESYSTEM backend per entity |
+| `backend/src/main/java/com/studysync/repository/` | Generic `Repository<T,ID>` interface and five entity-specific interfaces |
+| `backend/src/main/java/com/studysync/repository/inmemory/` | HashMap-based in-memory implementations for all five entities |
+| `backend/src/main/java/com/studysync/factory/RepositoryFactory.java` | Factory that returns the correct MEMORY, DATABASE, or FILESYSTEM implementation per entity |
 | `backend/src/main/java/com/studysync/repository/stubs/` | Stub implementations for future SQL and filesystem backends |
-| `backend/src/test/java/com/studysync/repository/` | 31 unit tests across 5 test classes — all passing |
-| [CHANGELOG.md](./CHANGELOG.md) | Full changelog for all assignments |
+| `backend/src/test/java/com/studysync/repository/` | 31 unit tests across five test classes — all passing |
+| [CHANGELOG.md](./CHANGELOG.md) | Full changelog tracking all additions and changes across assignments |
 
-#### Repository Design Decisions
+#### Repository Structure
 
-**Why a generic `Repository<T, ID>` interface?**
-Generics eliminate duplication — all five entity repositories share the same six CRUD methods without rewriting them. Entity-specific interfaces extend this base to add domain queries like `findByEmail()` or `findByCourseId()`.
+```
+backend/src/main/java/com/studysync/
+├── repository/
+│   ├── Repository.java                        (generic interface)
+│   ├── UserRepository.java
+│   ├── StudyGroupRepository.java
+│   ├── MembershipRepository.java
+│   ├── StudySessionRepository.java
+│   ├── CourseRepository.java
+│   ├── inmemory/
+│   │   ├── InMemoryUserRepository.java
+│   │   ├── InMemoryStudyGroupRepository.java
+│   │   ├── InMemoryMembershipRepository.java
+│   │   ├── InMemoryStudySessionRepository.java
+│   │   └── InMemoryCourseRepository.java
+│   └── stubs/
+│       ├── DatabaseUserRepository.java
+│       ├── DatabaseStudyGroupRepository.java
+│       ├── DatabaseMembershipRepository.java
+│       ├── DatabaseStudySessionRepository.java
+│       ├── DatabaseCourseRepository.java
+│       ├── FileSystemUserRepository.java
+│       └── FileSystemStudyGroupRepository.java
+│
+└── factory/
+    └── RepositoryFactory.java
 
-**Why Factory Pattern over Dependency Injection?**
-The Factory Pattern was chosen because it requires no Spring context — it works with plain Java. This keeps the repository layer fully testable without a framework. When Spring Boot is integrated later, the factory can be replaced with `@Autowired` injection with no changes to the interfaces.
+backend/src/test/java/com/studysync/repository/
+├── InMemoryUserRepositoryTest.java            (9 tests)
+├── InMemoryStudyGroupRepositoryTest.java      (6 tests)
+├── InMemoryMembershipRepositoryTest.java      (5 tests)
+├── InMemoryStudySessionRepositoryTest.java    (4 tests)
+└── RepositoryFactoryTest.java                 (8 tests)
+```
 
-**Why in-memory HashMap for now?**
-In-memory storage enables fast, isolated unit tests with zero external dependencies. Every test creates a fresh repository instance in `@BeforeEach` so tests never share state. Switching to a real database later requires only implementing the existing interface and updating the factory — no business logic changes needed.
+#### Design Decisions
+
+**Generic `Repository<T, ID>` interface**
+Generics eliminate duplication across entity repositories. All five entity repositories inherit six standard CRUD operations from a single interface. Entity-specific interfaces extend this base to add domain queries such as `findByEmail` or `findByCourseId`.
+
+**Factory Pattern over Dependency Injection**
+The Factory Pattern was chosen because it requires no Spring context, keeping the repository layer fully testable with plain Java. When Spring Boot is integrated in a future assignment, the factory can be replaced with `@Autowired` injection with no changes to the interfaces or in-memory implementations.
+
+**In-memory HashMap implementation**
+In-memory storage enables fast, isolated unit tests with no external dependencies. Each test creates a fresh repository instance in `@BeforeEach` so no test shares state with another. `AtomicLong` counters auto-generate entity IDs, matching the behaviour of a database auto-increment column.
 
 #### Storage Backends
 
-| Storage Type | Status | Class |
+| Storage Type | Status | Implementation |
 |---|---|---|
-| `MEMORY` | Fully implemented | `InMemory*Repository` |
-| `DATABASE` | Stub — future SQL/JPA implementation | `Database*Repository` |
-| `FILESYSTEM` | Stub — future JSON file implementation | `FileSystem*Repository` |
+| MEMORY | Fully implemented | `InMemory*Repository` — HashMap-based, used for all tests |
+| DATABASE | Stub | `Database*Repository` — throws `UnsupportedOperationException` until implemented |
+| FILESYSTEM | Stub | `FileSystem*Repository` — throws `UnsupportedOperationException` until implemented |
 
+#### Test Results
 
+```
+Tests run: 31, Failures: 0, Errors: 0, Skipped: 0
 
-#### Quality Characteristics
+InMemoryUserRepositoryTest         — 9 tests
+InMemoryStudyGroupRepositoryTest   — 6 tests
+InMemoryMembershipRepositoryTest   — 5 tests
+InMemoryStudySessionRepositoryTest — 4 tests
+RepositoryFactoryTest              — 8 tests
+```
 
-- **Comprehensive Pattern Coverage:** All six creational patterns correctly implemented
-- **Real-World Application:** Each pattern solves authentic system design problems
-- **Thorough Testing:** 25 unit tests with 100% pass rate covering normal and edge cases
-- **Code Quality:** Follows Java conventions and SOLID principles throughout
-- **Thread Safety:** Singleton pattern validated with concurrent access testing
-- **Security:** Zero known CVE vulnerabilities in all dependencies
-- **Production Ready:** Professional-grade code structure and documentation
+Combined with Assignment 10, the full test suite runs 66 tests with 0 failures.
 
-#### System Status
+```bash
+cd backend
+mvn clean test
+```
 
 The StudySync backend is production-ready. All components tested and verified. Ready for:
 - Production deployment
@@ -1071,7 +585,7 @@ bash run-tests.sh
 
 ### Kanban Board
 
-The development workflow for this project is managed using a GitHub Projects Kanban board. The board is based on the Automated Kanban template and has been customised with two additional columns to enforce a quality gate before task completion.
+The development workflow is managed using a GitHub Projects Kanban board based on the Automated Kanban template, customised with two additional columns to enforce a quality gate before task completion.
 
 **Live Board:** [StudySync — Sprint 1 Kanban Board](https://github.com/users/Keitudimps/projects/2)
 
@@ -1081,11 +595,11 @@ The development workflow for this project is managed using a GitHub Projects Kan
 
 | Column | Classification | WIP Limit | Purpose |
 |---|---|---|---|
-| To Do | Default | Unlimited | Houses all tasks assigned to the current sprint that have not yet been initiated |
-| In Progress | Default | 3 | Tracks tasks under active development; auto-populated when a linked issue is opened |
-| Blocked | Custom | 2 | Isolates tasks that cannot progress due to unresolved dependencies or technical impediments, making blockers explicitly visible |
-| Testing | Custom | 3 | Holds code-complete tasks pending manual verification; serves as the quality gate before a task is considered done |
-| Done | Default | Unlimited | Contains fully verified tasks meeting the Definition of Done; auto-populated when a linked issue is closed |
+| To Do | Default | Unlimited | Tasks assigned to the current sprint that have not yet been initiated |
+| In Progress | Default | 3 | Tasks under active development; auto-populated when a linked issue is opened |
+| Blocked | Custom | 2 | Tasks that cannot proceed due to unresolved dependencies or impediments |
+| Testing | Custom | 3 | Code-complete tasks pending manual verification before being marked done |
+| Done | Default | Unlimited | Fully verified tasks; auto-populated when a linked issue is closed |
 
 #### Issue Labels
 
@@ -1094,11 +608,11 @@ The development workflow for this project is managed using a GitHub Projects Kan
 | `sprint-1` | All issues assigned to Sprint 1 |
 | `must-have` | MoSCoW Must-have user stories |
 | `should-have` | MoSCoW Should-have user stories |
-| `backend` | Tasks relating to Spring Boot API development |
-| `frontend` | Tasks relating to React UI development |
-| `security` | Tasks relating to authentication and authorisation |
-| `database` | Tasks relating to JPA entities and database migrations |
-| `testing` | Tasks relating to test case execution and verification |
+| `backend` | Spring Boot API development tasks |
+| `frontend` | React UI development tasks |
+| `security` | Authentication and authorisation tasks |
+| `database` | JPA entity and database migration tasks |
+| `testing` | Test case execution and verification tasks |
 
 ---
 
@@ -1112,16 +626,17 @@ The development workflow for this project is managed using a GitHub Projects Kan
 | Authentication | JSON Web Tokens (JWT) — HMAC-SHA256 |
 | Deployment | Vercel (Frontend), Railway (Backend and Database) |
 | API Architecture | RESTful — JSON over HTTP/HTTPS |
+| Build Tool | Apache Maven 3.9.15 |
 
 ---
 
 ## Project Reflection
 
-A cumulative reflection document is maintained throughout the project, covering challenges and lessons learned at each stage of development. This document is updated with each assignment submission.
+A cumulative reflection document is maintained throughout the project, covering challenges and lessons learned at each stage of development.
 
 | Document | Coverage |
 |---|---|
-| [REFLECTION.md](./REFLECTION.md) | Stakeholder trade-offs (Assignment 4), use case modelling challenges (Assignment 5), Agile estimation and solo development (Assignment 6), Kanban template selection and tool comparison (Assignment 7), state and activity diagram granularity (Assignment 8), domain modelling and object-oriented design (Assignment 9) |
+| [REFLECTION.md](./REFLECTION.md) | Stakeholder trade-offs (Assignment 4), use case modelling (Assignment 5), Agile estimation and solo development (Assignment 6), Kanban template selection and tool comparison (Assignment 7), state and activity diagram granularity (Assignment 8), domain modelling and object-oriented design (Assignment 9), creational patterns and class implementation (Assignment 10) |
 
 ---
 
@@ -1129,12 +644,13 @@ A cumulative reflection document is maintained throughout the project, covering 
 
 | Field | Detail |
 |---|---|
-| **Name(s)** | Fereshteh Keitumetse Gomolemo Dimpe |
+| **Name** | Fereshteh Keitumetse Gomolemo Dimpe |
 | **Student Number** | 221806229 |
 | **Course** | Software Engineering |
 | **Institution** | CPUT |
 | **Submission Period** | Assignments 3 through 12 |
 | **Repository** | [github.com/Keitudimps/StudySync](https://github.com/Keitudimps/StudySync) |
+<<<<<<< HEAD
 
 ---
 
@@ -1265,3 +781,5 @@ mvn test
 | `/docs` folder with OpenAPI file | Complete |
 | `CHANGELOG.md` updated | Complete |
 | GitHub project board screenshot | Include `Kanban_board.png` or updated board screenshot |
+=======
+>>>>>>> a45ea42cb29611d2dde3a32c101ba083797f449e
