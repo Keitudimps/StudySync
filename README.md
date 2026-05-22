@@ -650,3 +650,85 @@ A cumulative reflection document is maintained throughout the project, covering 
 | **Institution** | CPUT |
 | **Submission Period** | Assignments 3 through 12 |
 | **Repository** | [github.com/Keitudimps/StudySync](https://github.com/Keitudimps/StudySync) |
+
+
+---
+
+# CI/CD Pipeline
+
+## Continuous Integration (CI)
+
+The project uses GitHub Actions to automate testing and quality checks.
+
+The workflow automatically runs when:
+- Code is pushed to any branch
+- A pull request is opened against the `main` branch
+
+The CI pipeline performs the following tasks:
+1. Checks out the repository
+2. Sets up Java 17
+3. Restores Maven dependencies
+4. Runs all unit and integration tests using Maven
+
+If any tests fail, the pull request cannot be merged into `main`.
+
+---
+
+## Continuous Deployment (CD)
+
+When code is merged into the `main` branch, the workflow automatically:
+1. Builds the backend project
+2. Generates a JAR release artifact
+3. Uploads the artifact to GitHub Actions
+
+This ensures that every successful merge to `main` produces a deployable build artifact.
+
+---
+
+## Running Tests Locally
+
+### Backend Tests
+
+Navigate to the backend directory:
+
+```bash
+cd backend
+```
+
+Run all tests:
+
+```bash
+mvn clean test
+```
+
+Build the application:
+
+```bash
+mvn clean package
+```
+
+---
+
+## GitHub Actions Workflow
+
+Workflow file location:
+
+```text
+.github/workflows/ci.yml
+```
+
+The workflow includes:
+- Automated test execution
+- Pull request validation
+- Artifact generation for production builds
+
+---
+
+## Branch Protection Rules
+
+The repository uses branch protection rules on the `main` branch to:
+- Require pull request reviews
+- Require successful CI checks
+- Prevent direct pushes to `main`
+
+Refer to `PROTECTION.md` for additional details.
