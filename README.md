@@ -564,3 +564,63 @@ This project was developed for academic and educational purposes.
 # Conclusion
 
 StudySync demonstrates modern software engineering practices including layered architecture, design patterns, repository abstraction, REST API development, automated testing, Agile project management, and CI/CD workflow automation using GitHub Actions.
+
+---
+
+# Open-Source Collaboration
+
+StudySync is prepared for peer review and open-source-style collaboration. The repository includes contribution guidelines, issue planning, a roadmap, a license, and peer voting documentation.
+
+## Collaboration Documents
+
+| Document | Purpose |
+|---|---|
+| [CONTRIBUTING.md](./CONTRIBUTING.md) | Explains how contributors can set up the project, choose issues, follow coding standards, and submit pull requests |
+| [ROADMAP.md](./ROADMAP.md) | Lists planned future features and long-term project improvements |
+| [LICENSE](./LICENSE) | Defines the open-source license for the project |
+| [VOTING_RESULTS.md](./VOTING_RESULTS.md) | Tracks peer review engagement, stars, forks, and pull requests |
+| [ISSUE_LABELS.md](./ISSUE_LABELS.md) | Lists suggested good-first-issue and feature-request tasks for contributors |
+
+---
+
+## Getting Started for Contributors
+
+New contributors should follow these steps:
+
+1. Fork the repository.
+2. Choose an issue labeled `good-first-issue` or `feature-request`.
+3. Create a new branch.
+4. Make a small focused change.
+5. Run all tests.
+6. Submit a pull request with a clear description.
+
+Full contributor instructions are available in [CONTRIBUTING.md](./CONTRIBUTING.md).
+
+---
+
+## Features for Contribution
+
+| Feature | Difficulty | Suggested Label |
+|---|---|---|
+| Improve user validation messages | Beginner | good-first-issue |
+| Add more unit tests | Beginner | good-first-issue |
+| Improve README formatting | Beginner | good-first-issue |
+| Add JavaDoc comments | Beginner | good-first-issue |
+| Add API documentation notes | Beginner | good-first-issue |
+| Add dark mode support | Intermediate | feature-request |
+| Add Google Calendar synchronization | Intermediate | feature-request |
+| Implement Redis caching | Advanced | feature-request |
+| Add Docker support | Advanced | feature-request |
+
+---
+
+## Peer Review and Voting
+
+Classmates are encouraged to review the repository by:
+
+- Starring the repository
+- Forking the repository
+- Opening small pull requests
+- Providing feedback through issues or comments
+
+Peer engagement is recorded in [VOTING_RESULTS.md](./VOTING_RESULTS.md).
