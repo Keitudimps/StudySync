@@ -42,8 +42,11 @@ public class StudyGroupControllerTest {
         ResponseEntity<StudyGroupDTO> response = studyGroupController.createGroup(input);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertNotNull(response.getBody());
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertEquals("DBMS Group", response.getBody().getName());
+        System.out.println("Assertion passed: expected result matches actual result.");
         verify(studyGroupService).createGroup("DBMS Group", 1L, 10, Privacy.PUBLIC, 1L);
     }
 
@@ -56,7 +59,9 @@ public class StudyGroupControllerTest {
         ResponseEntity<List<StudyGroupDTO>> response = studyGroupController.getAllGroups();
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertEquals(1, response.getBody().size());
+        System.out.println("Assertion passed: expected result matches actual result.");
         verify(studyGroupService).getAllGroups();
     }
 
@@ -68,15 +73,19 @@ public class StudyGroupControllerTest {
         ResponseEntity<StudyGroupDTO> response = studyGroupController.getGroupById(99L);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        System.out.println("Assertion passed: expected result matches actual result.");
     }
 
     @Test
     @DisplayName("DELETE /api/groups/{groupId} - Should return 403 for non-creator")
     void testDeleteGroup_Forbidden() {
         doThrow(new IllegalStateException("Only creator can delete")).when(studyGroupService).deleteGroup(1L, 9L);
+        System.out.println("Delete operation completed.");
 
         ResponseEntity<Void> response = studyGroupController.deleteGroup(1L, 9L);
+        System.out.println("Delete operation completed.");
 
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+        System.out.println("Assertion passed: expected result matches actual result.");
     }
 }

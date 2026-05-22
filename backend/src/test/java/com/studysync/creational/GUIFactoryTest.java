@@ -19,15 +19,19 @@ class GUIFactoryTest {
         System.out.println("  Button class  : " + button.getClass().getSimpleName());
         System.out.println("  TextBox class : " + textBox.getClass().getSimpleName());
 
-        assertInstanceOf(WindowsButton.class, button,
-            "WindowsFactory.createButton() must return a WindowsButton — " +
-            "if this fails, the factory was changed to return a different type");
-        assertInstanceOf(WindowsTextBox.class, textBox,
-            "WindowsFactory.createTextBox() must return a WindowsTextBox");
+        assertInstanceOf(WindowsButton.class, button,"WindowsFactory.createButton() must return a WindowsButton — " +
+                "if this fails, the factory was changed to return a different type");
+        System.out.println("Assertion passed: expected result matches actual result.");
+
+        assertInstanceOf(WindowsTextBox.class, textBox,"WindowsFactory.createTextBox() must return a WindowsTextBox");
+        System.out.println("Assertion passed: expected result matches actual result.");
+
 
         // Verify render() executes without throwing
         assertDoesNotThrow(button::render,   "WindowsButton.render() must not throw");
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertDoesNotThrow(textBox::render,  "WindowsTextBox.render() must not throw");
+        System.out.println("Assertion passed: expected result matches actual result.");
 
         System.out.println("  PASS");
     }
@@ -44,14 +48,18 @@ class GUIFactoryTest {
         System.out.println("  Button class  : " + button.getClass().getSimpleName());
         System.out.println("  TextBox class : " + textBox.getClass().getSimpleName());
 
-        assertInstanceOf(MacButton.class, button,
-            "MacFactory.createButton() must return a MacButton — " +
-            "if this fails, the factory was changed to return a different type");
-        assertInstanceOf(MacTextBox.class, textBox,
-            "MacFactory.createTextBox() must return a MacTextBox");
+        assertInstanceOf(MacButton.class, button,"MacFactory.createButton() must return a MacButton — " +
+                "if this fails, the factory was changed to return a different type");
+        System.out.println("Assertion passed: expected result matches actual result.");
+
+        assertInstanceOf(MacTextBox.class, textBox,      "MacFactory.createTextBox() must return a MacTextBox");
+        System.out.println("Assertion passed: expected result matches actual result.");
+
 
         assertDoesNotThrow(button::render,  "MacButton.render() must not throw");
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertDoesNotThrow(textBox::render, "MacTextBox.render() must not throw");
+        System.out.println("Assertion passed: expected result matches actual result.");
 
         System.out.println("  PASS");
     }
@@ -65,20 +73,25 @@ class GUIFactoryTest {
         GUIFactory macFactory = new MacFactory();
 
         Button winBtn = winFactory.createButton();
+        System.out.println("Inserted Object: " + winBtn);
         Button macBtn = macFactory.createButton();
+        System.out.println("Inserted Object: " + macBtn);
         TextBox winBox = winFactory.createTextBox();
+        System.out.println("Inserted Object: " + winBox);
         TextBox macBox = macFactory.createTextBox();
+        System.out.println("Inserted Object: " + macBox);
 
         System.out.println("  Windows button : " + winBtn.getClass().getSimpleName());
         System.out.println("  Mac button     : " + macBtn.getClass().getSimpleName());
         System.out.println("  Windows textbox: " + winBox.getClass().getSimpleName());
         System.out.println("  Mac textbox    : " + macBox.getClass().getSimpleName());
 
-        assertNotEquals(winBtn.getClass(), macBtn.getClass(),
-            "Windows and Mac buttons must be different classes — " +
-            "if this fails, both factories return the same button type");
-        assertNotEquals(winBox.getClass(), macBox.getClass(),
-            "Windows and Mac textboxes must be different classes");
+        assertNotEquals(winBtn.getClass(), macBtn.getClass(), "Windows and Mac buttons must be different classes — " +
+                "if this fails, both factories return the same button type");
+        System.out.println("Assertion passed: expected result matches actual result.");
+
+        assertNotEquals(winBox.getClass(), macBox.getClass(),    "Windows and Mac textboxes must be different classes");
+        System.out.println("Assertion passed: expected result matches actual result.");
 
         System.out.println("  PASS");
     }
@@ -95,12 +108,12 @@ class GUIFactoryTest {
         ApplicationUI macApp = new ApplicationUI(macFactory);
 
         System.out.println("  Rendering Windows UI...");
-        assertDoesNotThrow(winApp::renderUI,
-            "ApplicationUI.renderUI() with WindowsFactory must not throw");
+        assertDoesNotThrow(winApp::renderUI,   "ApplicationUI.renderUI() with WindowsFactory must not throw");
+        System.out.println("Assertion passed: expected result matches actual result.");
 
         System.out.println("  Rendering Mac UI...");
-        assertDoesNotThrow(macApp::renderUI,
-            "ApplicationUI.renderUI() with MacFactory must not throw");
+        assertDoesNotThrow(macApp::renderUI, "ApplicationUI.renderUI() with MacFactory must not throw");
+        System.out.println("Assertion passed: expected result matches actual result.");
 
         System.out.println("  PASS");
     }

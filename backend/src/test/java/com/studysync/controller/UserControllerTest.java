@@ -48,8 +48,11 @@ public class UserControllerTest {
 
         // Assert
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertNotNull(response.getBody());
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertEquals("John Doe", response.getBody().getName());
+        System.out.println("Assertion passed: expected result matches actual result.");
         verify(userService).registerUser(anyString(), anyString(), anyString(), anyInt());
     }
 
@@ -66,6 +69,7 @@ public class UserControllerTest {
 
         // Assert
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        System.out.println("Assertion passed: expected result matches actual result.");
     }
 
     @Test
@@ -82,8 +86,11 @@ public class UserControllerTest {
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertNotNull(response.getBody());
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertEquals(2, response.getBody().size());
+        System.out.println("Assertion passed: expected result matches actual result.");
         verify(userService).getAllUsers();
     }
 
@@ -100,7 +107,9 @@ public class UserControllerTest {
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertEquals(1, response.getBody().size());
+        System.out.println("Assertion passed: expected result matches actual result.");
         verify(userService).getAllActiveUsers();
     }
 
@@ -117,8 +126,11 @@ public class UserControllerTest {
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertNotNull(response.getBody());
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertEquals("John", response.getBody().getName());
+        System.out.println("Assertion passed: expected result matches actual result.");
         verify(userService).getUserById(userId);
     }
 
@@ -135,6 +147,7 @@ public class UserControllerTest {
 
         // Assert
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        System.out.println("Assertion passed: expected result matches actual result.");
     }
 
     @Test
@@ -150,8 +163,11 @@ public class UserControllerTest {
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertNotNull(response.getBody());
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertEquals(email, response.getBody().getEmail());
+        System.out.println("Assertion passed: expected result matches actual result.");
     }
 
     @Test
@@ -169,8 +185,11 @@ public class UserControllerTest {
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertNotNull(response.getBody());
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertEquals("Updated Name", response.getBody().getName());
+        System.out.println("Assertion passed: expected result matches actual result.");
         verify(userService).updateUser(userId, updateDTO.getName(), updateDTO.getEmail());
     }
 
@@ -187,6 +206,7 @@ public class UserControllerTest {
 
         // Assert
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        System.out.println("Assertion passed: expected result matches actual result.");
         verify(userService).deactivateUser(userId);
     }
 
@@ -201,7 +221,9 @@ public class UserControllerTest {
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertEquals(5L, response.getBody());
+        System.out.println("Assertion passed: expected result matches actual result.");
         verify(userService).getActiveUserCount();
     }
 }

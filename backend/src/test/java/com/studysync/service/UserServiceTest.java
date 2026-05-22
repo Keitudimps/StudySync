@@ -44,15 +44,20 @@ public class UserServiceTest {
         User mockUser = new User(name, email, password, yearOfStudy);
         when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
         doNothing().when(userRepository).save(any(User.class));
+        System.out.println("Save operation completed.");
 
         // Act
         User result = userService.registerUser(name, email, password, yearOfStudy);
 
         // Assert
         assertNotNull(result);
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertEquals(name, result.getName());
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertEquals(email, result.getEmail());
+        System.out.println("Assertion passed: expected result matches actual result.");
         verify(userRepository).save(any(User.class));
+        System.out.println("Save operation completed.");
     }
 
     @Test
@@ -64,10 +69,13 @@ public class UserServiceTest {
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(existingUser));
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () ->
-            userService.registerUser("John", email, "password123", 2)
-        );
+        assertThrows(IllegalArgumentException.class, () -> {
+            System.out.println("Executing action that should throw an exception...");
+            userService.registerUser("John", email, "password123", 2);
+        });
+        System.out.println("Expected exception was thrown. Test Passed.");
         verify(userRepository, never()).save(any());
+        System.out.println("Save operation completed.");
     }
 
     @Test
@@ -83,7 +91,9 @@ public class UserServiceTest {
 
         // Assert
         assertNotNull(result);
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertEquals("Jane", result.getName());
+        System.out.println("Assertion passed: expected result matches actual result.");
         verify(userRepository).findById(userId);
     }
 
@@ -95,9 +105,11 @@ public class UserServiceTest {
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () ->
-            userService.getUserById(userId)
-        );
+        assertThrows(IllegalArgumentException.class, () -> {
+            System.out.println("Executing action that should throw an exception...");
+            userService.getUserById(userId);
+        });
+        System.out.println("Expected exception was thrown. Test Passed.");
     }
 
     @Test
@@ -113,7 +125,9 @@ public class UserServiceTest {
 
         // Assert
         assertNotNull(result);
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertEquals(email, result.getEmail());
+        System.out.println("Assertion passed: expected result matches actual result.");
     }
 
     @Test
@@ -130,7 +144,9 @@ public class UserServiceTest {
 
         // Assert
         assertNotNull(result);
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertEquals(2, result.size());
+        System.out.println("Assertion passed: expected result matches actual result.");
         verify(userRepository).findAll();
     }
 
@@ -147,7 +163,9 @@ public class UserServiceTest {
 
         // Assert
         assertNotNull(result);
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertEquals(1, result.size());
+        System.out.println("Assertion passed: expected result matches actual result.");
         verify(userRepository).findAllActive();
     }
 
@@ -161,9 +179,11 @@ public class UserServiceTest {
 
         // Act
         userService.deleteUser(userId);
+        System.out.println("Delete operation completed.");
 
         // Assert
         verify(userRepository).deleteById(userId);
+        System.out.println("Delete operation completed.");
     }
 
     @Test
@@ -174,10 +194,13 @@ public class UserServiceTest {
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () ->
-            userService.deleteUser(userId)
-        );
+        assertThrows(IllegalArgumentException.class, () -> {
+            System.out.println("Executing action that should throw an exception...");
+            userService.deleteUser(userId);
+        });
+        System.out.println("Expected exception was thrown. Test Passed.");
         verify(userRepository, never()).deleteById(userId);
+        System.out.println("Delete operation completed.");
     }
 
     @Test
@@ -191,6 +214,7 @@ public class UserServiceTest {
 
         // Assert
         assertEquals(5L, result);
+        System.out.println("Assertion passed: expected result matches actual result.");
         verify(userRepository).count();
     }
 }

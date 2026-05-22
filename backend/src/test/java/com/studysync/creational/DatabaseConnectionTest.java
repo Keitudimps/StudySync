@@ -32,7 +32,9 @@ class DatabaseConnectionTest {
         System.out.println("  Call 3 hash : " + System.identityHashCode(c));
 
         assertSame(a, b, "First and second calls must return identical reference");
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertSame(b, c, "Second and third calls must return identical reference");
+        System.out.println("Assertion passed: expected result matches actual result.");
 
         System.out.println("  All three calls returned the same object: confirmed");
         System.out.println("  PASS");
@@ -54,9 +56,10 @@ class DatabaseConnectionTest {
         System.out.println("  Query count after 2 calls: " + after);
 
         assertEquals(before + 2, after,
-            "Query count must increase by exactly 2 — if this fails, " +
-            "executeQuery() is not incrementing queryCount correctly");
+                "Query count must increase by exactly 2 — if this fails, " +
+                        "executeQuery() is not incrementing queryCount correctly");
 
+        System.out.println("Assertion passed: expected result matches actual result.");
         System.out.println("  PASS");
     }
 
@@ -75,13 +78,19 @@ class DatabaseConnectionTest {
         System.out.println("  Created at  : " + conn.getConnectedAt());
 
         assertNotNull(url, "getConnectionUrl() must not return null");
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertTrue(url.startsWith("jdbc:"),
-            "URL must start with 'jdbc:' — if this fails, the default URL was changed");
+                "URL must start with 'jdbc:' — if this fails, the default URL was changed");
+        System.out.println("Assertion passed: expected result matches actual result.");
+
         assertTrue(connected,
-            "isConnected() must return true after construction — " +
-            "if this fails, the constructor is setting isConnected=false");
-        assertNotNull(conn.getConnectedAt(),
-            "getConnectedAt() must not return null");
+                "isConnected() must return true after construction — " +
+                        "if this fails, the constructor is setting isConnected=false");
+        System.out.println("Assertion passed: expected result matches actual result.");
+
+        assertNotNull(conn.getConnectedAt(), "getConnectedAt() must not return null");
+
+        System.out.println("Assertion passed: expected result matches actual result.");
 
         System.out.println("  PASS");
     }
@@ -108,12 +117,15 @@ class DatabaseConnectionTest {
         executor.shutdown();
         boolean finished = executor.awaitTermination(5, TimeUnit.SECONDS);
         assertTrue(finished, "All threads must complete within 5 seconds");
+        System.out.println("Assertion passed: expected result matches actual result.");
 
         System.out.println("  Distinct identity hashes collected: " + identityHashes.size());
 
         assertEquals(1, identityHashes.size(),
-            "All 10 threads must receive the exact same instance — " +
-            "if this is > 1, the Holder singleton is not thread-safe and created multiple instances");
+                "All 10 threads must receive the exact same instance — " +
+                        "if this is > 1, the Holder singleton is not thread-safe and created multiple instances");
+        System.out.println("Assertion passed: expected result matches actual result.");
+
 
         System.out.println("  PASS");
     }
@@ -132,10 +144,14 @@ class DatabaseConnectionTest {
         System.out.println("  Call 2 hash : " + System.identityHashCode(y));
 
         assertSame(x, y,
-            "Eager singleton must return the same instance every time — " +
-            "if this fails, the INSTANCE field was removed or made non-static");
+                "Eager singleton must return the same instance every time — " +
+                        "if this fails, the INSTANCE field was removed or made non-static");
+        System.out.println("Assertion passed: expected result matches actual result.");
+
         assertTrue(x.getConnectionUrl().startsWith("jdbc:"),
-            "Eager singleton URL must be a valid JDBC string");
+                "Eager singleton URL must be a valid JDBC string");
+        System.out.println("Assertion passed: expected result matches actual result.");
+
 
         System.out.println("  PASS");
     }
@@ -154,7 +170,9 @@ class DatabaseConnectionTest {
         System.out.println("  Count after  : " + after);
 
         assertEquals(before + 1, after,
-            "Eager singleton queryCount must increase by 1 after one executeQuery()");
+                "Eager singleton queryCount must increase by 1 after one executeQuery()");
+        System.out.println("Assertion passed: expected result matches actual result.");
+
 
         System.out.println("  PASS");
     }
@@ -173,8 +191,9 @@ class DatabaseConnectionTest {
         System.out.println("  Call 2 hash : " + System.identityHashCode(q));
 
         assertSame(p, q,
-            "Sync singleton must return the same instance every time — " +
-            "if this fails, the volatile+double-check logic was broken");
+                "Sync singleton must return the same instance every time — " +
+                        "if this fails, the volatile+double-check logic was broken");
+        System.out.println("Assertion passed: expected result matches actual result.");
 
         System.out.println("  PASS");
     }
@@ -192,8 +211,9 @@ class DatabaseConnectionTest {
         int after = conn.getQueryCount();
         System.out.println("  Count after  : " + after);
 
-        assertEquals(before + 1, after,
-            "Sync singleton queryCount must increase by 1 after one executeQuery()");
+        assertEquals(before + 1, after,    "Sync singleton queryCount must increase by 1 after one executeQuery()");
+
+        System.out.println("Assertion passed: expected result matches actual result.");
 
         System.out.println("  PASS");
     }

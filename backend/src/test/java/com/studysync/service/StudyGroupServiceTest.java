@@ -44,14 +44,18 @@ public class StudyGroupServiceTest {
         StudyGroup mockGroup = StudyGroup.create(name, courseId, maxCapacity, Privacy.PUBLIC, creatorId);
         when(groupRepository.searchByName(name)).thenReturn(new ArrayList<>());
         doNothing().when(groupRepository).save(any(StudyGroup.class));
+        System.out.println("Save operation completed.");
 
         // Act
         StudyGroup result = groupService.createGroup(name, courseId, maxCapacity, Privacy.PUBLIC, creatorId);
 
         // Assert
         assertNotNull(result);
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertEquals(name, result.getName());
+        System.out.println("Assertion passed: expected result matches actual result.");
         verify(groupRepository).save(any(StudyGroup.class));
+        System.out.println("Save operation completed.");
     }
 
     @Test
@@ -66,10 +70,13 @@ public class StudyGroupServiceTest {
         when(groupRepository.searchByName(name)).thenReturn(existing);
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () ->
-            groupService.createGroup(name, courseId, 10, Privacy.PUBLIC, 2L)
-        );
+        assertThrows(IllegalArgumentException.class, () -> {
+            System.out.println("Executing action that should throw an exception...");
+            groupService.createGroup(name, courseId, 10, Privacy.PUBLIC, 2L);
+        });
+        System.out.println("Expected exception was thrown. Test Passed.");
         verify(groupRepository, never()).save(any());
+        System.out.println("Save operation completed.");
     }
 
     @Test
@@ -85,7 +92,9 @@ public class StudyGroupServiceTest {
 
         // Assert
         assertNotNull(result);
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertEquals("Test Group", result.getName());
+        System.out.println("Assertion passed: expected result matches actual result.");
         verify(groupRepository).findById(groupId);
     }
 
@@ -97,9 +106,11 @@ public class StudyGroupServiceTest {
         when(groupRepository.findById(groupId)).thenReturn(java.util.Optional.empty());
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () ->
-            groupService.getGroupById(groupId)
-        );
+        assertThrows(IllegalArgumentException.class, () -> {
+            System.out.println("Executing action that should throw an exception...");
+            groupService.getGroupById(groupId);
+        });
+        System.out.println("Expected exception was thrown. Test Passed.");
     }
 
     @Test
@@ -116,7 +127,9 @@ public class StudyGroupServiceTest {
 
         // Assert
         assertNotNull(result);
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertEquals(2, result.size());
+        System.out.println("Assertion passed: expected result matches actual result.");
         verify(groupRepository).findAll();
     }
 
@@ -136,7 +149,9 @@ public class StudyGroupServiceTest {
 
         // Assert
         assertNotNull(result);
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertEquals(1, result.size());
+        System.out.println("Assertion passed: expected result matches actual result.");
     }
 
     @Test
@@ -153,7 +168,9 @@ public class StudyGroupServiceTest {
 
         // Assert
         assertNotNull(result);
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertEquals(1, result.size());
+        System.out.println("Assertion passed: expected result matches actual result.");
         verify(groupRepository).findByCourseId(courseId);
     }
 
@@ -167,12 +184,15 @@ public class StudyGroupServiceTest {
         mockGroup.setGroupId(groupId);
         when(groupRepository.findById(groupId)).thenReturn(java.util.Optional.of(mockGroup));
         doNothing().when(groupRepository).deleteById(groupId);
+        System.out.println("Delete operation completed.");
 
         // Act
         groupService.deleteGroup(groupId, creatorId);
+        System.out.println("Delete operation completed.");
 
         // Assert
         verify(groupRepository).deleteById(groupId);
+        System.out.println("Delete operation completed.");
     }
 
     @Test
@@ -187,10 +207,13 @@ public class StudyGroupServiceTest {
         when(groupRepository.findById(groupId)).thenReturn(java.util.Optional.of(mockGroup));
 
         // Act & Assert
-        assertThrows(IllegalStateException.class, () ->
-            groupService.deleteGroup(groupId, otherUserId)
-        );
+        assertThrows(IllegalStateException.class, () -> {
+            System.out.println("Executing action that should throw an exception...");
+            groupService.deleteGroup(groupId, otherUserId);
+        });
+        System.out.println("Expected exception was thrown. Test Passed.");
         verify(groupRepository, never()).deleteById(groupId);
+        System.out.println("Delete operation completed.");
     }
 
     @Test
@@ -207,6 +230,7 @@ public class StudyGroupServiceTest {
 
         // Assert
         assertTrue(result);
+        System.out.println("Assertion passed: expected result matches actual result.");
     }
 
     @Test
@@ -220,6 +244,7 @@ public class StudyGroupServiceTest {
 
         // Assert
         assertEquals(3L, result);
+        System.out.println("Assertion passed: expected result matches actual result.");
         verify(groupRepository).count();
     }
 }

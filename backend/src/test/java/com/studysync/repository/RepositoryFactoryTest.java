@@ -16,9 +16,11 @@ class RepositoryFactoryTest {
         UserRepository repo = RepositoryFactory.getUserRepository("MEMORY");
 
         assertNotNull(repo, "Factory must return a non-null repository");
-        assertInstanceOf(InMemoryUserRepository.class, repo,
-            "MEMORY type must produce an InMemoryUserRepository — " +
-            "if this fails, the switch case was changed");
+        System.out.println("Assertion passed: expected result matches actual result.");
+        assertInstanceOf(InMemoryUserRepository.class, repo, "MEMORY type must produce an InMemoryUserRepository — " +
+                "if this fails, the switch case was changed");
+        System.out.println("Assertion passed: expected result matches actual result.");
+
 
         System.out.println("  Returned type: " + repo.getClass().getSimpleName());
         System.out.println("  PASS");
@@ -32,7 +34,9 @@ class RepositoryFactoryTest {
         StudyGroupRepository repo = RepositoryFactory.getStudyGroupRepository("MEMORY");
 
         assertNotNull(repo);
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertInstanceOf(InMemoryStudyGroupRepository.class, repo);
+        System.out.println("Assertion passed: expected result matches actual result.");
 
         System.out.println("  Returned type: " + repo.getClass().getSimpleName());
         System.out.println("  PASS");
@@ -46,7 +50,9 @@ class RepositoryFactoryTest {
         MembershipRepository repo = RepositoryFactory.getMembershipRepository("MEMORY");
 
         assertNotNull(repo);
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertInstanceOf(InMemoryMembershipRepository.class, repo);
+        System.out.println("Assertion passed: expected result matches actual result.");
 
         System.out.println("  Returned type: " + repo.getClass().getSimpleName());
         System.out.println("  PASS");
@@ -60,7 +66,9 @@ class RepositoryFactoryTest {
         StudySessionRepository repo = RepositoryFactory.getStudySessionRepository("MEMORY");
 
         assertNotNull(repo);
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertInstanceOf(InMemoryStudySessionRepository.class, repo);
+        System.out.println("Assertion passed: expected result matches actual result.");
 
         System.out.println("  Returned type: " + repo.getClass().getSimpleName());
         System.out.println("  PASS");
@@ -74,7 +82,9 @@ class RepositoryFactoryTest {
         CourseRepository repo = RepositoryFactory.getCourseRepository("MEMORY");
 
         assertNotNull(repo);
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertInstanceOf(InMemoryCourseRepository.class, repo);
+        System.out.println("Assertion passed: expected result matches actual result.");
 
         System.out.println("  Returned type: " + repo.getClass().getSimpleName());
         System.out.println("  PASS");
@@ -90,8 +100,11 @@ class RepositoryFactoryTest {
         UserRepository mixed = RepositoryFactory.getUserRepository("Memory");
 
         assertInstanceOf(InMemoryUserRepository.class, lower, "'memory' must work");
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertInstanceOf(InMemoryUserRepository.class, upper, "'MEMORY' must work");
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertInstanceOf(InMemoryUserRepository.class, mixed, "'Memory' must work");
+        System.out.println("Assertion passed: expected result matches actual result.");
 
         System.out.println("  'memory' → " + lower.getClass().getSimpleName());
         System.out.println("  'MEMORY' → " + upper.getClass().getSimpleName());
@@ -111,8 +124,9 @@ class RepositoryFactoryTest {
         );
 
         System.out.println("  Exception message: " + ex.getMessage());
-        assertTrue(ex.getMessage().contains("ORACLE"),
-            "Exception message must include the bad storage type name");
+        assertTrue(ex.getMessage().contains("ORACLE"),     "Exception message must include the bad storage type name");
+        System.out.println("Assertion passed: expected result matches actual result.");
+
 
         System.out.println("  PASS");
     }
@@ -125,9 +139,10 @@ class RepositoryFactoryTest {
         UserRepository repo1 = RepositoryFactory.getUserRepository("MEMORY");
         UserRepository repo2 = RepositoryFactory.getUserRepository("MEMORY");
 
-        assertNotSame(repo1, repo2,
-            "Factory must return a new instance on each call — " +
-            "if this fails, the factory accidentally became a Singleton");
+        assertNotSame(repo1, repo2,"Factory must return a new instance on each call — " +
+                "if this fails, the factory accidentally became a Singleton");
+        System.out.println("Assertion passed: expected result matches actual result.");
+
 
         System.out.println("  repo1 hash: " + System.identityHashCode(repo1));
         System.out.println("  repo2 hash: " + System.identityHashCode(repo2));

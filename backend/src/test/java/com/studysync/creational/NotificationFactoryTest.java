@@ -13,17 +13,23 @@ class NotificationFactoryTest {
         System.out.println("\n--- TEST: Create Email Notification ---");
 
         Notification notification = NotificationFactory.createNotification("EMAIL");
+        System.out.println("Inserted Object: " + notification);
 
         assertNotNull(notification, "Factory must return a non-null object");
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertEquals("EMAIL", notification.getType(),
-            "getType() must return exactly 'EMAIL' — if this fails, EmailNotification.getType() was changed");
+                "getType() must return exactly 'EMAIL' — if this fails, EmailNotification.getType() was changed");
+        System.out.println("Assertion passed: expected result matches actual result.");
+
 
         System.out.println("  Type returned : " + notification.getType());
         System.out.println("  Class created : " + notification.getClass().getSimpleName());
 
         // Verify send() actually executes without throwing
         assertDoesNotThrow(() -> notification.send("student@uni.ac.za", "Test message"),
-            "send() must not throw any exception");
+                "send() must not throw any exception");
+
+        System.out.println("Assertion passed: expected result matches actual result.");
 
         System.out.println("  send() result : completed without exception");
         System.out.println("  PASS");
@@ -35,12 +41,18 @@ class NotificationFactoryTest {
         System.out.println("\n--- TEST: Create SMS Notification ---");
 
         Notification notification = NotificationFactory.createNotification("SMS");
+        System.out.println("Inserted Object: " + notification);
 
         assertNotNull(notification, "Factory must return a non-null object");
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertInstanceOf(SMSNotification.class, notification,
-            "Factory must create an SMSNotification instance — if this fails, the factory switch case was changed");
+                "Factory must create an SMSNotification instance — if this fails, the factory switch case was changed");
+        System.out.println("Assertion passed: expected result matches actual result.");
+
         assertEquals("SMS", notification.getType(),
-            "getType() must return exactly 'SMS'");
+                "getType() must return exactly 'SMS'");
+        System.out.println("Assertion passed: expected result matches actual result.");
+
 
         System.out.println("  Type returned : " + notification.getType());
         System.out.println("  Instance of   : " + notification.getClass().getSimpleName());
@@ -53,12 +65,18 @@ class NotificationFactoryTest {
         System.out.println("\n--- TEST: Create Push Notification ---");
 
         Notification notification = NotificationFactory.createNotification("PUSH");
+        System.out.println("Inserted Object: " + notification);
 
         assertNotNull(notification, "Factory must return a non-null object");
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertInstanceOf(PushNotification.class, notification,
-            "Factory must create a PushNotification instance");
+                "Factory must create a PushNotification instance");
+        System.out.println("Assertion passed: expected result matches actual result.");
+
         assertEquals("PUSH", notification.getType(),
-            "getType() must return exactly 'PUSH'");
+                "getType() must return exactly 'PUSH'");
+        System.out.println("Assertion passed: expected result matches actual result.");
+
 
         System.out.println("  Type returned : " + notification.getType());
         System.out.println("  Instance of   : " + notification.getClass().getSimpleName());
@@ -80,7 +98,9 @@ class NotificationFactoryTest {
         System.out.println("  Exception message : " + ex.getMessage());
 
         assertEquals("Unknown notification type: WHATSAPP", ex.getMessage(),
-            "Exception message must match exactly — if this fails, the error message format was changed");
+                "Exception message must match exactly — if this fails, the error message format was changed");
+        System.out.println("Assertion passed: expected result matches actual result.");
+
 
         System.out.println("  PASS");
     }
@@ -91,12 +111,17 @@ class NotificationFactoryTest {
         System.out.println("\n--- TEST: Case-Insensitive Input ---");
 
         Notification lower = NotificationFactory.createNotification("email");
+        System.out.println("Inserted Object: " + lower);
         Notification upper = NotificationFactory.createNotification("EMAIL");
+        System.out.println("Inserted Object: " + upper);
 
         assertNotNull(lower, "Lowercase 'email' must produce a non-null result");
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertEquals(lower.getType(), upper.getType(),
-            "Both 'email' and 'EMAIL' must produce a notification with the same getType() value — " +
-            "if this fails, toUpperCase() was removed from the factory");
+
+                "Both 'email' and 'EMAIL' must produce a notification with the same getType() value — " +
+                        "if this fails, toUpperCase() was removed from the factory");
+        System.out.println("Assertion passed: expected result matches actual result.");
 
         System.out.println("  'email' → getType() : " + lower.getType());
         System.out.println("  'EMAIL' → getType() : " + upper.getType());

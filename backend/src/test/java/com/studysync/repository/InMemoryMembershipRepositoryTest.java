@@ -22,9 +22,12 @@ class InMemoryMembershipRepositoryTest {
         System.out.println("\n--- TEST: save() + findById() ---");
         Membership m = new Membership(1L, 10L, MembershipStatus.ACTIVE);
         repo.save(m);
+        System.out.println("Save operation completed.");
 
         assertNotNull(m.getMembershipId());
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertTrue(repo.findById(m.getMembershipId()).isPresent());
+        System.out.println("Assertion passed: expected result matches actual result.");
         System.out.println("  Membership ID: " + m.getMembershipId());
         System.out.println("  PASS");
     }
@@ -34,11 +37,15 @@ class InMemoryMembershipRepositoryTest {
     void testFindByUserId() {
         System.out.println("\n--- TEST: findByUserId() ---");
         repo.save(new Membership(1L, 10L, MembershipStatus.ACTIVE));
+        System.out.println("Save operation completed.");
         repo.save(new Membership(1L, 20L, MembershipStatus.PENDING));
+        System.out.println("Save operation completed.");
         repo.save(new Membership(2L, 10L, MembershipStatus.ACTIVE));
+        System.out.println("Save operation completed.");
 
         List<Membership> user1 = repo.findByUserId(1L);
         assertEquals(2, user1.size(), "User 1 has 2 memberships");
+        System.out.println("Assertion passed: expected result matches actual result.");
         System.out.println("  User 1 memberships: " + user1.size());
         System.out.println("  PASS");
     }
@@ -48,13 +55,17 @@ class InMemoryMembershipRepositoryTest {
     void testFindByUserIdAndGroupId() {
         System.out.println("\n--- TEST: findByUserIdAndGroupId() ---");
         repo.save(new Membership(1L, 10L, MembershipStatus.ACTIVE));
+        System.out.println("Save operation completed.");
 
         Optional<Membership> found = repo.findByUserIdAndGroupId(1L, 10L);
         assertTrue(found.isPresent(), "Membership (user=1, group=10) must be found");
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertEquals(MembershipStatus.ACTIVE, found.get().getStatus());
+        System.out.println("Assertion passed: expected result matches actual result.");
 
         Optional<Membership> missing = repo.findByUserIdAndGroupId(1L, 99L);
         assertFalse(missing.isPresent(), "Non-existent combination must return empty");
+        System.out.println("Assertion passed: expected result matches actual result.");
 
         System.out.println("  Exact match found: " + found.isPresent());
         System.out.println("  PASS");
@@ -65,12 +76,15 @@ class InMemoryMembershipRepositoryTest {
     void testCountActiveByUserId() {
         System.out.println("\n--- TEST: countActiveByUserId() ---");
         repo.save(new Membership(1L, 10L, MembershipStatus.ACTIVE));
+        System.out.println("Save operation completed.");
         repo.save(new Membership(1L, 20L, MembershipStatus.ACTIVE));
+        System.out.println("Save operation completed.");
         repo.save(new Membership(1L, 30L, MembershipStatus.PENDING));  // not active
+        System.out.println("Save operation completed.");
 
         long activeCount = repo.countActiveByUserId(1L);
-        assertEquals(2, activeCount,
-            "Only ACTIVE memberships count — PENDING should not be included");
+        assertEquals(2, activeCount,  "Only ACTIVE memberships count — PENDING should not be included");
+        System.out.println("Assertion passed: expected result matches actual result.");
         System.out.println("  Active count for user 1: " + activeCount + " (expected 2)");
         System.out.println("  PASS");
     }
@@ -80,14 +94,19 @@ class InMemoryMembershipRepositoryTest {
     void testFindByStatus() {
         System.out.println("\n--- TEST: findByStatus() ---");
         repo.save(new Membership(1L, 10L, MembershipStatus.ACTIVE));
+        System.out.println("Save operation completed.");
         repo.save(new Membership(2L, 10L, MembershipStatus.PENDING));
+        System.out.println("Save operation completed.");
         repo.save(new Membership(3L, 10L, MembershipStatus.ACTIVE));
+        System.out.println("Save operation completed.");
 
         List<Membership> active  = repo.findByStatus(MembershipStatus.ACTIVE);
         List<Membership> pending = repo.findByStatus(MembershipStatus.PENDING);
 
         assertEquals(2, active.size(),  "2 ACTIVE memberships expected");
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertEquals(1, pending.size(), "1 PENDING membership expected");
+        System.out.println("Assertion passed: expected result matches actual result.");
         System.out.println("  ACTIVE: " + active.size() + "  PENDING: " + pending.size());
         System.out.println("  PASS");
     }

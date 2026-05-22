@@ -43,8 +43,11 @@ public class StudySessionControllerTest {
         ResponseEntity<StudySessionDTO> response = studySessionController.scheduleSession(input);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertNotNull(response.getBody());
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertEquals("Normalisation", response.getBody().getTitle());
+        System.out.println("Assertion passed: expected result matches actual result.");
         verify(studySessionService).scheduleSession("Normalisation", futureTime, 2, "Library", 1L, 1L);
     }
 
@@ -58,7 +61,9 @@ public class StudySessionControllerTest {
         ResponseEntity<List<StudySessionDTO>> response = studySessionController.getAllSessions();
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertEquals(1, response.getBody().size());
+        System.out.println("Assertion passed: expected result matches actual result.");
         verify(studySessionService).getAllSessions();
     }
 
@@ -70,6 +75,7 @@ public class StudySessionControllerTest {
         ResponseEntity<StudySessionDTO> response = studySessionController.getSessionById(99L);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        System.out.println("Assertion passed: expected result matches actual result.");
     }
 
     @Test
@@ -80,5 +86,6 @@ public class StudySessionControllerTest {
         ResponseEntity<Void> response = studySessionController.cancelSession(1L, 9L);
 
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+        System.out.println("Assertion passed: expected result matches actual result.");
     }
 }

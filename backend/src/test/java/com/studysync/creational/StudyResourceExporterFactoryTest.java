@@ -18,16 +18,22 @@ class StudyResourceExporterFactoryTest {
         System.out.println("Format name   : " + exporter.getFormatName());
 
         assertNotNull(exporter, "MarkdownExporterFactory must produce a non-null exporter");
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertInstanceOf(MarkdownExporter.class, exporter,
                 "MarkdownExporterFactory must produce a MarkdownExporter");
+        System.out.println("Assertion passed: expected result matches actual result.");
+
         assertEquals("MARKDOWN", exporter.getFormatName(),
                 "Markdown exporter must report format name as 'MARKDOWN'");
+        System.out.println("Assertion passed: expected result matches actual result.");
+
 
         System.out.println("Exporting study notes...");
         boolean result = exporter.export("# Session Notes\n- Topic: Recursion");
         System.out.println("Export result : " + result);
 
         assertTrue(result, "Markdown export must return true on success");
+        System.out.println("Assertion passed: expected result matches actual result.");
 
         System.out.println("✓ PASS — Markdown exporter working correctly");
     }
@@ -44,16 +50,22 @@ class StudyResourceExporterFactoryTest {
         System.out.println("Format name   : " + exporter.getFormatName());
 
         assertNotNull(exporter, "PdfExporterFactory must produce a non-null exporter");
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertInstanceOf(PdfExporter.class, exporter,
                 "PdfExporterFactory must produce a PdfExporter");
+        System.out.println("Assertion passed: expected result matches actual result.");
+
         assertEquals("PDF", exporter.getFormatName(),
                 "PDF exporter must report format name as 'PDF'");
+        System.out.println("Assertion passed: expected result matches actual result.");
+
 
         System.out.println("Exporting session summary...");
         boolean result = exporter.export("Session: Algorithms Review — Room 3.24");
         System.out.println("Export result : " + result);
 
         assertTrue(result, "PDF export must return true on success");
+        System.out.println("Assertion passed: expected result matches actual result.");
 
         System.out.println("✓ PASS — PDF exporter working correctly");
     }
@@ -70,16 +82,22 @@ class StudyResourceExporterFactoryTest {
         System.out.println("Format name   : " + exporter.getFormatName());
 
         assertNotNull(exporter, "CsvExporterFactory must produce a non-null exporter");
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertInstanceOf(CsvExporter.class, exporter,
                 "CsvExporterFactory must produce a CsvExporter");
+        System.out.println("Assertion passed: expected result matches actual result.");
+
         assertEquals("CSV", exporter.getFormatName(),
                 "CSV exporter must report format name as 'CSV'");
+        System.out.println("Assertion passed: expected result matches actual result.");
+
 
         System.out.println("Exporting session attendance list...");
         boolean result = exporter.export("name,email\nAlice,alice@uni.ac.za\nBob,bob@uni.ac.za");
         System.out.println("Export result : " + result);
 
         assertTrue(result, "CSV export must return true on success");
+        System.out.println("Assertion passed: expected result matches actual result.");
 
         System.out.println("✓ PASS — CSV exporter working correctly");
     }
@@ -99,21 +117,27 @@ class StudyResourceExporterFactoryTest {
         boolean mdResult = markdownFactory.exportResource(content);
         System.out.println("Result: " + mdResult);
         assertTrue(mdResult, "MarkdownExporterFactory.exportResource() must return true");
+        System.out.println("Assertion passed: expected result matches actual result.");
 
         System.out.println("\nCalling pdfFactory.exportResource()...");
         boolean pdfResult = pdfFactory.exportResource(content);
         System.out.println("Result: " + pdfResult);
         assertTrue(pdfResult, "PdfExporterFactory.exportResource() must return true");
+        System.out.println("Assertion passed: expected result matches actual result.");
 
         System.out.println("\nCalling csvFactory.exportResource()...");
         boolean csvResult = csvFactory.exportResource(content);
         System.out.println("Result: " + csvResult);
         assertTrue(csvResult, "CsvExporterFactory.exportResource() must return true");
+        System.out.println("Assertion passed: expected result matches actual result.");
 
         System.out.println("\nVerifying each factory produces a distinct exporter type...");
         Class<?> mdType  = markdownFactory.createExporter().getClass();
+        System.out.println("Markdown exporter type object: " + mdType.getSimpleName());
         Class<?> pdfType = pdfFactory.createExporter().getClass();
+        System.out.println("PDF exporter type object: " + pdfType.getSimpleName());
         Class<?> csvType = csvFactory.createExporter().getClass();
+        System.out.println("CSV exporter type object: " + csvType.getSimpleName());
 
         System.out.println("Markdown exporter type : " + mdType.getSimpleName());
         System.out.println("PDF exporter type      : " + pdfType.getSimpleName());
@@ -121,10 +145,16 @@ class StudyResourceExporterFactoryTest {
 
         assertNotEquals(mdType, pdfType,
                 "Markdown and PDF factories must produce different exporter types");
+        System.out.println("Assertion passed: expected result matches actual result.");
+
         assertNotEquals(pdfType, csvType,
                 "PDF and CSV factories must produce different exporter types");
+        System.out.println("Assertion passed: expected result matches actual result.");
+
         assertNotEquals(mdType, csvType,
                 "Markdown and CSV factories must produce different exporter types");
+        System.out.println("Assertion passed: expected result matches actual result.");
+
 
         System.out.println("✓ PASS — template method pattern working correctly");
     }

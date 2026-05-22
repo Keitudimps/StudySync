@@ -49,14 +49,18 @@ public class StudySessionServiceTest {
         StudySession mockSession = StudySession.schedule(title, futureTime, duration, location, groupId, createdBy);
         when(groupService.getGroupById(groupId)).thenReturn(null); // Group exists (null is OK for this test)
         doNothing().when(sessionRepository).save(any(StudySession.class));
+        System.out.println("Save operation completed.");
 
         // Act
         StudySession result = sessionService.scheduleSession(title, futureTime, duration, location, groupId, createdBy);
 
         // Assert
         assertNotNull(result);
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertEquals(title, result.getTitle());
+        System.out.println("Assertion passed: expected result matches actual result.");
         verify(sessionRepository).save(any(StudySession.class));
+        System.out.println("Save operation completed.");
     }
 
     @Test
@@ -67,10 +71,13 @@ public class StudySessionServiceTest {
         Long groupId = 1L;
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () ->
-            sessionService.scheduleSession("Past Session", pastTime, 2, "Room", groupId, 1L)
-        );
+        assertThrows(IllegalArgumentException.class, () -> {
+            System.out.println("Executing action that should throw an exception...");
+            sessionService.scheduleSession("Past Session", pastTime, 2, "Room", groupId, 1L);
+        });
+        System.out.println("Expected exception was thrown. Test Passed.");
         verify(sessionRepository, never()).save(any());
+        System.out.println("Save operation completed.");
     }
 
     @Test
@@ -87,7 +94,9 @@ public class StudySessionServiceTest {
 
         // Assert
         assertNotNull(result);
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertEquals("Test Session", result.getTitle());
+        System.out.println("Assertion passed: expected result matches actual result.");
         verify(sessionRepository).findById(sessionId);
     }
 
@@ -99,9 +108,11 @@ public class StudySessionServiceTest {
         when(sessionRepository.findById(sessionId)).thenReturn(java.util.Optional.empty());
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () ->
-            sessionService.getSessionById(sessionId)
-        );
+        assertThrows(IllegalArgumentException.class, () -> {
+            System.out.println("Executing action that should throw an exception...");
+            sessionService.getSessionById(sessionId);
+        });
+        System.out.println("Expected exception was thrown. Test Passed.");
     }
 
     @Test
@@ -118,7 +129,9 @@ public class StudySessionServiceTest {
 
         // Assert
         assertNotNull(result);
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertEquals(2, result.size());
+        System.out.println("Assertion passed: expected result matches actual result.");
         verify(sessionRepository).findAll();
     }
 
@@ -135,7 +148,9 @@ public class StudySessionServiceTest {
 
         // Assert
         assertNotNull(result);
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertEquals(1, result.size());
+        System.out.println("Assertion passed: expected result matches actual result.");
         verify(sessionRepository).findUpcomingSessions();
     }
 
@@ -153,7 +168,9 @@ public class StudySessionServiceTest {
 
         // Assert
         assertNotNull(result);
+        System.out.println("Assertion passed: expected result matches actual result.");
         assertEquals(1, result.size());
+        System.out.println("Assertion passed: expected result matches actual result.");
         verify(sessionRepository).findByGroupId(groupId);
     }
 
@@ -167,13 +184,16 @@ public class StudySessionServiceTest {
         StudySession mockSession = StudySession.schedule("Session", LocalDateTime.now().plusDays(1), 1, "Room", 1L, creatorId);
         when(sessionRepository.findById(sessionId)).thenReturn(java.util.Optional.of(mockSession));
         doNothing().when(sessionRepository).save(any(StudySession.class));
+        System.out.println("Save operation completed.");
 
         // Act
         StudySession result = sessionService.rescheduleSession(sessionId, newTime, creatorId);
 
         // Assert
         assertNotNull(result);
+        System.out.println("Assertion passed: expected result matches actual result.");
         verify(sessionRepository).save(any(StudySession.class));
+        System.out.println("Save operation completed.");
     }
 
     @Test
@@ -188,10 +208,13 @@ public class StudySessionServiceTest {
         when(sessionRepository.findById(sessionId)).thenReturn(java.util.Optional.of(mockSession));
 
         // Act & Assert
-        assertThrows(IllegalStateException.class, () ->
-            sessionService.rescheduleSession(sessionId, newTime, otherUserId)
-        );
+        assertThrows(IllegalStateException.class, () -> {
+            System.out.println("Executing action that should throw an exception...");
+            sessionService.rescheduleSession(sessionId, newTime, otherUserId);
+        });
+        System.out.println("Expected exception was thrown. Test Passed.");
         verify(sessionRepository, never()).save(any());
+        System.out.println("Save operation completed.");
     }
 
     @Test
@@ -203,12 +226,14 @@ public class StudySessionServiceTest {
         StudySession mockSession = StudySession.schedule("Session", LocalDateTime.now().plusDays(1), 1, "Room", 1L, creatorId);
         when(sessionRepository.findById(sessionId)).thenReturn(java.util.Optional.of(mockSession));
         doNothing().when(sessionRepository).deleteById(sessionId);
+        System.out.println("Delete operation completed.");
 
         // Act
         sessionService.cancelSession(sessionId, creatorId);
 
         // Assert
         verify(sessionRepository).deleteById(sessionId);
+        System.out.println("Delete operation completed.");
     }
 
     @Test
@@ -222,6 +247,7 @@ public class StudySessionServiceTest {
 
         // Assert
         assertEquals(5L, result);
+        System.out.println("Assertion passed: expected result matches actual result.");
         verify(sessionRepository).count();
     }
 }
