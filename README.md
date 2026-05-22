@@ -21,18 +21,19 @@ The system is being developed using **React** for the frontend, **Java Spring Bo
 # Table of Contents
 
 1. [Repository Structure](#repository-structure)
-2. [Quick Links](#quick-links)
-3. [Technology Stack](#technology-stack)
-4. [Running the Project](#running-the-project)
-5. [Project Documentation](#project-documentation)
-6. [Design Patterns Implementation](#design-patterns-implementation)
-7. [Repository Layer](#repository-layer)
-8. [Service Layer and REST API](#service-layer-and-rest-api)
-9. [CI/CD Pipeline](#cicd-pipeline)
-10. [Project Management](#project-management)
-11. [Current Project Status](#current-project-status)
-12. [Project Reflection](#project-reflection)
-13. [Author](#author)
+2. [Source Code Navigation](#source-code-navigation)
+3. [Quick Links](#quick-links)
+4. [Technology Stack](#technology-stack)
+5. [Running the Project](#running-the-project)
+6. [Project Documentation](#project-documentation)
+7. [Design Patterns Implementation](#design-patterns-implementation)
+8. [Repository Layer](#repository-layer)
+9. [Service Layer and REST API](#service-layer-and-rest-api)
+10. [CI/CD Pipeline](#cicd-pipeline)
+11. [Project Management](#project-management)
+12. [Current Project Status](#current-project-status)
+13. [Project Reflection](#project-reflection)
+14. [Author](#author)
 
 ---
 
@@ -73,6 +74,107 @@ StudySync/
 ├── CHANGELOG.md
 └── .gitignore
 ```
+
+---
+
+# Source Code Navigation
+
+## Main Application
+
+| Component | Link |
+|---|---|
+| Main Application | [StudySyncApplication.java](./backend/src/main/java/com/studysync/StudySyncApplication.java) |
+
+---
+
+## Backend Packages
+
+| Package | Link |
+|---|---|
+| Domain Package | [domain/](./backend/src/main/java/com/studysync/domain/) |
+| Repository Package | [repository/](./backend/src/main/java/com/studysync/repository/) |
+| Service Package | [service/](./backend/src/main/java/com/studysync/service/) |
+| Controller Package | [controller/](./backend/src/main/java/com/studysync/controller/) |
+| DTO Package | [dto/](./backend/src/main/java/com/studysync/dto/) |
+| Creational Package | [creational/](./backend/src/main/java/com/studysync/creational/) |
+
+---
+
+## Domain Layer
+
+| Class | Link |
+|---|---|
+| User | [User.java](./backend/src/main/java/com/studysync/domain/User.java) |
+| StudyGroup | [StudyGroup.java](./backend/src/main/java/com/studysync/domain/StudyGroup.java) |
+| Membership | [Membership.java](./backend/src/main/java/com/studysync/domain/Membership.java) |
+| StudySession | [StudySession.java](./backend/src/main/java/com/studysync/domain/StudySession.java) |
+| Course | [Course.java](./backend/src/main/java/com/studysync/domain/Course.java) |
+
+---
+
+## Repository Layer
+
+| Repository | Link |
+|---|---|
+| UserRepository | [UserRepository.java](./backend/src/main/java/com/studysync/repository/UserRepository.java) |
+| StudyGroupRepository | [StudyGroupRepository.java](./backend/src/main/java/com/studysync/repository/StudyGroupRepository.java) |
+| MembershipRepository | [MembershipRepository.java](./backend/src/main/java/com/studysync/repository/MembershipRepository.java) |
+| StudySessionRepository | [StudySessionRepository.java](./backend/src/main/java/com/studysync/repository/StudySessionRepository.java) |
+| RepositoryFactory | [RepositoryFactory.java](./backend/src/main/java/com/studysync/factory/RepositoryFactory.java) |
+
+---
+
+## Service Layer
+
+| Service | Link |
+|---|---|
+| UserService | [UserService.java](./backend/src/main/java/com/studysync/service/UserService.java) |
+| StudyGroupService | [StudyGroupService.java](./backend/src/main/java/com/studysync/service/StudyGroupService.java) |
+| StudySessionService | [StudySessionService.java](./backend/src/main/java/com/studysync/service/StudySessionService.java) |
+
+---
+
+## REST Controllers
+
+| Controller | Link |
+|---|---|
+| UserController | [UserController.java](./backend/src/main/java/com/studysync/controller/UserController.java) |
+| StudyGroupController | [StudyGroupController.java](./backend/src/main/java/com/studysync/controller/StudyGroupController.java) |
+| StudySessionController | [StudySessionController.java](./backend/src/main/java/com/studysync/controller/StudySessionController.java) |
+
+---
+
+## DTO Layer
+
+| DTO | Link |
+|---|---|
+| UserDTO | [UserDTO.java](./backend/src/main/java/com/studysync/dto/UserDTO.java) |
+| StudyGroupDTO | [StudyGroupDTO.java](./backend/src/main/java/com/studysync/dto/StudyGroupDTO.java) |
+| StudySessionDTO | [StudySessionDTO.java](./backend/src/main/java/com/studysync/dto/StudySessionDTO.java) |
+
+---
+
+## CI/CD and Configuration
+
+| File | Link |
+|---|---|
+| GitHub Actions Workflow | [.github/workflows/ci.yml](./.github/workflows/ci.yml) |
+| Branch Protection Documentation | [PROTECTION.md](./PROTECTION.md) |
+| Maven Build File | [pom.xml](./backend/pom.xml) |
+
+---
+
+## Test Suites
+
+| Test Class | Link |
+|---|---|
+| UserServiceTest | [UserServiceTest.java](./backend/src/test/java/com/studysync/service/UserServiceTest.java) |
+| StudyGroupServiceTest | [StudyGroupServiceTest.java](./backend/src/test/java/com/studysync/service/StudyGroupServiceTest.java) |
+| StudySessionServiceTest | [StudySessionServiceTest.java](./backend/src/test/java/com/studysync/service/StudySessionServiceTest.java) |
+| UserControllerTest | [UserControllerTest.java](./backend/src/test/java/com/studysync/controller/UserControllerTest.java) |
+| RepositoryFactoryTest | [RepositoryFactoryTest.java](./backend/src/test/java/com/studysync/repository/RepositoryFactoryTest.java) |
+| GroupPrototypeTest | [GroupPrototypeTest.java](./backend/src/test/java/com/studysync/creational/GroupPrototypeTest.java) |
+| StudyGroupBuilderTest | [StudyGroupBuilderTest.java](./backend/src/test/java/com/studysync/creational/StudyGroupBuilderTest.java) |
 
 ---
 
@@ -248,6 +350,9 @@ The project implements multiple creational design patterns integrated into the s
 
 # Repository Layer
 
+Source Directory:  
+[backend/src/main/java/com/studysync/repository/](./backend/src/main/java/com/studysync/repository/)
+
 The repository layer provides a persistence abstraction using in-memory implementations and future-proofing stubs.
 
 ## Features
@@ -260,19 +365,10 @@ The repository layer provides a persistence abstraction using in-memory implemen
 
 ---
 
-## Repository Tests
-
-| Test Class | Tests |
-|---|---|
-| InMemoryUserRepositoryTest | 9 |
-| InMemoryStudyGroupRepositoryTest | 6 |
-| InMemoryMembershipRepositoryTest | 5 |
-| InMemoryStudySessionRepositoryTest | 4 |
-| RepositoryFactoryTest | 8 |
-
----
-
 # Service Layer and REST API
+
+Source Directory:  
+[backend/src/main/java/com/studysync/service/](./backend/src/main/java/com/studysync/service/)
 
 The project includes a complete service layer and REST API implementation.
 
