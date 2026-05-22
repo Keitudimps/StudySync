@@ -29,14 +29,7 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
-
-      - name: Cache Maven Dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('backend/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-m2
+          cache: maven
 
       - name: Run Tests
         run: mvn clean test
@@ -61,6 +54,7 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
+          cache: maven
 
       - name: Build JAR Artifact
         run: mvn clean package -DskipTests
