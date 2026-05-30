@@ -30,10 +30,13 @@ The system is being developed using **React** for the frontend, **Java Spring Bo
 8. [Repository Layer](#repository-layer)
 9. [Service Layer and REST API](#service-layer-and-rest-api)
 10. [CI/CD Pipeline](#cicd-pipeline)
-11. [Project Management](#project-management)
-12. [Current Project Status](#current-project-status)
-13. [Project Reflection](#project-reflection)
-14. [Author](#author)
+11. [Assignment 13 Evidence](#assignment-13-evidence)
+12. [Project Management](#project-management)
+13. [Current Project Status](#current-project-status)
+14. [Open-Source Collaboration](#open-source-collaboration)
+15. [Project Reflection](#project-reflection)
+16. [Author](#Keitumetse Dimpe)
+17. [License](#license)
 
 ---
 
@@ -70,7 +73,15 @@ StudySync/
 │       └── ci.yml
 │
 ├── README.md
+├── CONTRIBUTING.md
+├── ROADMAP.md
+├── ISSUE_LABELS.md
+├── VOTING_RESULTS.md
+├── REFLECTION.md
 ├── PROTECTION.md
+├── ASSIGNMENT_13_CHECKLIST.md
+├── ASSIGNMENT_14_CHECKLIST.md
+├── LICENSE
 ├── CHANGELOG.md
 └── .gitignore
 ```
@@ -195,6 +206,11 @@ StudySync/
 | Class Diagram | [CLASS_DIAGRAM.md](./CLASS_DIAGRAM.md) |
 | Reflection Document | [REFLECTION.md](./REFLECTION.md) |
 | Branch Protection Rules | [PROTECTION.md](./PROTECTION.md) |
+| Contribution Guidelines | [CONTRIBUTING.md](./CONTRIBUTING.md) |
+| Open-Source Roadmap | [ROADMAP.md](./ROADMAP.md) |
+| Contributor Issue Plan | [ISSUE_LABELS.md](./ISSUE_LABELS.md) |
+| Peer Voting Results | [VOTING_RESULTS.md](./VOTING_RESULTS.md) |
+| Assignment 14 Checklist | [ASSIGNMENT_14_CHECKLIST.md](./ASSIGNMENT_14_CHECKLIST.md) |
 | Changelog | [CHANGELOG.md](./CHANGELOG.md) |
 
 ---
@@ -322,6 +338,10 @@ The repository contains all documentation, diagrams, specifications, architectur
 | [REFLECTION.md](./REFLECTION.md) | Project reflections and lessons learned |
 | [CHANGELOG.md](./CHANGELOG.md) | Project updates and cumulative changes |
 | [PROTECTION.md](./PROTECTION.md) | Branch protection configuration explanation |
+| [CONTRIBUTING.md](./CONTRIBUTING.md) | Contributor setup, coding standards, issue workflow, and PR process |
+| [ROADMAP.md](./ROADMAP.md) | Future project features and planned improvements |
+| [ISSUE_LABELS.md](./ISSUE_LABELS.md) | Planned beginner-friendly and feature-request issues for contributors |
+| [VOTING_RESULTS.md](./VOTING_RESULTS.md) | Peer review stars, forks, feedback, and voting evidence |
 
 ---
 
@@ -514,6 +534,29 @@ Additional details:
 
 ---
 
+
+# Assignment 13 Evidence
+
+The following screenshots provide evidence for the CI/CD and branch protection requirements.
+
+## Branch Protection Rules
+
+![Branch Protection Rules](./Screenshots/Branch%20protection%20screenshot.png)
+
+## GitHub Actions Test Results
+
+![GitHub Actions Workflow](./Screenshots/Actions%20Workflow.png)
+
+## Generated Release Artifact
+
+![Generated Artifact](./Screenshots/Artifact%20generation%20screenshot.png)
+
+## Pull Request Blocked by Required Checks
+
+![Pull Request Blocked](./Screenshots/PR%20blocked%20screenshot.png)
+
+---
+
 # Project Management
 
 ## GitHub Projects Kanban Board
@@ -596,7 +639,7 @@ A cumulative reflection document is maintained throughout the project lifecycle.
 
 # License
 
-This project was developed for academic and educational purposes.
+This project uses the MIT License. See [LICENSE](./LICENSE) for details.
 
 ---
 
@@ -608,17 +651,19 @@ StudySync demonstrates modern software engineering practices including layered a
 
 # Open-Source Collaboration
 
-StudySync is prepared for peer review and open-source-style collaboration. The repository includes contribution guidelines, issue planning, a roadmap, a license, and peer voting documentation.
+StudySync is prepared for peer review and open-source-style collaboration. The repository includes contribution guidelines, issue planning, a roadmap, a license, peer voting documentation, and a reflection on collaboration.
 
 ## Collaboration Documents
 
 | Document | Purpose |
 |---|---|
-| [CONTRIBUTING.md](./CONTRIBUTING.md) | Explains how contributors can set up the project, choose issues, follow coding standards, and submit pull requests |
-| [ROADMAP.md](./ROADMAP.md) | Lists planned future features and long-term project improvements |
-| [LICENSE](./LICENSE) | Defines the open-source license for the project |
-| [VOTING_RESULTS.md](./VOTING_RESULTS.md) | Tracks peer review engagement, stars, forks, and pull requests |
-| [ISSUE_LABELS.md](./ISSUE_LABELS.md) | Lists suggested good-first-issue and feature-request tasks for contributors |
+| [CONTRIBUTING.md](./CONTRIBUTING.md) | Explains setup, coding standards, issue selection, testing, and pull request workflow |
+| [ROADMAP.md](./ROADMAP.md) | Lists planned future features and improvements |
+| [LICENSE](./LICENSE) | Provides the MIT open-source license |
+| [ISSUE_LABELS.md](./ISSUE_LABELS.md) | Lists 5+ `good-first-issue` tasks and 3+ `feature-request` tasks |
+| [VOTING_RESULTS.md](./VOTING_RESULTS.md) | Records peer review stars, forks, comments, and pull requests |
+| [REFLECTION.md](./REFLECTION.md) | Contains the Assignment 14 reflection on collaboration and onboarding |
+| [ASSIGNMENT_14_CHECKLIST.md](./ASSIGNMENT_14_CHECKLIST.md) | Tracks completion of Assignment 14 requirements |
 
 ---
 
@@ -627,11 +672,13 @@ StudySync is prepared for peer review and open-source-style collaboration. The r
 New contributors should follow these steps:
 
 1. Fork the repository.
-2. Choose an issue labeled `good-first-issue` or `feature-request`.
-3. Create a new branch.
-4. Make a small focused change.
-5. Run all tests.
-6. Submit a pull request with a clear description.
+2. Clone the forked repository.
+3. Open the project in IntelliJ IDEA or Visual Studio Code.
+4. Navigate to the backend folder.
+5. Run `mvn clean test` to confirm the project works locally.
+6. Choose an issue labeled `good-first-issue` or `feature-request`.
+7. Create a new branch for the change.
+8. Submit a pull request with a clear description.
 
 Full contributor instructions are available in [CONTRIBUTING.md](./CONTRIBUTING.md).
 
@@ -641,25 +688,20 @@ Full contributor instructions are available in [CONTRIBUTING.md](./CONTRIBUTING.
 
 | Feature | Difficulty | Suggested Label |
 |---|---|---|
-| Improve user validation messages | Beginner | good-first-issue |
-| Add more unit tests | Beginner | good-first-issue |
-| Improve README formatting | Beginner | good-first-issue |
-| Add JavaDoc comments | Beginner | good-first-issue |
-| Add API documentation notes | Beginner | good-first-issue |
-| Add dark mode support | Intermediate | feature-request |
-| Add Google Calendar synchronization | Intermediate | feature-request |
-| Implement Redis caching | Advanced | feature-request |
-| Add Docker support | Advanced | feature-request |
+| Improve user validation messages | Beginner | `good-first-issue` |
+| Add more unit tests | Beginner | `good-first-issue` |
+| Improve README formatting | Beginner | `good-first-issue` |
+| Add JavaDoc comments | Beginner | `good-first-issue` |
+| Add API documentation notes | Beginner | `good-first-issue` |
+| Add dark mode support | Intermediate | `feature-request` |
+| Add Google Calendar synchronization | Intermediate | `feature-request` |
+| Implement Redis caching | Advanced | `feature-request` |
+| Add Docker support | Advanced | `feature-request` |
 
 ---
 
 ## Peer Review and Voting
 
-Classmates are encouraged to review the repository by:
+Classmates are encouraged to review the repository by starring it, forking it, opening small pull requests, and giving feedback through issues or comments. Peer engagement is recorded in [VOTING_RESULTS.md](./VOTING_RESULTS.md).
 
-- Starring the repository
-- Forking the repository
-- Opening small pull requests
-- Providing feedback through issues or comments
-
-Peer engagement is recorded in [VOTING_RESULTS.md](./VOTING_RESULTS.md).
+---
