@@ -204,10 +204,10 @@ StudySync/
 | Layer | Technology |
 |---|---|
 | Frontend | React 18, Axios, React Router v6, TailwindCSS |
-| Backend | Java 17, Spring Boot 3 |
+| Backend | Java 21, Spring Boot 3 |
 | Database | PostgreSQL 15 |
 | Authentication | JSON Web Tokens (JWT) |
-| Build Tool | Apache Maven 3.9.15 |
+| Build Tool | Apache Maven |
 | Testing | JUnit 5, Mockito |
 | CI/CD | GitHub Actions |
 | Deployment | Vercel, Railway |
@@ -241,15 +241,21 @@ mvn spring-boot:run
 
 ---
 
-## Run All Tests
+## Run All Tests Locally
+
+From the `backend` folder, run:
 
 ```bash
 mvn clean test
 ```
 
+This command runs the unit and integration tests before code is pushed to GitHub.
+
 ---
 
-## Build the Application
+## Build the Application Locally
+
+From the `backend` folder, run:
 
 ```bash
 mvn clean package
@@ -432,17 +438,7 @@ All tests pass successfully with zero failures.
 
 # CI/CD Pipeline
 
-The project uses GitHub Actions to automate testing and deployment preparation.
-
----
-
-## Continuous Integration (CI)
-
-The CI workflow automatically:
-- Runs on pushes to all branches
-- Runs on pull requests to `main`
-- Executes all unit and integration tests
-- Prevents merges when tests fail
+The project uses GitHub Actions to automate testing and release artifact generation for Assignment 13.
 
 Workflow file:
 
@@ -452,12 +448,51 @@ Workflow file:
 
 ---
 
-## Continuous Deployment (CD)
+## Continuous Integration (CI)
 
-When code is merged into the `main` branch:
-- The backend application is built
-- A JAR artifact is generated
-- The artifact is uploaded automatically through GitHub Actions
+The CI job is called **Run Unit and Integration Tests**. It automatically:
+
+- Runs on every push to any branch.
+- Runs on every pull request targeting `main`.
+- Sets up Java 21 using Temurin.
+- Caches Maven dependencies to make the workflow faster.
+- Runs all backend tests using:
+
+```bash
+mvn --batch-mode clean test
+```
+
+When branch protection is enabled, this status check blocks pull request merging if the tests fail.
+
+---
+
+## Continuous Delivery / Release Artifact (CD)
+
+The release artifact job is called **Build and Upload Release Artifact**. It runs only when code is pushed or merged into `main`.
+
+The job:
+
+- Waits for the test job to pass first.
+- Builds the backend JAR file using Maven.
+- Uploads the JAR as a GitHub Actions artifact named `StudySync-JAR`.
+- Fails the workflow if no JAR file is produced.
+
+This means feature branches and pull requests run tests, but release artifacts are generated only from `main`.
+
+---
+
+# Pull Request Workflow
+
+The required workflow is:
+
+1. Create a new branch for changes.
+2. Commit and push the branch.
+3. Open a pull request into `main`.
+4. Wait for the CI test status check to pass.
+5. Get at least 1 approval.
+6. Merge only after GitHub allows the pull request.
+
+If tests fail, the pull request must remain blocked until the issue is fixed.
 
 ---
 
@@ -466,12 +501,16 @@ When code is merged into the `main` branch:
 The repository uses GitHub branch protection rules on the `main` branch.
 
 Configured rules:
-- Require pull request reviews
-- Require status checks to pass
-- Prevent direct pushes to `main`
+
+- Require pull request reviews before merging.
+- Require at least 1 approval.
+- Require the `Run Unit and Integration Tests` status check to pass.
+- Prevent direct pushes to `main`.
 
 Additional details:
+
 - [PROTECTION.md](./PROTECTION.md)
+- [ASSIGNMENT_13_CHECKLIST.md](./ASSIGNMENT_13_CHECKLIST.md)
 
 ---
 
