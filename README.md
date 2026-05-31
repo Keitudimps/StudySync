@@ -1,283 +1,44 @@
 # StudySync — Study Group Finder System
 
-## Project Overview
+StudySync is a web-based academic collaboration platform for students who need a structured way to find, create, join, and manage study groups. It replaces informal WhatsApp/social-media coordination with a system that supports academic profiles, group discovery, membership approval, study session scheduling, administration, testing, CI/CD, and open-source-style collaboration.
 
-StudySync is a web-based academic collaboration platform developed as part of a Software Engineering course project. The system is designed to address a common challenge faced by university students: the lack of a structured, centralised tool for forming and coordinating peer study groups.
-
-The platform enables students to discover, create, and participate in study groups organised by course code or subject area. It provides structured workflows for group membership, session scheduling, and administrative oversight — replacing the informal and unreliable methods students currently rely on, such as social media groups and physical notice boards.
-
-Upon completion, the system will provide the following core capabilities:
-
-- Student registration and academic profile management linked to enrolled courses
-- Creation and discovery of study groups with configurable privacy settings
-- Membership management including join requests and creator approval workflows
-- Study session scheduling with location and agenda support
-- Administrative tools for user account management and group moderation
-
-The system is being developed using **React** for the frontend, **Java Spring Boot** for the backend REST API, and **PostgreSQL** as the relational database.
+The repository is organised as one continuous Software Engineering project from **Assignment 3 to Assignment 14**. Each assignment builds on the previous one, so the README links every required document, diagram, screenshot, and source-code area.
 
 ---
 
-# Table of Contents
+## Table of Contents
 
-1. [Repository Structure](#repository-structure)
-2. [Source Code Navigation](#source-code-navigation)
-3. [Quick Links](#quick-links)
-4. [Technology Stack](#technology-stack)
-5. [Running the Project](#running-the-project)
-6. [Project Documentation](#project-documentation)
-7. [Design Patterns Implementation](#design-patterns-implementation)
-8. [Repository Layer](#repository-layer)
-9. [Service Layer and REST API](#service-layer-and-rest-api)
-10. [CI/CD Pipeline](#cicd-pipeline)
-11. [Assignment 13 Evidence](#assignment-13-evidence)
-12. [Project Management](#project-management)
-13. [Current Project Status](#current-project-status)
-14. [Open-Source Collaboration](#open-source-collaboration)
-15. [Project Reflection](#project-reflection)
-16. [Author](#Keitumetse Dimpe)
-17. [License](#license)
+1. [Quick Start](#quick-start)
+2. [Technology Stack](#technology-stack)
+3. [Assignment 3–14 Coverage Matrix](#assignment-314-coverage-matrix)
+4. [Repository Structure](#repository-structure)
+5. [Documentation Index](#documentation-index)
+6. [Diagram Gallery](#diagram-gallery)
+7. [Source Code Navigation](#source-code-navigation)
+8. [Running and Testing](#running-and-testing)
+9. [CI/CD and Branch Protection Evidence](#cicd-and-branch-protection-evidence)
+10. [Open-Source Collaboration](#open-source-collaboration)
+11. [Author](#author)
+12. [License](#license)
 
 ---
 
-# Repository Structure
-
-This repository serves as the complete project documentation and source code repository for all assignments submitted throughout the semester. Each implementation builds upon the previous phase, maintaining full traceability from requirements engineering through to system implementation and CI/CD automation.
-
-```text
-StudySync/
-│
-├── backend/
-│   ├── src/
-│   │   ├── main/
-│   │   │   ├── controller/
-│   │   │   ├── creational/
-│   │   │   ├── domain/
-│   │   │   ├── dto/
-│   │   │   ├── factory/
-│   │   │   ├── repository/
-│   │   │   ├── service/
-│   │   │   └── StudySyncApplication.java
-│   │   │
-│   │   └── test/
-│   │       ├── controller/
-│   │       ├── creational/
-│   │       ├── repository/
-│   │       └── service/
-│   │
-│   ├── pom.xml
-│   └── run-tests.sh
-│
-├── .github/
-│   └── workflows/
-│       └── ci.yml
-│
-├── README.md
-├── CONTRIBUTING.md
-├── ROADMAP.md
-├── ISSUE_LABELS.md
-├── VOTING_RESULTS.md
-├── REFLECTION.md
-├── PROTECTION.md
-├── ASSIGNMENT_13_CHECKLIST.md
-├── ASSIGNMENT_14_CHECKLIST.md
-├── LICENSE
-├── CHANGELOG.md
-└── .gitignore
-```
-
----
-
-# Source Code Navigation
-
-## Main Application
-
-| Component | Link |
-|---|---|
-| Main Application | [StudySyncApplication.java](./backend/src/main/java/com/studysync/StudySyncApplication.java) |
-
----
-
-## Backend Packages
-
-| Package | Link |
-|---|---|
-| Domain Package | [domain/](./backend/src/main/java/com/studysync/domain/) |
-| Repository Package | [repository/](./backend/src/main/java/com/studysync/repository/) |
-| Service Package | [service/](./backend/src/main/java/com/studysync/service/) |
-| Controller Package | [controller/](./backend/src/main/java/com/studysync/controller/) |
-| DTO Package | [dto/](./backend/src/main/java/com/studysync/dto/) |
-| Creational Package | [creational/](./backend/src/main/java/com/studysync/creational/) |
-
----
-
-## Domain Layer
-
-| Class | Link |
-|---|---|
-| User | [User.java](./backend/src/main/java/com/studysync/domain/User.java) |
-| StudyGroup | [StudyGroup.java](./backend/src/main/java/com/studysync/domain/StudyGroup.java) |
-| Membership | [Membership.java](./backend/src/main/java/com/studysync/domain/Membership.java) |
-| StudySession | [StudySession.java](./backend/src/main/java/com/studysync/domain/StudySession.java) |
-| Course | [Course.java](./backend/src/main/java/com/studysync/domain/Course.java) |
-
----
-
-## Repository Layer
-
-| Repository | Link |
-|---|---|
-| UserRepository | [UserRepository.java](./backend/src/main/java/com/studysync/repository/UserRepository.java) |
-| StudyGroupRepository | [StudyGroupRepository.java](./backend/src/main/java/com/studysync/repository/StudyGroupRepository.java) |
-| MembershipRepository | [MembershipRepository.java](./backend/src/main/java/com/studysync/repository/MembershipRepository.java) |
-| StudySessionRepository | [StudySessionRepository.java](./backend/src/main/java/com/studysync/repository/StudySessionRepository.java) |
-| RepositoryFactory | [RepositoryFactory.java](./backend/src/main/java/com/studysync/factory/RepositoryFactory.java) |
-
----
-
-## Service Layer
-
-| Service | Link |
-|---|---|
-| UserService | [UserService.java](./backend/src/main/java/com/studysync/service/UserService.java) |
-| StudyGroupService | [StudyGroupService.java](./backend/src/main/java/com/studysync/service/StudyGroupService.java) |
-| StudySessionService | [StudySessionService.java](./backend/src/main/java/com/studysync/service/StudySessionService.java) |
-
----
-
-## REST Controllers
-
-| Controller | Link |
-|---|---|
-| UserController | [UserController.java](./backend/src/main/java/com/studysync/controller/UserController.java) |
-| StudyGroupController | [StudyGroupController.java](./backend/src/main/java/com/studysync/controller/StudyGroupController.java) |
-| StudySessionController | [StudySessionController.java](./backend/src/main/java/com/studysync/controller/StudySessionController.java) |
-
----
-
-## DTO Layer
-
-| DTO | Link |
-|---|---|
-| UserDTO | [UserDTO.java](./backend/src/main/java/com/studysync/dto/UserDTO.java) |
-| StudyGroupDTO | [StudyGroupDTO.java](./backend/src/main/java/com/studysync/dto/StudyGroupDTO.java) |
-| StudySessionDTO | [StudySessionDTO.java](./backend/src/main/java/com/studysync/dto/StudySessionDTO.java) |
-
----
-
-## CI/CD and Configuration
-
-| File | Link |
-|---|---|
-| GitHub Actions Workflow | [.github/workflows/ci.yml](./.github/workflows/ci.yml) |
-| Branch Protection Documentation | [PROTECTION.md](./PROTECTION.md) |
-| Maven Build File | [pom.xml](./backend/pom.xml) |
-
----
-
-## Test Suites
-
-| Test Class | Link |
-|---|---|
-| UserServiceTest | [UserServiceTest.java](./backend/src/test/java/com/studysync/service/UserServiceTest.java) |
-| StudyGroupServiceTest | [StudyGroupServiceTest.java](./backend/src/test/java/com/studysync/service/StudyGroupServiceTest.java) |
-| StudySessionServiceTest | [StudySessionServiceTest.java](./backend/src/test/java/com/studysync/service/StudySessionServiceTest.java) |
-| UserControllerTest | [UserControllerTest.java](./backend/src/test/java/com/studysync/controller/UserControllerTest.java) |
-| RepositoryFactoryTest | [RepositoryFactoryTest.java](./backend/src/test/java/com/studysync/repository/RepositoryFactoryTest.java) |
-| GroupPrototypeTest | [GroupPrototypeTest.java](./backend/src/test/java/com/studysync/creational/GroupPrototypeTest.java) |
-| StudyGroupBuilderTest | [StudyGroupBuilderTest.java](./backend/src/test/java/com/studysync/creational/StudyGroupBuilderTest.java) |
-
----
-
-# Quick Links
-
-| Resource | Link |
-|---|---|
-| System Specification | [SPECIFICATION.md](./SPECIFICATION.md) |
-| Architecture Documentation | [ARCHITECTURE.md](./ARCHITECTURE.md) |
-| Stakeholders | [STAKEHOLDERS.md](./STAKEHOLDERS.md) |
-| System Requirements | [SRD.md](./SRD.md) |
-| Use Cases | [USE_CASES.md](./USE_CASES.md) |
-| Agile Planning | [AGILE_PLANNING.md](./AGILE_PLANNING.md) |
-| Kanban Documentation | [KANBAN_EXPLANATION.md](./KANBAN_EXPLANATION.md) |
-| State Diagrams | [STATE_DIAGRAMS.md](./STATE_DIAGRAMS.md) |
-| Activity Diagrams | [ACTIVITY_DIAGRAMS.md](./ACTIVITY_DIAGRAMS.md) |
-| Domain Model | [DOMAIN_MODEL.md](./DOMAIN_MODEL.md) |
-| Class Diagram | [CLASS_DIAGRAM.md](./CLASS_DIAGRAM.md) |
-| Reflection Document | [REFLECTION.md](./REFLECTION.md) |
-| Branch Protection Rules | [PROTECTION.md](./PROTECTION.md) |
-| Contribution Guidelines | [CONTRIBUTING.md](./CONTRIBUTING.md) |
-| Open-Source Roadmap | [ROADMAP.md](./ROADMAP.md) |
-| Contributor Issue Plan | [ISSUE_LABELS.md](./ISSUE_LABELS.md) |
-| Peer Voting Results | [VOTING_RESULTS.md](./VOTING_RESULTS.md) |
-| Assignment 14 Checklist | [ASSIGNMENT_14_CHECKLIST.md](./ASSIGNMENT_14_CHECKLIST.md) |
-| Changelog | [CHANGELOG.md](./CHANGELOG.md) |
-
----
-
-# Technology Stack
-
-| Layer | Technology |
-|---|---|
-| Frontend | React 18, Axios, React Router v6, TailwindCSS |
-| Backend | Java 21, Spring Boot 3 |
-| Database | PostgreSQL 15 |
-| Authentication | JSON Web Tokens (JWT) |
-| Build Tool | Apache Maven |
-| Testing | JUnit 5, Mockito |
-| CI/CD | GitHub Actions |
-| Deployment | Vercel, Railway |
-| Version Control | Git and GitHub |
-
----
-
-# Running the Project
-
-## Clone the Repository
+## Quick Start
 
 ```bash
 git clone https://github.com/Keitudimps/StudySync.git
-```
-
----
-
-## Navigate to Backend
-
-```bash
-cd backend
-```
-
----
-
-## Run the Application
-
-```bash
+cd StudySync/backend
+mvn clean test
 mvn spring-boot:run
 ```
 
----
-
-## Run All Tests Locally
-
-From the `backend` folder, run:
-
-```bash
-mvn clean test
-```
-
-This command runs the unit and integration tests before code is pushed to GitHub.
-
----
-
-## Build the Application Locally
-
-From the `backend` folder, run:
+Build the release artifact locally:
 
 ```bash
 mvn clean package
 ```
 
-Generated JAR artifacts will be located in:
+The generated JAR will be created in:
 
 ```text
 backend/target/
@@ -285,347 +46,408 @@ backend/target/
 
 ---
 
-# Project Documentation
+## Technology Stack
 
-The repository contains all documentation, diagrams, specifications, architectural models, implementation artefacts, and project management documentation developed throughout the project lifecycle.
-
----
-
-## System Specification and Architecture
-
-| Document | Description |
+| Layer | Technology |
 |---|---|
-| [SPECIFICATION.md](./SPECIFICATION.md) | Defines system scope, features, constraints, and problem domain |
-| [ARCHITECTURE.md](./ARCHITECTURE.md) | Full C4 architectural diagrams covering context, containers, components, and code relationships |
+| Backend | Java 21, Spring Boot 3 |
+| API Style | REST API |
+| Build Tool | Maven |
+| Testing | JUnit 5, Mockito, Spring Boot Test |
+| Architecture | Layered architecture, Repository pattern, Service layer |
+| Design Patterns | Simple Factory, Factory Method, Abstract Factory, Builder, Prototype, Singleton |
+| Documentation | Markdown, Mermaid.js, C4 Model, OpenAPI YAML |
+| CI/CD | GitHub Actions |
+| Collaboration | GitHub Issues, Pull Requests, Project Board, Stars/Forks |
 
 ---
 
-## Requirements Engineering
+## Assignment 3–14 Coverage Matrix
 
-| Document | Description |
-|---|---|
-| [STAKEHOLDERS.md](./STAKEHOLDERS.md) | Stakeholder analysis including concerns, trade-offs, and success metrics |
-| [SRD.md](./SRD.md) | Functional and non-functional requirements with traceability matrix |
-
----
-
-## Analysis and Modelling
-
-| Document | Description |
-|---|---|
-| [USE_CASES.md](./USE_CASES.md) | Use case diagrams, specifications, and functional test cases |
-| [STATE_DIAGRAMS.md](./STATE_DIAGRAMS.md) | State transition diagrams |
-| [ACTIVITY_DIAGRAMS.md](./ACTIVITY_DIAGRAMS.md) | Workflow activity diagrams |
-| [DOMAIN_MODEL.md](./DOMAIN_MODEL.md) | Domain entities, relationships, and business rules |
-| [CLASS_DIAGRAM.md](./CLASS_DIAGRAM.md) | UML class diagram implementation |
+| Assignment | Requirement Area | Repository Evidence |
+|---|---|---|
+| Assignment 3 | System specification and C4 architecture | [SPECIFICATION.md](./SPECIFICATION.md), [ARCHITECTURE.md](./ARCHITECTURE.md) |
+| Assignment 4 | Stakeholders, functional requirements, non-functional requirements | [STAKEHOLDERS.md](./STAKEHOLDERS.md), [SRD.md](./SRD.md) |
+| Assignment 5 | Use case diagram, use case specifications, test cases | [USE_CASES.md](./USE_CASES.md), [UseCaseDiagram.jpg](./UseCaseDiagram.jpg) |
+| Assignment 6 | Agile user stories, backlog, sprint planning | [AGILE_PLANNING.md](./AGILE_PLANNING.md) |
+| Assignment 7 | GitHub project templates and Kanban board | [TEMPLATE_ANALYSIS.md](./TEMPLATE_ANALYSIS.md), [KANBAN_EXPLANATION.md](./KANBAN_EXPLANATION.md), [Kanban_board.png](./Kanban_board.png) |
+| Assignment 8 | State transition diagrams and activity workflow diagrams | [STATE_DIAGRAMS.md](./STATE_DIAGRAMS.md), [ACTIVITY_DIAGRAMS.md](./ACTIVITY_DIAGRAMS.md) |
+| Assignment 9 | Domain model and class diagram | [DOMAIN_MODEL.md](./DOMAIN_MODEL.md), [CLASS_DIAGRAM.md](./CLASS_DIAGRAM.md) |
+| Assignment 10 | Classes, creational patterns, tests, changelog | [backend/src/main/java/com/studysync/](./backend/src/main/java/com/studysync/), [CHANGELOG.md](./CHANGELOG.md) |
+| Assignment 11 | Repository layer, CRUD abstraction, future storage stubs | [Repository package](./backend/src/main/java/com/studysync/repository/), [Repository tests](./backend/src/test/java/com/studysync/repository/) |
+| Assignment 12 | Service layer, REST API, OpenAPI documentation | [Service package](./backend/src/main/java/com/studysync/service/), [Controller package](./backend/src/main/java/com/studysync/controller/), [OpenAPI YAML](./docs/openapi.yaml) |
+| Assignment 13 | GitHub Actions CI/CD, branch protection, artifacts | [.github/workflows/ci.yml](./.github/workflows/ci.yml), [PROTECTION.md](./PROTECTION.md), [ASSIGNMENT_13_CHECKLIST.md](./ASSIGNMENT_13_CHECKLIST.md), [Screenshots](./Screenshots/) |
+| Assignment 14 | Contributor onboarding, roadmap, license, peer voting, reflection | [CONTRIBUTING.md](./CONTRIBUTING.md), [ROADMAP.md](./ROADMAP.md), [LICENSE](./LICENSE), [ISSUE_LABELS.md](./ISSUE_LABELS.md), [VOTING_RESULTS.md](./VOTING_RESULTS.md), [REFLECTION.md](./REFLECTION.md) |
 
 ---
 
-## Agile Planning and Project Management
-
-| Document | Description |
-|---|---|
-| [AGILE_PLANNING.md](./AGILE_PLANNING.md) | User stories, product backlog, sprint planning |
-| [KANBAN_EXPLANATION.md](./KANBAN_EXPLANATION.md) | Kanban board workflow and structure |
-| [TEMPLATE_ANALYSIS.md](./TEMPLATE_ANALYSIS.md) | GitHub project template analysis |
-
----
-
-## Supporting Documentation
-
-| Document | Description |
-|---|---|
-| [REFLECTION.md](./REFLECTION.md) | Project reflections and lessons learned |
-| [CHANGELOG.md](./CHANGELOG.md) | Project updates and cumulative changes |
-| [PROTECTION.md](./PROTECTION.md) | Branch protection configuration explanation |
-| [CONTRIBUTING.md](./CONTRIBUTING.md) | Contributor setup, coding standards, issue workflow, and PR process |
-| [ROADMAP.md](./ROADMAP.md) | Future project features and planned improvements |
-| [ISSUE_LABELS.md](./ISSUE_LABELS.md) | Planned beginner-friendly and feature-request issues for contributors |
-| [VOTING_RESULTS.md](./VOTING_RESULTS.md) | Peer review stars, forks, feedback, and voting evidence |
-
----
-
-# Design Patterns Implementation
-
-The project implements multiple creational design patterns integrated into the system architecture.
-
-## Patterns Implemented
-
-| Pattern | Purpose |
-|---|---|
-| Simple Factory | Notification object creation |
-| Factory Method | Payment processor creation |
-| Abstract Factory | Cross-platform GUI creation |
-| Builder | Complex StudyGroup object construction |
-| Prototype | Cloning reusable group templates |
-| Singleton | Single database connection instance |
-
----
-
-## Quality Metrics
-
-| Metric | Value |
-|---|---|
-| Java Source Files | 67 |
-| Pattern Classes | 31 |
-| Test Suites | 7 |
-| Unit Tests | 35 |
-| Test Pass Rate | 100% |
-
----
-
-# Repository Layer
-
-Source Directory:  
-[backend/src/main/java/com/studysync/repository/](./backend/src/main/java/com/studysync/repository/)
-
-The repository layer provides a persistence abstraction using in-memory implementations and future-proofing stubs.
-
-## Features
-
-- Generic repository interface
-- CRUD operations
-- In-memory implementations
-- Repository factory
-- Database and filesystem stubs
-
----
-
-# Service Layer and REST API
-
-Source Directory:  
-[backend/src/main/java/com/studysync/service/](./backend/src/main/java/com/studysync/service/)
-
-The project includes a complete service layer and REST API implementation.
-
----
-
-## Service Layer
-
-| Service | Responsibility |
-|---|---|
-| UserService | User management |
-| StudyGroupService | Group management |
-| StudySessionService | Session scheduling |
-
----
-
-## REST API Endpoints
-
-### Users
+## Repository Structure
 
 ```text
-/api/users
-```
-
-### Study Groups
-
-```text
-/api/groups
-```
-
-### Study Sessions
-
-```text
-/api/sessions
+StudySync/
+├── .github/
+│   └── workflows/
+│       └── ci.yml
+├── backend/
+│   ├── pom.xml
+│   ├── run-tests.sh
+│   └── src/
+│       ├── main/java/com/studysync/
+│       │   ├── controller/
+│       │   ├── creational/
+│       │   ├── domain/
+│       │   ├── dto/
+│       │   ├── factory/
+│       │   ├── repository/
+│       │   ├── service/
+│       │   └── StudySyncApplication.java
+│       └── test/java/com/studysync/
+│           ├── controller/
+│           ├── creational/
+│           ├── repository/
+│           └── service/
+├── docs/
+│   ├── openapi.yaml
+│   └── SWAGGER_SCREENSHOT_NOTE.md
+├── Screenshots/
+│   ├── Actions Workflow.png
+│   ├── Artifact generation screenshot.png
+│   ├── Branch protection screenshot.png
+│   └── PR blocked screenshot.png
+├── UseCaseDiagram.jpg
+├── Kanban_board.png
+├── README.md
+├── SPECIFICATION.md
+├── ARCHITECTURE.md
+├── STAKEHOLDERS.md
+├── SRD.md
+├── USE_CASES.md
+├── AGILE_PLANNING.md
+├── TEMPLATE_ANALYSIS.md
+├── KANBAN_EXPLANATION.md
+├── STATE_DIAGRAMS.md
+├── ACTIVITY_DIAGRAMS.md
+├── DOMAIN_MODEL.md
+├── CLASS_DIAGRAM.md
+├── CHANGELOG.md
+├── PROTECTION.md
+├── CONTRIBUTING.md
+├── ROADMAP.md
+├── ISSUE_LABELS.md
+├── VOTING_RESULTS.md
+├── REFLECTION.md
+└── LICENSE
 ```
 
 ---
 
-## Business Rules Enforced
+## Documentation Index
 
-- Unique email validation
-- Unique group name validation
-- Creator-only deletion
-- Future session validation
-- Session ownership checks
+### Planning, Requirements, and Architecture
 
----
-
-## Test Coverage
-
-| Layer | Tests |
+| Document | Purpose |
 |---|---|
-| Creational Patterns | 25 |
-| Repository Layer | 41 |
-| Service Layer | 29 |
-| Controller Layer | 9 |
-| Total Tests | 104 |
+| [SPECIFICATION.md](./SPECIFICATION.md) | Project title, domain, problem statement, scope, assumptions, and core system description |
+| [ARCHITECTURE.md](./ARCHITECTURE.md) | C4 Context, Container, Component, and code-level architectural diagrams |
+| [STAKEHOLDERS.md](./STAKEHOLDERS.md) | Stakeholder roles, concerns, pain points, and success metrics |
+| [SRD.md](./SRD.md) | Functional requirements, non-functional requirements, and traceability |
+| [USE_CASES.md](./USE_CASES.md) | UML use case diagram, use case specifications, and test cases |
+| [AGILE_PLANNING.md](./AGILE_PLANNING.md) | User stories, product backlog, sprint goal, sprint backlog, and traceability |
+| [TEMPLATE_ANALYSIS.md](./TEMPLATE_ANALYSIS.md) | GitHub Projects template comparison and selected template justification |
+| [KANBAN_EXPLANATION.md](./KANBAN_EXPLANATION.md) | Kanban workflow explanation, WIP reasoning, and board purpose |
 
-All tests pass successfully with zero failures.
+### Modelling and Design
+
+| Document | Purpose |
+|---|---|
+| [STATE_DIAGRAMS.md](./STATE_DIAGRAMS.md) | State transition diagrams for important StudySync objects |
+| [ACTIVITY_DIAGRAMS.md](./ACTIVITY_DIAGRAMS.md) | Activity diagrams for major workflows such as registration, joining groups, and scheduling sessions |
+| [DOMAIN_MODEL.md](./DOMAIN_MODEL.md) | Main domain entities, attributes, responsibilities, relationships, and business rules |
+| [CLASS_DIAGRAM.md](./CLASS_DIAGRAM.md) | UML class diagram in Mermaid.js aligned with the implementation |
+
+### Implementation, CI/CD, and Collaboration
+
+| Document | Purpose |
+|---|---|
+| [CHANGELOG.md](./CHANGELOG.md) | Tracks implementation progress and completed changes |
+| [PROTECTION.md](./PROTECTION.md) | Explains branch protection rules and why they matter |
+| [.github/workflows/ci.yml](./.github/workflows/ci.yml) | Runs tests on push/PR and uploads a release artifact from `main` |
+| [CONTRIBUTING.md](./CONTRIBUTING.md) | Setup instructions, coding standards, issue workflow, testing, and PR process |
+| [ROADMAP.md](./ROADMAP.md) | Planned future features and improvement areas |
+| [ISSUE_LABELS.md](./ISSUE_LABELS.md) | Required `good-first-issue` and `feature-request` issue plan |
+| [VOTING_RESULTS.md](./VOTING_RESULTS.md) | Peer stars, forks, comments, PRs, and review results |
+| [REFLECTION.md](./REFLECTION.md) | Reflection on collaboration, onboarding, peer feedback, and lessons learned |
+| [LICENSE](./LICENSE) | MIT license for open-source-style reuse |
 
 ---
 
-# CI/CD Pipeline
+## Diagram Gallery
 
-The project uses GitHub Actions to automate testing and release artifact generation for Assignment 13.
+The key diagrams are embedded below so they appear directly on GitHub. Full diagram explanations are available in the linked markdown files.
 
-Workflow file:
+### Assignment 3 — C4 System Context Diagram
 
-```text
-.github/workflows/ci.yml
+```mermaid
+flowchart LR
+    Student[Student] -->|Register, create or join groups, schedule sessions| StudySync[StudySync Web Application]
+    Admin[Administrator] -->|Manage users, groups, and platform content| StudySync
+    StudySync -->|REST API calls| Backend[Spring Boot REST API]
+    Backend -->|Stores and retrieves data| Database[(PostgreSQL Database)]
+    StudySync -->|Manual meeting links| Video[Zoom / Google Meet]
 ```
 
+Full architecture diagrams: [ARCHITECTURE.md](./ARCHITECTURE.md)
+
 ---
 
-## Continuous Integration (CI)
+### Assignment 5 — Use Case Diagram
 
-The CI job is called **Run Unit and Integration Tests**. It automatically:
+![StudySync Use Case Diagram](./UseCaseDiagram.jpg)
 
-- Runs on every push to any branch.
-- Runs on every pull request targeting `main`.
-- Sets up Java 21 using Temurin.
-- Caches Maven dependencies to make the workflow faster.
-- Runs all backend tests using:
+Full use case specifications and test cases: [USE_CASES.md](./USE_CASES.md)
+
+---
+
+### Assignment 7 — Kanban Board Evidence
+
+![StudySync Kanban Board](./Kanban_board.png)
+
+Kanban explanation: [KANBAN_EXPLANATION.md](./KANBAN_EXPLANATION.md)
+
+---
+
+### Assignment 8 — State Diagram Preview
+
+```mermaid
+stateDiagram-v2
+    [*] --> Registered
+    Registered --> Active: Email verified / profile completed
+    Active --> Suspended: Admin suspends account
+    Suspended --> Active: Admin reactivates account
+    Active --> Deactivated: User deletes account
+    Deactivated --> [*]
+```
+
+Full state transition diagrams: [STATE_DIAGRAMS.md](./STATE_DIAGRAMS.md)
+
+---
+
+### Assignment 8 — Activity Diagram Preview
+
+```mermaid
+flowchart TD
+    A([Start]) --> B[Student opens StudySync]
+    B --> C[Enter registration details]
+    C --> D{Are details valid?}
+    D -- No --> E[Show validation message]
+    E --> C
+    D -- Yes --> F[Create user account]
+    F --> G[Save academic profile]
+    G --> H[Show registration success]
+    H --> I([End])
+```
+
+Full activity workflow diagrams: [ACTIVITY_DIAGRAMS.md](./ACTIVITY_DIAGRAMS.md)
+
+---
+
+### Assignment 9 — Class Diagram Preview
+
+```mermaid
+classDiagram
+    direction LR
+
+    class User {
+        -Long userId
+        -String name
+        -String email
+        -Role role
+        +register()
+        +login()
+        +updateProfile()
+    }
+
+    class StudyGroup {
+        -Long groupId
+        -String name
+        -Privacy privacy
+        -Integer maxCapacity
+        +create()
+        +isFull()
+        +updateDetails()
+    }
+
+    class Membership {
+        -Long membershipId
+        -MembershipStatus status
+        +approve()
+        +reject()
+        +leave()
+    }
+
+    class StudySession {
+        -Long sessionId
+        -String title
+        -LocalDateTime scheduledAt
+        +schedule()
+        +cancel()
+    }
+
+    class Course {
+        -Long courseId
+        -String code
+        -String name
+        +addGroup()
+    }
+
+    User "1" --> "0..*" Membership : has
+    StudyGroup "1" --> "0..*" Membership : contains
+    StudyGroup "1" --> "0..*" StudySession : schedules
+    Course "1" --> "0..*" StudyGroup : organises
+```
+
+Full class diagram: [CLASS_DIAGRAM.md](./CLASS_DIAGRAM.md)
+
+---
+
+## Source Code Navigation
+
+### Main Application
+
+| Component | Link |
+|---|---|
+| Main Spring Boot Application | [StudySyncApplication.java](./backend/src/main/java/com/studysync/StudySyncApplication.java) |
+
+### Backend Packages
+
+| Package | Link |
+|---|---|
+| Domain classes | [domain/](./backend/src/main/java/com/studysync/domain/) |
+| DTO classes | [dto/](./backend/src/main/java/com/studysync/dto/) |
+| Repository interfaces and implementations | [repository/](./backend/src/main/java/com/studysync/repository/) |
+| Factories | [factory/](./backend/src/main/java/com/studysync/factory/) |
+| Creational pattern examples | [creational/](./backend/src/main/java/com/studysync/creational/) |
+| Service layer | [service/](./backend/src/main/java/com/studysync/service/) |
+| REST controllers | [controller/](./backend/src/main/java/com/studysync/controller/) |
+
+### Important Classes
+
+| Area | Files |
+|---|---|
+| Domain Model | [User.java](./backend/src/main/java/com/studysync/domain/User.java), [StudyGroup.java](./backend/src/main/java/com/studysync/domain/StudyGroup.java), [Membership.java](./backend/src/main/java/com/studysync/domain/Membership.java), [StudySession.java](./backend/src/main/java/com/studysync/domain/StudySession.java), [Course.java](./backend/src/main/java/com/studysync/domain/Course.java) |
+| Services | [UserService.java](./backend/src/main/java/com/studysync/service/UserService.java), [StudyGroupService.java](./backend/src/main/java/com/studysync/service/StudyGroupService.java), [StudySessionService.java](./backend/src/main/java/com/studysync/service/StudySessionService.java) |
+| Controllers | [UserController.java](./backend/src/main/java/com/studysync/controller/UserController.java), [StudyGroupController.java](./backend/src/main/java/com/studysync/controller/StudyGroupController.java), [StudySessionController.java](./backend/src/main/java/com/studysync/controller/StudySessionController.java) |
+| Repository Factory | [RepositoryFactory.java](./backend/src/main/java/com/studysync/factory/RepositoryFactory.java) |
+| OpenAPI | [docs/openapi.yaml](./docs/openapi.yaml) |
+
+---
+
+## Running and Testing
+
+### Prerequisites
+
+- Java 21 or later
+- Maven 3.9 or later
+- Git
+- IntelliJ IDEA or Visual Studio Code
+
+### Run the Backend
 
 ```bash
-mvn --batch-mode clean test
+cd backend
+mvn spring-boot:run
 ```
 
-When branch protection is enabled, this status check blocks pull request merging if the tests fail.
+### Run Tests Locally
+
+```bash
+cd backend
+mvn clean test
+```
+
+### Build the JAR Artifact
+
+```bash
+cd backend
+mvn clean package
+```
+
+### Test Evidence
+
+The test suite contains **116 JUnit tests** across controller, service, repository, and creational pattern layers.
+
+| Layer | Evidence |
+|---|---|
+| Creational patterns | [backend/src/test/java/com/studysync/creational/](./backend/src/test/java/com/studysync/creational/) |
+| Repositories | [backend/src/test/java/com/studysync/repository/](./backend/src/test/java/com/studysync/repository/) |
+| Services | [backend/src/test/java/com/studysync/service/](./backend/src/test/java/com/studysync/service/) |
+| Controllers | [backend/src/test/java/com/studysync/controller/](./backend/src/test/java/com/studysync/controller/) |
 
 ---
 
-## Continuous Delivery / Release Artifact (CD)
+## CI/CD and Branch Protection Evidence
 
-The release artifact job is called **Build and Upload Release Artifact**. It runs only when code is pushed or merged into `main`.
+The GitHub Actions workflow runs tests on every push and pull request. It only uploads the release artifact when code is merged into `main`.
 
-The job:
+| Evidence | Screenshot |
+|---|---|
+| Branch protection rules | ![Branch Protection Rules](./Screenshots/Branch%20protection%20screenshot.png) |
+| GitHub Actions test run | ![GitHub Actions Workflow](./Screenshots/Actions%20Workflow.png) |
+| Release artifact generated | ![Generated Artifact](./Screenshots/Artifact%20generation%20screenshot.png) |
+| Pull request blocked by required checks | ![Pull Request Blocked](./Screenshots/PR%20blocked%20screenshot.png) |
 
-- Waits for the test job to pass first.
-- Builds the backend JAR file using Maven.
-- Uploads the JAR as a GitHub Actions artifact named `StudySync-JAR`.
-- Fails the workflow if no JAR file is produced.
+Related files:
 
-This means feature branches and pull requests run tests, but release artifacts are generated only from `main`.
-
----
-
-# Pull Request Workflow
-
-The required workflow is:
-
-1. Create a new branch for changes.
-2. Commit and push the branch.
-3. Open a pull request into `main`.
-4. Wait for the CI test status check to pass.
-5. Get at least 1 approval.
-6. Merge only after GitHub allows the pull request.
-
-If tests fail, the pull request must remain blocked until the issue is fixed.
-
----
-
-# Branch Protection Rules
-
-The repository uses GitHub branch protection rules on the `main` branch.
-
-Configured rules:
-
-- Require pull request reviews before merging.
-- Require at least 1 approval.
-- Require the `Run Unit and Integration Tests` status check to pass.
-- Prevent direct pushes to `main`.
-
-Additional details:
-
+- [.github/workflows/ci.yml](./.github/workflows/ci.yml)
 - [PROTECTION.md](./PROTECTION.md)
 - [ASSIGNMENT_13_CHECKLIST.md](./ASSIGNMENT_13_CHECKLIST.md)
 
 ---
 
+## Open-Source Collaboration
 
-# Assignment 13 Evidence
+StudySync is prepared for peer review and contributor onboarding.
 
-The following screenshots provide evidence for the CI/CD and branch protection requirements.
+### Contributor Setup
 
-## Branch Protection Rules
+New contributors should:
 
-![Branch Protection Rules](./Screenshots/Branch%20protection%20screenshot.png)
+1. Fork the repository.
+2. Clone their fork.
+3. Run `mvn clean test` from the `backend` folder.
+4. Pick an issue labelled `good-first-issue` or `feature-request`.
+5. Create a feature branch.
+6. Submit a pull request with a clear description and test evidence.
 
-## GitHub Actions Test Results
+Full guide: [CONTRIBUTING.md](./CONTRIBUTING.md)
 
-![GitHub Actions Workflow](./Screenshots/Actions%20Workflow.png)
+### Features for Contribution
 
-## Generated Release Artifact
+| Feature | Difficulty | Suggested Label |
+|---|---|---|
+| Improve validation messages | Beginner | `good-first-issue` |
+| Add JavaDoc comments | Beginner | `good-first-issue` |
+| Add more unit tests | Beginner | `good-first-issue` |
+| Improve README formatting | Beginner | `good-first-issue` |
+| Add API usage examples | Beginner | `good-first-issue` |
+| Add dark mode support | Intermediate | `feature-request` |
+| Add Google Calendar synchronization | Intermediate | `feature-request` |
+| Add Redis caching | Advanced | `feature-request` |
+| Add Docker support | Advanced | `feature-request` |
 
-![Generated Artifact](./Screenshots/Artifact%20generation%20screenshot.png)
+Related Assignment 14 documents:
 
-## Pull Request Blocked by Required Checks
-
-![Pull Request Blocked](./Screenshots/PR%20blocked%20screenshot.png)
-
----
-
-# Project Management
-
-## GitHub Projects Kanban Board
-
-### Live Board
-
-[StudySync — Sprint 1 Kanban Board](https://github.com/users/Keitudimps/projects/2)
-
----
-
-## Board Preview
-
-![StudySync Sprint 1 Kanban Board](./Kanban_board.png)
-
----
-
-## Board Structure
-
-| Column | Purpose |
-|---|---|
-| To Do | Planned sprint tasks |
-| In Progress | Tasks currently under development |
-| Blocked | Tasks waiting for dependencies or fixes |
-| Testing | Tasks pending verification |
-| Done | Completed and verified tasks |
+- [CONTRIBUTING.md](./CONTRIBUTING.md)
+- [ROADMAP.md](./ROADMAP.md)
+- [ISSUE_LABELS.md](./ISSUE_LABELS.md)
+- [VOTING_RESULTS.md](./VOTING_RESULTS.md)
+- [REFLECTION.md](./REFLECTION.md)
+- [ASSIGNMENT_14_CHECKLIST.md](./ASSIGNMENT_14_CHECKLIST.md)
+- [PEER_REVIEW_REQUEST.md](./PEER_REVIEW_REQUEST.md)
 
 ---
 
-## Issue Labels
-
-| Label | Purpose |
-|---|---|
-| sprint-1 | Sprint 1 tasks |
-| backend | Backend development |
-| frontend | Frontend development |
-| security | Security implementation |
-| database | Database tasks |
-| testing | Testing tasks |
-
----
-
-# Current Project Status
-
-| Area | Status |
-|---|---|
-| Domain Model | Completed |
-| Design Patterns | Completed |
-| Repository Layer | Completed |
-| Service Layer | Completed |
-| REST API | Completed |
-| Unit Testing | Completed |
-| CI/CD Pipeline | Completed |
-| Branch Protection | Completed |
-
-Build Status: Passing
-
----
-
-# Project Reflection
-
-A cumulative reflection document is maintained throughout the project lifecycle.
-
-| Document | Coverage |
-|---|---|
-| [REFLECTION.md](./REFLECTION.md) | Reflections, challenges, and lessons learned throughout development |
-
----
-
-# Author
+## Author
 
 | Field | Detail |
 |---|---|
@@ -637,71 +459,12 @@ A cumulative reflection document is maintained throughout the project lifecycle.
 
 ---
 
-# License
+## License
 
-This project uses the MIT License. See [LICENSE](./LICENSE) for details.
-
----
-
-# Conclusion
-
-StudySync demonstrates modern software engineering practices including layered architecture, design patterns, repository abstraction, REST API development, automated testing, Agile project management, and CI/CD workflow automation using GitHub Actions.
+This project is licensed under the MIT License. See [LICENSE](./LICENSE) for details.
 
 ---
 
-# Open-Source Collaboration
+## Conclusion
 
-StudySync is prepared for peer review and open-source-style collaboration. The repository includes contribution guidelines, issue planning, a roadmap, a license, peer voting documentation, and a reflection on collaboration.
-
-## Collaboration Documents
-
-| Document | Purpose |
-|---|---|
-| [CONTRIBUTING.md](./CONTRIBUTING.md) | Explains setup, coding standards, issue selection, testing, and pull request workflow |
-| [ROADMAP.md](./ROADMAP.md) | Lists planned future features and improvements |
-| [LICENSE](./LICENSE) | Provides the MIT open-source license |
-| [ISSUE_LABELS.md](./ISSUE_LABELS.md) | Lists 5+ `good-first-issue` tasks and 3+ `feature-request` tasks |
-| [VOTING_RESULTS.md](./VOTING_RESULTS.md) | Records peer review stars, forks, comments, and pull requests |
-| [REFLECTION.md](./REFLECTION.md) | Contains the Assignment 14 reflection on collaboration and onboarding |
-| [ASSIGNMENT_14_CHECKLIST.md](./ASSIGNMENT_14_CHECKLIST.md) | Tracks completion of Assignment 14 requirements |
-
----
-
-## Getting Started for Contributors
-
-New contributors should follow these steps:
-
-1. Fork the repository.
-2. Clone the forked repository.
-3. Open the project in IntelliJ IDEA or Visual Studio Code.
-4. Navigate to the backend folder.
-5. Run `mvn clean test` to confirm the project works locally.
-6. Choose an issue labeled `good-first-issue` or `feature-request`.
-7. Create a new branch for the change.
-8. Submit a pull request with a clear description.
-
-Full contributor instructions are available in [CONTRIBUTING.md](./CONTRIBUTING.md).
-
----
-
-## Features for Contribution
-
-| Feature | Difficulty | Suggested Label |
-|---|---|---|
-| Improve user validation messages | Beginner | `good-first-issue` |
-| Add more unit tests | Beginner | `good-first-issue` |
-| Improve README formatting | Beginner | `good-first-issue` |
-| Add JavaDoc comments | Beginner | `good-first-issue` |
-| Add API documentation notes | Beginner | `good-first-issue` |
-| Add dark mode support | Intermediate | `feature-request` |
-| Add Google Calendar synchronization | Intermediate | `feature-request` |
-| Implement Redis caching | Advanced | `feature-request` |
-| Add Docker support | Advanced | `feature-request` |
-
----
-
-## Peer Review and Voting
-
-Classmates are encouraged to review the repository by starring it, forking it, opening small pull requests, and giving feedback through issues or comments. Peer engagement is recorded in [VOTING_RESULTS.md](./VOTING_RESULTS.md).
-
----
+StudySync demonstrates a complete Software Engineering lifecycle: requirements engineering, C4 architecture, use case modelling, Agile planning, Kanban management, behavioural modelling, domain modelling, object-oriented design, creational design patterns, repository abstraction, service and REST API implementation, automated testing, CI/CD, branch protection, and open-source collaboration readiness.
