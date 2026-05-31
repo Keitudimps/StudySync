@@ -35,7 +35,7 @@ The system is being developed using **React** for the frontend, **Java Spring Bo
 13. [Current Project Status](#current-project-status)
 14. [Open-Source Collaboration](#open-source-collaboration)
 15. [Project Reflection](#project-reflection)
-16. [Author](#Keitumetse Dimpe)
+16. [Author](Keitumetse Dimpe)
 17. [License](#license)
 
 ---
