@@ -2,53 +2,55 @@
 
 ## Overview
 
-Branch protection rules are used to maintain code quality, improve collaboration, and prevent unstable code from being merged into the `main` branch.
+The `main` branch represents the stable version of the StudySync project. Branch protection rules are used to make sure that unstable, unreviewed, or untested code cannot be merged directly into `main`.
 
-The following protection rules were configured for the StudySync project:
+## Configured Rules for `main`
 
-- Require pull request reviews before merging
-- Require status checks to pass before merging
-- Disable direct pushes to the `main` branch
+The following rules must be enabled in GitHub under **Settings → Branches → Branch protection rules**:
 
----
+1. **Require a pull request before merging**
+   - At least **1 approval** is required before a pull request can be merged.
+
+2. **Require status checks to pass before merging**
+   - The required GitHub Actions status check is: `Run Unit and Integration Tests`.
+   - This check runs the Maven test command before code can be merged.
+
+3. **Disable direct pushes to `main`**
+   - Contributors must create a branch and open a pull request instead of pushing directly to `main`.
 
 ## Why These Rules Matter
 
-### 1. Pull Request Reviews
+### Pull Request Reviews
 
-Pull request reviews ensure that all code changes are checked by at least one team member before being merged.
+Pull request reviews help another developer check the code before it becomes part of the stable branch. This improves code quality, catches mistakes early, and supports teamwork.
 
-Benefits:
-- Reduces coding mistakes
-- Improves code quality
-- Encourages collaboration
-- Helps identify security or logic issues early
+### Required Status Checks
 
----
+Required status checks make sure the CI pipeline passes before merging. If any unit or integration test fails, GitHub blocks the pull request from being merged into `main`.
 
-### 2. Required Status Checks
+### No Direct Pushes
 
-The CI workflow automatically runs unit and integration tests whenever code is pushed or a pull request is created.
+Disabling direct pushes protects the stable branch. It ensures that every change follows the same professional workflow: branch → commit → pull request → review → automated tests → merge.
 
-Benefits:
-- Prevents broken code from reaching production
-- Ensures all tests pass before merging
-- Improves system reliability
-- Detects errors automatically
+## Link to CI Workflow
 
----
+The CI/CD workflow is stored in:
 
-### 3. Disable Direct Pushes
+```text
+.github/workflows/ci.yml
+```
 
-Developers are not allowed to push directly to the `main` branch.
+The workflow runs tests on every push and pull request, then builds and uploads a JAR artifact only after code is pushed or merged into `main`.
 
-Benefits:
-- Protects the stable version of the project
-- Forces all changes through the pull request process
-- Ensures testing and review procedures are followed
+## Evidence Required for Submission
 
----
+The submission should include screenshots showing:
+
+- The branch protection rule for `main`
+- The pull request review requirement
+- The required status check
+- The blocked direct-push or protected branch setting
 
 ## Conclusion
 
-Branch protection rules support professional software development practices by enforcing testing, collaboration, and quality control throughout the development lifecycle.
+These rules support quality control, automation, and safe collaboration. They prevent broken code from reaching the stable branch and ensure that all project changes are reviewed and tested first.
